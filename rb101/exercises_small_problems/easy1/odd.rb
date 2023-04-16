@@ -1,9 +1,13 @@
+# def is_odd?(integer)
+#   if integer % 2 == 1
+#     true
+#   else
+#     false
+#   end
+# end
+
 def is_odd?(integer)
-  if integer % 2 == 1
-    true
-  else
-    false
-  end
+  (integer % 2 == 1) ? true : false
 end
 
 puts is_odd?(2)    # => false
