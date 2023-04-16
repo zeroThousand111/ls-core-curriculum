@@ -18,11 +18,9 @@
 # end
 
 # Answer to the further exploration question
-# def is_odd?(integer)
-#   integer.remainder(2)
-# end
-
-
+def is_odd?(integer)
+  integer.remainder(2) == 1
+end
 
 puts is_odd?(2)    # => false
 puts is_odd?(5)    # => true
