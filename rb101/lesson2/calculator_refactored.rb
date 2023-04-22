@@ -9,14 +9,15 @@ end
 def operation_to_method(op)
   case op
   when '1'
-    'adding'
+    return 'adding'
   when '2'
-    'subtracting'
+    return 'subtracting'
   when '3'
-    'multiplying'
+    return 'multiplying'
   when '4'
-    'dividing'
+    return 'dividing'
   end
+  something
 end
 
 num1 = nil
