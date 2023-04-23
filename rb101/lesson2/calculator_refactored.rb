@@ -39,9 +39,7 @@ end
 prompt("Hi, #{name}")
 
 # main loop begins
-loop do 
-
-
+loop do
   # ask the user for the first number and validate it
   loop do
     prompt("Please enter the first number:")
@@ -52,7 +50,7 @@ loop do
       prompt("Hmm... that doesn't look like a valid number.")
     end
   end
-  
+
   # ask the user for the second number and validate it
   loop do
     prompt("Please enter the second number:")
@@ -63,7 +61,7 @@ loop do
       prompt("Hmm... that doesn't look like a valid number.")
     end
   end
-  
+
   # ask the user for an operation to perform
   operator_prompt = <<-MSG # this is a heredoc
     Please enter an operation you would like to perform:
@@ -73,7 +71,7 @@ loop do
     4) division
   MSG
   prompt(operator_prompt)
-  
+
   operator = nil
   loop do
     operator = gets.chomp
@@ -83,24 +81,24 @@ loop do
       prompt("Must choose 1, 2, 3 or 4")
     end
   end
-  
+
   # perform the operation on the two numbers
   result = case operator
-    when '1'
-      num1.to_i + num2.to_i
-    when '2'
-      num1.to_i - num2.to_i
-    when '3'
-      num1.to_i * num2.to_i
-    when '4'
-      num1.to_f / num2.to_f
-  end
-    
+           when '1'
+             num1.to_i + num2.to_i
+           when '2'
+             num1.to_i - num2.to_i
+           when '3'
+             num1.to_i * num2.to_i
+           when '4'
+             num1.to_f / num2.to_f
+           end
+
   prompt("#{operation_to_method(operator)} #{num1} and #{num2}...")
-    
+
   # output the result
   prompt("The answer is #{result}!")
-  
+
   # ask the user if they want to loop again
   prompt("Do you want to perform another calculation? (Y for yes)")
   answer = gets.chomp
