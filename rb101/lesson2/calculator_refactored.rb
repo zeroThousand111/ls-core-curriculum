@@ -3,21 +3,32 @@ def prompt(message)
 end
 
 def valid_number?(num)
+  valid_integer?(num) || valid_float?(num)
+end
+
+def valid_integer?(num)
   num.to_i.to_s == num
 end
 
-def operation_to_method(op)
-  case op
-  when '1'
-    return 'adding'
-  when '2'
-    return 'subtracting'
-  when '3'
-    return 'multiplying'
-  when '4'
-    return 'dividing'
-  end
-  something
+def valid_float?(num)
+  num.to_f.to_s == num
+end
+
+def operation_to_message(operation)
+  word = case operation
+           when '1'
+             'Adding'
+           when '2'
+             'Subtracting'
+           when '3'
+             'Multiplying'
+           when '4'
+             'Dividing'
+         end
+
+  x = "A random line of code"
+
+  word
 end
 
 num1 = nil
@@ -85,19 +96,21 @@ loop do
   # perform the operation on the two numbers
   result = case operator
            when '1'
-             num1.to_i + num2.to_i
+             num1.to_f + num2.to_f
            when '2'
-             num1.to_i - num2.to_i
+             num1.to_f - num2.to_f
            when '3'
-             num1.to_i * num2.to_i
+             num1.to_f * num2.to_f
            when '4'
              num1.to_f / num2.to_f
            end
 
-  prompt("#{operation_to_method(operator)} #{num1} and #{num2}...")
+  result = result.round(2)
+
+  prompt("#{operation_to_message(operator)} #{num1} and #{num2}...")
 
   # output the result
-  prompt("The answer is #{result}!")
+  prompt("The answer, rounded to 2 d.p., is #{result}!")
 
   # ask the user if they want to loop again
   prompt("Do you want to perform another calculation? (Y for yes)")
