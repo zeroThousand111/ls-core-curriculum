@@ -5,7 +5,7 @@ puts "At what age would you like to retire?"
 retirement_age = gets.chomp.to_i
 
 # calculations
-this_year = 2023
+this_year = Time.now.year
 difference = retirement_age - age
 retirement_year = this_year + difference
 
