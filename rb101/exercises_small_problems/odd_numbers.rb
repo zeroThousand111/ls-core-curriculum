@@ -15,4 +15,7 @@
 # end
 
 # # array method
-(1..100).each { |n| puts n if n.odd? }
+# (1..100).each { |n| puts n if n.odd? }
+
+# Integer#upto method
+1.upto(100) { |n| puts n if n.odd? }
