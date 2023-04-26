@@ -1,6 +1,12 @@
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
 
+LANGUAGE = 'en'
+
+def messages(message, lang='en')
+  MESSAGES[lang][message]
+end
+
 def prompt(message)
   puts "=> #{message}"
 end
@@ -41,7 +47,7 @@ name = nil
 # welcome message and prompt to enter user name
 
 loop do
-  prompt(MESSAGES['welcome'])
+  prompt(messages('welcome', LANGUAGE))
   name = gets.chomp
   if name.empty?
     prompt("Hmm... that doesn't look like a valid name.")
