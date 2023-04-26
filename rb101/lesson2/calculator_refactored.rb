@@ -1,12 +1,6 @@
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
 
-LANGUAGE = 'en'
-
-def messages(message, lang='en')
-  MESSAGES[lang][message]
-end
-
 def prompt(message)
   puts "=> #{message}"
 end
@@ -47,10 +41,10 @@ name = nil
 # welcome message and prompt to enter user name
 
 loop do
-  prompt(messages('welcome', LANGUAGE))
+  prompt(MESSAGES['welcome'])
   name = gets.chomp
   if name.empty?
-    prompt("Hmm... that doesn't look like a valid name.")
+    prompt(MESSAGES['valid_name'])
   else
     break
   end
@@ -62,23 +56,23 @@ prompt("Hi, #{name}")
 loop do
   # ask the user for the first number and validate it
   loop do
-    prompt("Please enter the first number:")
+    prompt(MESSAGES['first_number'])
     num1 = gets.chomp
     if valid_number?(num1)
       break
     else
-      prompt("Hmm... that doesn't look like a valid number.")
+      prompt(MESSAGES['hmm'])
     end
   end
 
   # ask the user for the second number and validate it
   loop do
-    prompt("Please enter the second number:")
+    prompt(MESSAGES['second_number'])
     num2 = gets.chomp
     if valid_number?(num2)
       break
     else
-      prompt("Hmm... that doesn't look like a valid number.")
+      prompt(MESSAGES['hmm'])
     end
   end
 
@@ -98,7 +92,7 @@ loop do
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt("Must choose 1, 2, 3 or 4")
+      prompt(MESSAGES['must'])
     end
   end
 
@@ -122,10 +116,10 @@ loop do
   prompt("The answer, rounded to 2 d.p., is #{result}!")
 
   # ask the user if they want to loop again
-  prompt("Do you want to perform another calculation? (Y for yes)")
+  prompt(MESSAGES['another'])
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
 
 # exit message
-prompt("Thank you for using calculator. Goodbye!")
+prompt(MESSAGES['thanks'])

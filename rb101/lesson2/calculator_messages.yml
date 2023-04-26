@@ -1,6 +1,8 @@
-en:
-  welcome: "Welcome to Calculator! Enter your name:"
-  valid_name: "Make sure to enter a valid name."
-es:
-  welcome: "Bienvenido a la calculadora! Entre su nombre:"
-  valid_name: "Asegúrese de entrar un nombre válido."
+welcome: "Welcome to Calculator! Enter your name:"
+valid_name: "Make sure to enter a valid name."
+hmm: "Hmm... that doesn't look like a valid number."
+first_number: "Please enter the first number:"
+second_number: "Please enter the second number:"
+must: "Must choose 1, 2, 3 or 4"
+another: "Do you want to perform another calculation? (Y for yes)"
+thanks: "Thank you for using calculator. Goodbye!"
