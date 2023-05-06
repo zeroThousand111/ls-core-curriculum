@@ -1,18 +1,35 @@
 VALID_CHOICES = %w(rock paper scissors lizard spock)
 
+ABBREVIATIONS = %w(r p s l v)
+
+WINNING_CONDITIONS =
+  {
+    'rock' => ['scissors', 'lizard'],
+    'paper' => ['rock', 'spock'],
+    'scissors' => ['paper', 'lizard'],
+    'lizard' => ['spock', 'paper'],
+    'spock' => ['rock', 'scissors']
+  }
+
+CONVERSION_HASH =
+  {
+    'r' => 'rock',
+    'p' => 'paper',
+    's' => 'scissors',
+    'l' => 'lizard',
+    'v' => 'spock'
+  }
+
 def prompt(message)
   puts "=> #{message}"
 end
 
 def win?(first, second)
-  winning_conditions = {
-  'rock'=>['scissors', 'lizard'],
-  'paper'=>['rock', 'spock'],
-  'scissors'=>['paper', 'lizard'],
-  'lizard'=>['spock', 'paper'],
-  'spock'=>['rock', 'scissors']
-  }
-  winning_conditions[first].include?(second)
+  WINNING_CONDITIONS[first].include?(second)
+end
+
+def input_to_choices(string)
+  CONVERSION_HASH[string]
 end
 
 def display_results(player, computer)
@@ -29,7 +46,10 @@ loop do
   choice = ''
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-    choice = gets.chomp
+    prompt("Type in the abbreviation for the above choices:")
+    prompt(ABBREVIATIONS.join(', ').to_s)
+    input = gets.chomp
+    choice = input_to_choices(input)
     if VALID_CHOICES.include?(choice)
       break
     else
