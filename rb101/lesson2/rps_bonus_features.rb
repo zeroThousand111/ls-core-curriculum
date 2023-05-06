@@ -42,28 +42,69 @@ def display_results(player, computer)
   end
 end
 
+def display_current_scores(player, computer, tied, round)
+  puts ""
+  prompt("After round #{round} the scores are:")
+  prompt("Player: #{player}")
+  prompt("Computer: #{computer}")
+  prompt("Tied games: #{tied}")
+  puts ""
+end
+
+choice = ''
+player_score = 0
+computer_score = 0
+tie = 0
+round = 0
+
+system "clear"
+
 loop do
-  choice = ''
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-    prompt("Type in the abbreviation for the above choices:")
-    prompt(ABBREVIATIONS.join(', ').to_s)
-    input = gets.chomp
-    choice = input_to_choices(input)
-    if VALID_CHOICES.include?(choice)
+    round += 1
+    prompt("Round #{round}!")
+    loop do
+      prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+      prompt("Type in the letter that corresponds to your choice:")
+      prompt(ABBREVIATIONS.join(', ').to_s)
+      input = gets.chomp
+      choice = input_to_choices(input)
+      if VALID_CHOICES.include?(choice)
+        break
+      else
+        prompt("That's not a valid choice.")
+      end
+    end
+
+    computer_choice = VALID_CHOICES.sample
+
+    prompt("You chose #{choice}; Computer chose #{computer_choice}")
+
+    display_results(choice, computer_choice)
+
+    if win?(choice, computer_choice)
+      player_score += 1
+    elsif win?(computer_choice, choice)
+      computer_score += 1
+    else
+      tie += 1
+    end
+
+    display_current_scores(player_score, computer_score, tie, round)
+
+    if player_score == 3
+      prompt("Congratulations! You won 3 games!")
+      break
+    elsif computer_score == 3
+      prompt("Bad luck! The computer won 3 games!")
       break
     else
-      prompt("That's not a valid choice.")
+      next
     end
   end
 
-  computer_choice = VALID_CHOICES.sample
-
-  puts "You chose #{choice}; Computer chose #{computer_choice}"
-
-  display_results(choice, computer_choice)
-
-  prompt("Do you want to play again?")
+  prompt("Do you want to play another 'best of three' again?")
+  prompt("Press 'y' for yes. Any other key for no.")
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
