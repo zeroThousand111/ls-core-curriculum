@@ -68,7 +68,7 @@ loop do
   tie = 0
   round = 0
   system "clear"
-  
+
   loop do
     round += 1
     prompt("Round #{round}!")
