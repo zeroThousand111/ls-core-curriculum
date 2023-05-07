@@ -24,6 +24,13 @@ def prompt(message)
   puts "=> #{message}"
 end
 
+def get_input
+  prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+  prompt("Type in the letter that corresponds to your choice:")
+  prompt(ABBREVIATIONS.join(', ').to_s)
+  gets.chomp
+end
+
 def win?(first, second)
   WINNING_CONDITIONS[first].include?(second)
 end
@@ -43,31 +50,30 @@ def display_results(player, computer)
 end
 
 def display_current_scores(player, computer, tied, round)
-  puts ""
-  prompt("After round #{round} the scores are:")
-  prompt("Player: #{player}")
-  prompt("Computer: #{computer}")
-  prompt("Tied games: #{tied}")
-  puts ""
+  current_scores = <<-SCORES
+
+=> After round #{round} the scores are:
+=> Player: #{player}
+=> Computer: #{computer}
+=> Tied games: #{tied}
+  
+  SCORES
+  puts current_scores
 end
 
-choice = ''
-player_score = 0
-computer_score = 0
-tie = 0
-round = 0
-
-system "clear"
-
 loop do
+  choice = ''
+  player_score = 0
+  computer_score = 0
+  tie = 0
+  round = 0
+  system "clear"
+  
   loop do
     round += 1
     prompt("Round #{round}!")
     loop do
-      prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-      prompt("Type in the letter that corresponds to your choice:")
-      prompt(ABBREVIATIONS.join(', ').to_s)
-      input = gets.chomp
+      input = get_input
       choice = input_to_choices(input)
       if VALID_CHOICES.include?(choice)
         break
