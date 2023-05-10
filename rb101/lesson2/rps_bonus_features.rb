@@ -24,6 +24,15 @@ def prompt(message)
   puts "=> #{message}"
 end
 
+def display_round(n)
+  beginning_message = <<-ROUNDS
+   * * * * * * * * * * * * * * * * * * * * * * * * * *
+     
+=> Round #{n}!
+  ROUNDS
+  puts beginning_message
+end
+
 def get_input
   prompt("Choose one: #{VALID_CHOICES.join(', ')}")
   prompt("Type in the letter that corresponds to your choice:")
@@ -31,12 +40,36 @@ def get_input
   gets.chomp
 end
 
-def win?(first, second)
-  WINNING_CONDITIONS[first].include?(second)
-end
-
 def input_to_choices(string)
   CONVERSION_HASH[string]
+end
+
+def valid_choice?(input)
+  if VALID_CHOICES.include?(input)
+    input
+  else
+    prompt("That's not a valid choice.")
+  end
+end
+
+def get_user_choice
+  loop do
+    input = get_input
+    choice = input_to_choices(input)
+    return choice if valid_choice?(choice)
+  end
+end
+
+def get_computer_choice
+  VALID_CHOICES.sample
+end
+
+def display_choices(player, computer)
+  prompt("You chose #{player}; Computer chose #{computer}")
+end
+
+def win?(first, second)
+  WINNING_CONDITIONS[first].include?(second)
 end
 
 def display_results(player, computer)
@@ -61,8 +94,25 @@ def display_current_scores(player, computer, tied, round)
   puts current_scores
 end
 
+def display_won_three_games?(player1, player2)
+  if player1 == 3
+    prompt("Congratulations! You won 3 games!")
+  elsif player2 == 3
+    prompt("Bad luck! The computer won 3 games!")
+  end
+end
+
+def determine_won_three_games?(player1, player2)
+  player1 == 3 || player2 == 3
+end
+
+def play_again?
+  prompt("Do you want to play another 'best of three' again?")
+  prompt("Press 'y' for YES. Any other key for NO.")
+  gets.chomp
+end
+
 loop do
-  choice = ''
   player_score = 0
   computer_score = 0
   tie = 0
@@ -71,47 +121,26 @@ loop do
 
   loop do
     round += 1
-    prompt("Round #{round}!")
-    loop do
-      input = get_input
-      choice = input_to_choices(input)
-      if VALID_CHOICES.include?(choice)
-        break
-      else
-        prompt("That's not a valid choice.")
-      end
-    end
+    display_round(round)
+    player_choice = get_user_choice
+    computer_choice = get_computer_choice
+    display_choices(player_choice, computer_choice)
+    display_results(player_choice, computer_choice)
 
-    computer_choice = VALID_CHOICES.sample
-
-    prompt("You chose #{choice}; Computer chose #{computer_choice}")
-
-    display_results(choice, computer_choice)
-
-    if win?(choice, computer_choice)
+    if win?(player_choice, computer_choice)
       player_score += 1
-    elsif win?(computer_choice, choice)
+    elsif win?(computer_choice, player_choice)
       computer_score += 1
     else
       tie += 1
     end
 
     display_current_scores(player_score, computer_score, tie, round)
-
-    if player_score == 3
-      prompt("Congratulations! You won 3 games!")
-      break
-    elsif computer_score == 3
-      prompt("Bad luck! The computer won 3 games!")
-      break
-    else
-      next
-    end
+    display_won_three_games?(player_score, computer_score)
+    break if determine_won_three_games?(player_score, computer_score)
   end
 
-  prompt("Do you want to play another 'best of three' again?")
-  prompt("Press 'y' for yes. Any other key for no.")
-  answer = gets.chomp
+  answer = play_again?
   break unless answer.downcase.start_with?('y')
 end
 
