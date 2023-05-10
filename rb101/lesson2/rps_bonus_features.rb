@@ -41,7 +41,7 @@ def get_input
 end
 
 def input_to_choices(string)
-  CONVERSION_HASH[string]
+  CONVERSION_HASH[string.downcase]
 end
 
 def valid_choice?(input)
