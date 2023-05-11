@@ -29,7 +29,7 @@ end
 def display_welcome_message
   welcome_message = <<~WELCOME
   => Welcome to Rock, Paper, Scissors, Lizard, Spock!
-  => You'll play a number of rounds against the computer.
+  => You'll play a number of rounds against the COMPUTER.
   => The player who wins three rounds first, wins the match!
   
   WELCOME
@@ -46,17 +46,16 @@ def display_round(n)
 end
 
 def display_choices(player, computer)
-  prompt("You chose #{player}; Computer chose #{computer}...")
-  prompt("Thinking...")
+  prompt("YOU chose #{player}; COMPUTER chose #{computer}...")
 end
 
 def display_results(player, computer)
   if win?(player, computer)
-    prompt("You won!")
+    prompt("YOU won!")
   elsif win?(computer, player)
-    prompt("Computer won!")
+    prompt("COMPUTER won!")
   else
-    prompt("It's a tie!")
+    prompt("It's a TIE!")
   end
 end
 
@@ -64,9 +63,9 @@ def display_current_scores(score_hash, round)
   current_scores = <<-SCORES
 
 => After round #{round} the scores are:
-=> Player: #{score_hash[:player_score]}
-=> Computer: #{score_hash[:computer_score]}
-=> Tied games: #{score_hash[:tied_games]}
+=> YOU: #{score_hash[:player_score]}
+=> COMPUTER: #{score_hash[:computer_score]}
+=> TIED games: #{score_hash[:tied_games]}
   
   SCORES
   puts current_scores
@@ -74,9 +73,9 @@ end
 
 def display_won_three_games(score_hash)
   if score_hash[:player_score] == 3
-    prompt("Congratulations! You won 3 games!")
+    prompt("Congratulations! YOU won 3 games!")
   elsif score_hash[:computer_score] == 3
-    prompt("Bad luck! The computer won 3 games!")
+    prompt("Bad luck! The COMPUTER won 3 games!")
   end
 end
 
@@ -120,7 +119,7 @@ def get_computer_choice
 end
 
 def prompt_play_again?
-  prompt("Do you want to play another 'best of three' again?")
+  prompt("Do you want to play for another 'best of three' again?")
   prompt("Press 'y' for YES. Any other key for NO.")
   answer = gets.chomp
   answer.downcase.start_with?('y')
@@ -156,26 +155,22 @@ loop do
     }
 
   system "clear"
-
   display_welcome_message
-
   loop do
     round += 1
     display_round(round)
     player_choice = get_user_choice
+    prompt("COMPUTER is thinking...")
+    system "sleep 2"
     computer_choice = get_computer_choice
     system "clear"
     display_choices(player_choice, computer_choice)
-    system "sleep 1"
     display_results(player_choice, computer_choice)
-
     update_scores(player_choice, computer_choice, score_hash)
-
     display_current_scores(score_hash, round)
     display_won_three_games(score_hash)
     break if determine_won_three_games?(score_hash)
   end
-
   break unless prompt_play_again?
 end
 
