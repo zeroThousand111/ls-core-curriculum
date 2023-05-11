@@ -38,7 +38,7 @@ end
 
 def display_round(n)
   round_info = <<-ROUNDS
-                     * * * * * * * * * * * * * * * * * *
+                    * * * * * * * * * * * * * * * * * *
 
 => Round #{n}!
   ROUNDS
@@ -60,22 +60,22 @@ def display_results(player, computer)
   end
 end
 
-def display_current_scores(player, computer, tied, round)
+def display_current_scores(score_hash, round)
   current_scores = <<-SCORES
 
 => After round #{round} the scores are:
-=> Player: #{player}
-=> Computer: #{computer}
-=> Tied games: #{tied}
+=> Player: #{score_hash[:player_score]}
+=> Computer: #{score_hash[:computer_score]}
+=> Tied games: #{score_hash[:tied_games]}
   
   SCORES
   puts current_scores
 end
 
-def display_won_three_games(player1, player2)
-  if player1 == 3
+def display_won_three_games(score_hash)
+  if score_hash[:player_score] == 3
     prompt("Congratulations! You won 3 games!")
-  elsif player2 == 3
+  elsif score_hash[:computer_score] == 3
     prompt("Bad luck! The computer won 3 games!")
   end
 end
@@ -131,16 +131,30 @@ def win?(first, second)
   WINNING_CONDITIONS[first].include?(second)
 end
 
-def determine_won_three_games?(player1, player2)
-  player1 == 3 || player2 == 3
+def determine_won_three_games?(score_hash)
+  score_hash[:player_score] == 3 || score_hash[:computer_score] == 3
+end
+
+def update_scores(player, computer, score_hash)
+  if win?(player, computer)
+    score_hash[:player_score] += 1
+  elsif win?(computer, player)
+    score_hash[:computer_score] += 1
+  else
+    score_hash[:tied_games] += 1
+  end
 end
 
 # main loop
 loop do
-  player_score = 0
-  computer_score = 0
-  tie = 0
   round = 0
+  score_hash =
+    {
+      player_score: 0,
+      computer_score: 0,
+      tied_games: 0
+    }
+
   system "clear"
 
   display_welcome_message
@@ -155,17 +169,11 @@ loop do
     system "sleep 1"
     display_results(player_choice, computer_choice)
 
-    if win?(player_choice, computer_choice)
-      player_score += 1
-    elsif win?(computer_choice, player_choice)
-      computer_score += 1
-    else
-      tie += 1
-    end
+    update_scores(player_choice, computer_choice, score_hash)
 
-    display_current_scores(player_score, computer_score, tie, round)
-    display_won_three_games(player_score, computer_score)
-    break if determine_won_three_games?(player_score, computer_score)
+    display_current_scores(score_hash, round)
+    display_won_three_games(score_hash)
+    break if determine_won_three_games?(score_hash)
   end
 
   break unless prompt_play_again?
