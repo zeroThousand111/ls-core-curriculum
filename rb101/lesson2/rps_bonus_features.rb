@@ -79,7 +79,7 @@ def display_won_three_games(score_hash)
   end
 end
 
-# input collection and validation methods
+# input and validation methods
 def get_input
   get_input_message = <<~INPUT
   => Choose one: #{VALID_CHOICES.join(', ')}
