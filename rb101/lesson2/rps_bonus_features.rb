@@ -1,3 +1,4 @@
+# constants
 VALID_CHOICES = %w(rock paper scissors lizard spock)
 
 ABBREVIATIONS = %w(r p s l v)
@@ -20,6 +21,7 @@ CONVERSION_HASH =
     'v' => 'spock'
   }
 
+# display methods
 def prompt(message)
   puts "=> #{message}"
 end
@@ -43,6 +45,42 @@ def display_round(n)
   puts round_info
 end
 
+def display_choices(player, computer)
+  prompt("You chose #{player}; Computer chose #{computer}...")
+  prompt("Thinking...")
+end
+
+def display_results(player, computer)
+  if win?(player, computer)
+    prompt("You won!")
+  elsif win?(computer, player)
+    prompt("Computer won!")
+  else
+    prompt("It's a tie!")
+  end
+end
+
+def display_current_scores(player, computer, tied, round)
+  current_scores = <<-SCORES
+
+=> After round #{round} the scores are:
+=> Player: #{player}
+=> Computer: #{computer}
+=> Tied games: #{tied}
+  
+  SCORES
+  puts current_scores
+end
+
+def display_won_three_games(player1, player2)
+  if player1 == 3
+    prompt("Congratulations! You won 3 games!")
+  elsif player2 == 3
+    prompt("Bad luck! The computer won 3 games!")
+  end
+end
+
+# input collection and validation methods
 def get_input
   get_input_message = <<~INPUT
   => Choose one: #{VALID_CHOICES.join(', ')}
@@ -81,49 +119,6 @@ def get_computer_choice
   VALID_CHOICES.sample
 end
 
-def display_choices(player, computer)
-  prompt("You chose #{player}; Computer chose #{computer}...")
-  prompt("Thinking...")
-end
-
-def win?(first, second)
-  WINNING_CONDITIONS[first].include?(second)
-end
-
-def display_results(player, computer)
-  if win?(player, computer)
-    prompt("You won!")
-  elsif win?(computer, player)
-    prompt("Computer won!")
-  else
-    prompt("It's a tie!")
-  end
-end
-
-def display_current_scores(player, computer, tied, round)
-  current_scores = <<-SCORES
-
-=> After round #{round} the scores are:
-=> Player: #{player}
-=> Computer: #{computer}
-=> Tied games: #{tied}
-  
-  SCORES
-  puts current_scores
-end
-
-def display_won_three_games(player1, player2)
-  if player1 == 3
-    prompt("Congratulations! You won 3 games!")
-  elsif player2 == 3
-    prompt("Bad luck! The computer won 3 games!")
-  end
-end
-
-def determine_won_three_games?(player1, player2)
-  player1 == 3 || player2 == 3
-end
-
 def prompt_play_again?
   prompt("Do you want to play another 'best of three' again?")
   prompt("Press 'y' for YES. Any other key for NO.")
@@ -131,6 +126,16 @@ def prompt_play_again?
   answer.downcase.start_with?('y')
 end
 
+# calculation methods
+def win?(first, second)
+  WINNING_CONDITIONS[first].include?(second)
+end
+
+def determine_won_three_games?(player1, player2)
+  player1 == 3 || player2 == 3
+end
+
+# main loop
 loop do
   player_score = 0
   computer_score = 0
