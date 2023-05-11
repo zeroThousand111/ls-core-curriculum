@@ -24,10 +24,20 @@ def prompt(message)
   puts "=> #{message}"
 end
 
+def display_welcome_message
+  welcome_message = <<~WELCOME
+  => Welcome to Rock, Paper, Scissors, Lizard, Spock!
+  => You'll play a number of rounds against the computer.
+  => The player who wins three rounds first, wins the match!
+  
+  WELCOME
+  puts welcome_message
+end
+
 def display_round(n)
   beginning_message = <<-ROUNDS
-   * * * * * * * * * * * * * * * * * * * * * * * * * *
-     
+   * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 => Round #{n}!
   ROUNDS
   puts beginning_message
@@ -120,6 +130,8 @@ loop do
   round = 0
   system "clear"
 
+  display_welcome_message
+
   loop do
     round += 1
     display_round(round)
@@ -127,7 +139,7 @@ loop do
     computer_choice = get_computer_choice
     system "clear"
     display_choices(player_choice, computer_choice)
-    system "sleep 2"
+    system "sleep 1"
     display_results(player_choice, computer_choice)
 
     if win?(player_choice, computer_choice)
