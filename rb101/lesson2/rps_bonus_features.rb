@@ -35,18 +35,21 @@ def display_welcome_message
 end
 
 def display_round(n)
-  beginning_message = <<-ROUNDS
-   * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  round_info = <<-ROUNDS
+                     * * * * * * * * * * * * * * * * * *
 
 => Round #{n}!
   ROUNDS
-  puts beginning_message
+  puts round_info
 end
 
 def get_input
-  prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-  prompt("Type in the letter that corresponds to your choice:")
-  prompt(ABBREVIATIONS.join(', ').to_s)
+  get_input_message = <<~INPUT
+  => Choose one: #{VALID_CHOICES.join(', ')}
+  => To choose, type in the letter or word that corresponds to your choice:
+  => rock(r); paper(p); scissors(s); lizard(l); spock(v).
+  INPUT
+  puts get_input_message
   gets.chomp
 end
 
@@ -65,7 +68,11 @@ end
 def get_user_choice
   loop do
     input = get_input
-    choice = input_to_choices(input)
+    if input.size < 2
+      choice = input_to_choices(input)
+    else
+      choice = input.downcase
+    end
     return choice if valid_choice?(choice)
   end
 end
@@ -105,7 +112,7 @@ def display_current_scores(player, computer, tied, round)
   puts current_scores
 end
 
-def display_won_three_games?(player1, player2)
+def display_won_three_games(player1, player2)
   if player1 == 3
     prompt("Congratulations! You won 3 games!")
   elsif player2 == 3
@@ -117,10 +124,11 @@ def determine_won_three_games?(player1, player2)
   player1 == 3 || player2 == 3
 end
 
-def play_again?
+def prompt_play_again?
   prompt("Do you want to play another 'best of three' again?")
   prompt("Press 'y' for YES. Any other key for NO.")
-  gets.chomp
+  answer = gets.chomp
+  answer.downcase.start_with?('y')
 end
 
 loop do
@@ -151,12 +159,11 @@ loop do
     end
 
     display_current_scores(player_score, computer_score, tie, round)
-    display_won_three_games?(player_score, computer_score)
+    display_won_three_games(player_score, computer_score)
     break if determine_won_three_games?(player_score, computer_score)
   end
 
-  answer = play_again?
-  break unless answer.downcase.start_with?('y')
+  break unless prompt_play_again?
 end
 
 prompt("Thank you for playing. Good bye!")
