@@ -65,7 +65,8 @@ def get_computer_choice
 end
 
 def display_choices(player, computer)
-  prompt("You chose #{player}; Computer chose #{computer}")
+  prompt("You chose #{player}; Computer chose #{computer}...")
+  prompt("Thinking...")
 end
 
 def win?(first, second)
@@ -124,7 +125,9 @@ loop do
     display_round(round)
     player_choice = get_user_choice
     computer_choice = get_computer_choice
+    system "clear"
     display_choices(player_choice, computer_choice)
+    system "sleep 2"
     display_results(player_choice, computer_choice)
 
     if win?(player_choice, computer_choice)
