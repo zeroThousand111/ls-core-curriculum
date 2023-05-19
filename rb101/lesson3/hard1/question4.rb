@@ -22,23 +22,23 @@
 
 def dot_separated_ip_address?(input_string)
   dot_separated_words = input_string.split(".")
-  is_four_groups?(dot_separated_words) && is_valid_characters?(dot_separated_words)
+  four_groups?(dot_separated_words) && valid_characters?(dot_separated_words)
 end
 
-def is_four_groups?(array)
-  array.size != 4 ? false : true
+def four_groups?(array)
+  array.size == 4
 end
 
-def is_valid_characters?(array)
+def valid_characters?(array)
   while array.size > 0 do
     word = array.pop
-    return false if !is_an_ip_number?(word)
+    return false if !an_ip_number?(word)
   end
-  return true
+  true
 end
 
-def is_an_ip_number?(string)
-	string.to_i.between?(0, 255)
+def an_ip_number?(string)
+  string.to_i.between?(0, 255)
 end
 
 # true test input:
