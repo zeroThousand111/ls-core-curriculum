@@ -1,19 +1,11 @@
+# method
 def stringy(n)
   array = []
-  n.times do |e|
-    if e.even? 
-      array << 1
-    else
-      array << 0
-    end
+  n.times do | i |
+    array << (i.even? ? 1 : 0)
   end
-  string = array.join
-  return string
+  array.join
 end
-
-# output tests
-puts stringy(4)
-puts stringy(7)
 
 # tests
 puts stringy(6) == '101010'
