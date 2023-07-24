@@ -1,9 +1,19 @@
+# def multisum(n)
+#   array = (1..n).to_a
+#   sum_array = array.select do |n|
+#     (n % 3 == 0) || (n % 5 == 0)
+#   end
+#   total = sum_array.sum
+# end
+
+# Further Exploration
+
 def multisum(n)
   array = (1..n).to_a
   sum_array = array.select do |n|
     (n % 3 == 0) || (n % 5 == 0)
-  end
-  total = sum_array.sum
+    end
+  sum_array.inject(:+)
 end
 
 # tests
