@@ -4,13 +4,38 @@ In the modern era under the Gregorian Calendar, leap years occur in every year t
 Assume this rule is good for any year greater than year 0. Write a method that takes any year greater than 0 as input, and returns true if the year is a leap year, or false if it is not a leap year.
 =end
 
+# def leap_year?(year)
+#   if year % 4 == 0 && year % 100 != 0
+#     true
+#   elsif year % 4 == 0 && year % 400 == 0
+#     true
+#   else
+#     false
+#   end
+# end
+
+# Further Exploration
+# The order in which you perform tests for a leap year calculation is important. For what years will `leap_year?` fail if you rewrite it as:
+
+# def leap_year?(year)
+#   if year % 100 == 0
+#     false
+#   elsif year % 400 == 0
+#     true
+#   else
+#     year % 4 == 0
+#   end
+# end
+
+## Further Further Exploration:
 def leap_year?(year)
-  if year % 4 == 0 && year % 100 != 0
+  if year % 4 == 0
     true
-  elsif year % 4 == 0 && year % 400 == 0
-    true
-  else
+  elsif year % 100 == 0
     false
+  elsif year % 400 == 0
+    true
+  else    
   end
 end
 
