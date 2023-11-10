@@ -14,7 +14,7 @@ integer_to_string(5000) == '5000'
 
 PROBLEM
 Input: An Integer
-Output: A string
+Output: A String
 Rules:
 Explict requirements:
   - The input Integer will be positive or zero
@@ -30,7 +30,7 @@ DATA STRUCTURES
 
 - Input is an Integer
 - Output is a String
-- A conversion Hash might be needed, as in previous two exercises
+- A conversion Hash might be needed, as in the previous two exercises
 - An Array as a way of storing digits in the correct order
 
 ALGORITHM
@@ -38,17 +38,27 @@ ALGORITHM
 
 1. Turn the input Integer into an Array of single digits (see sub-algorithm)
 2. Convert the Array elements into string characters using a conversion Hash and array element assignment (see sub-algorithm)
-3. Join the Array elements into a string using Array#join (is this allowed?)
+3. Join the Array elements into a string 
 
 SUB-ALGORITHM | TURNING A NUMBER INTO AN ARRAY OF SINGLE DIGITS
 (this is implemented by the helper method `create_array`)
 
 1. Create an empty array
 2. Measure length of Integer?
-3. 
+3. Calculate value at each position of Integer
 
 Or use Array#digits and reverse the order with Array#reverse!
 i.e. num.digits.reverse
+
+SUB-ALGORITHM | TURNING AN ARRAY OF STRINGS INTO A MERGED STRING OBJECT
+
+1. Measure length of array
+2. Create empty string
+3. Concatenate empty string with first string object in array
+4. Concatenate next string object into main string
+5. Repeat for all objects in array of strings
+
+Or use Array#join (is this allowed?)
 
 =end
 
@@ -66,24 +76,52 @@ CONVERSION = {
 }
 
 def integer_to_string(num)
-  array = create_array(num)
-  array.join
+  array_of_numbers = create_array(num)
+  array_of_strings = convert_numbers_to_strings(array_of_numbers)
+  join_array_of_strings(array_of_strings)
 end
 
 def create_array(num)
-  num.digits.reverse
+  # num.digits.reverse
+  array = []
+  counter = num.to_s.length # is this allowed?
+  loop do
+    array << value_at_position(num, counter)
+    counter -= 1
+    break if counter == 0
+  end
+  array
 end
 
-def value_at_position(num, position, base=10)
-  (num % (base**position))/(base**(position-1))
+def value_at_position(num, position)
+  (num % (10**position))/(10**(position-1))
 end
 
+def convert_numbers_to_strings(array)
+  array.map { |num| CONVERSION[num] }
+end
 
+def join_array_of_strings(array)
+  counter = 0
+  string = ""
+  loop do
+    string += array[counter]
+    counter += 1
+    break if counter == array.length
+  end
+  string
+end
 
 # print tests
-p integer_to_string(4321) # '4321'
+# p integer_to_string(4321) # '4321'
+
+# p value_at_position(99199, 3) # 1
+
+# p create_array(4321) # [4, 3, 2, 1]
+
+# p join_array_of_strings(["4", "3", "2", "1"]) # "4321"
 
 # test cases
-# p integer_to_string(4321) == '4321'
-# p integer_to_string(0) == '0'
-# p integer_to_string(5000) == '5000'
+p integer_to_string(4321) == '4321'
+p integer_to_string(0) == '0'
+p integer_to_string(5000) == '5000'
