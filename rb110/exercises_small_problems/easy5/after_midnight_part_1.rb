@@ -107,17 +107,17 @@ end
 # p time_of_day(3000) # "02:00"
 
 # Negative Numbers
-p time_of_day(-3) # "23:57"
-p time_of_day(-90) # "22:30"
-p time_of_day(-1437) # "00:03"
-p time_of_day(-4231) # "01:29" THIS DOESN'T YET WORK.  IS Test case correct?? Should it not be 21:29?
-p time_of_day(-4321) #20:59
+# p time_of_day(-3) # "23:57"
+# p time_of_day(-90) # "22:30"
+# p time_of_day(-1437) # "00:03"
+# p time_of_day(-4231) # "01:29" THIS DOESN'T YET WORK.  IS Test case correct?? Should it not be 21:29?
+# p time_of_day(-4321) #20:59
 
 # Test Cases
-# p time_of_day(0) == "00:00"
-# p time_of_day(-3) == "23:57"
-# p time_of_day(35) == "00:35"
-# p time_of_day(-1437) == "00:03"
-# p time_of_day(3000) == "02:00"
-# p time_of_day(800) == "13:20"
-# p time_of_day(-4231) == "01:29"
+p time_of_day(0) == "00:00"
+p time_of_day(-3) == "23:57"
+p time_of_day(35) == "00:35"
+p time_of_day(-1437) == "00:03"
+p time_of_day(3000) == "02:00"
+p time_of_day(800) == "13:20"
+p time_of_day(-4231) == "01:29" # I'm quite sure this test case is incorrect and the correct return should be "21:29"
