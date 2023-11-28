@@ -131,12 +131,23 @@ Time to code!
 
 # solution 4: LS official solution.  AHA!  This just overwrites the value of the key-value pair if one already exists with the same key.  It just uses how hash element assignment naturally works.
 
-def word_sizes(words_string)
-  counts = Hash.new(0) # could just as easily be counts = {}
-  words_string.split.each do |word|
-    counts[word.size] += 1 # creates new key-value pair or overwrites value of existing one
+# def word_sizes(words_string)
+#   counts = Hash.new(0) # deliberately NOT hash = {}, which will raise an exception on first element
+#   words_string.split.each do |word|
+#     counts[word.size] += 1 # creates new key-value pair or overwrites value of existing one
+#   end
+#   counts
+# end
+
+#solution 5: a blend of my solution 2 and official LS solution (solution 4 above)
+
+def word_sizes(string)
+  hash = Hash.new(0)
+  
+  string.split.each do |word|
+    hash[word.size] += 1
   end
-  counts
+  hash
 end
 
 # print tests
