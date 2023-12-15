@@ -1,5 +1,6 @@
 ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 
+# helper methods
 def positive_integer(string_array, integer)
   string_array.map do |letter|
     if !letter.match?(/[A-Za-z]/)
@@ -36,10 +37,7 @@ def encode(string, integer)
   new_array.join
 end
 
-# 1. create get string and get integer functions to allow user to input data
-
-# 2. create ability to include capital letters
-# done!
+# main code
 
 puts "#=> Welcome to ENCODER!"
 puts "#=> Please enter the phrase you would like to encode:"
@@ -72,7 +70,6 @@ puts "Your phrase encoded by #{integer} places is '#{encode(string, integer)}'"
 
 # include capital letters
 # p encode("Frgh Fdhvdu", 23) # => "code caesar"
-
 
 # negative integers
 # p encode("hi", -1)    # => "gh"
