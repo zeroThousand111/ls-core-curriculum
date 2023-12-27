@@ -69,20 +69,26 @@ Now CODE with intent!
 
 # solution 2 - using #each
 
-def average(input_array)
-  sum = 0
+# def average(input_array)
+#   sum = 0
   
-  input_array.each do |num|
-    sum += num
-  end
+#   input_array.each do |num|
+#     sum += num
+#   end
   
-  sum / input_array.size
-end
+#   sum / input_array.size
+# end
 
 # solution 3 - using #inject
 
+# def average(input_array)
+#   input_array.inject(:+) / input_array.size
+# end
+
+# solution 4 - returning a float
+
 def average(input_array)
-  input_array.inject(:+) / input_array.size
+  p (input_array.inject(:+) / input_array.size).to_f
 end
 
 # Print Tests
