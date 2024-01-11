@@ -1,3 +1,6 @@
+require 'pry'
+require 'pry-byebug'
+
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
@@ -29,6 +32,7 @@ def initialise_board
 end
 
 def empty_squares(brd)
+  binding.pry
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
