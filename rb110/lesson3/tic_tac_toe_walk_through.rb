@@ -10,6 +10,7 @@ def prompt(msg)
 end
 
 def display_board(brd)
+  system 'clear'
   puts ""
   puts "     |     |"
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -32,7 +33,6 @@ def initialise_board
 end
 
 def empty_squares(brd)
-  binding.pry
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
@@ -48,9 +48,60 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
+def computer_places_piece!(brd)
+  square = empty_squares(brd).sample
+  brd[square] = COMPUTER_MARKER
+end
+
+def board_full?(brd)
+  empty_squares(brd).empty?
+end
+
+def someone_won?(brd)
+  !!detect_winner(brd)
+end
+
+def detect_winner(brd)
+  winning_lines = [
+                  [1, 2, 3],
+                  [4, 5, 6],
+                  [7, 8, 9],
+                  [1, 4, 7],
+                  [2, 5, 8],
+                  [3, 6, 9],
+                  [1, 5, 9],
+                  [3, 5, 7]
+                ]
+  winning_lines.each do |line|
+    if brd[line[0]] == PLAYER_MARKER && 
+       brd[line[1]] == PLAYER_MARKER && 
+       brd[line[2]] == PLAYER_MARKER
+      return 'Player'
+    elsif brd[line[0]] == COMPUTER_MARKER && 
+          brd[line[1]] == COMPUTER_MARKER && 
+          brd[line[2]] == COMPUTER_MARKER
+      return 'Computer'
+    end
+  end
+  nil # returns if neither if nor elsif return a string
+end
+
 board = initialise_board
 display_board(board)
 
-player_places_piece!(board)
-p board # checks the status of the hash `board`
+loop do
+  display_board(board)
+  player_places_piece!(board)
+  break if someone_won?(board) || board_full?(board)
+  computer_places_piece!(board)
+  # binding.pry
+  break if someone_won?(board) || board_full?(board)
+end
+
 display_board(board)
+
+if someone_won?(board)
+  prompt("#{detect_winner(board)} won!")
+else
+  prompt("Its a tie!")
+end
