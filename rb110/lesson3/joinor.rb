@@ -30,13 +30,26 @@ require 'pry-byebug'
 
 # refactored
 
+# def joinor(input_array, delimiter=', ', final='or')
+#   front_array = input_array.map do |num|
+#     num.to_s + delimiter
+#   end.take(input_array.size - 1)
+#   back_array = [input_array[-1].to_s]
+#   output_array = front_array + back_array.insert(-2, final, ' ')
+#   output_array.join
+# end
+
+# refactored again to address cases when just one element
+
 def joinor(input_array, delimiter=', ', final='or')
-  front_array = input_array.map do |num|
-    num.to_s + delimiter
-  end.take(input_array.size - 1)
-  back_array = [input_array[-1].to_s]
-  output_array = front_array + back_array.insert(-2, final, ' ')
-  output_array.join
+  case input_array.size
+  when 0 then ''
+  when 1 then input_array[0].to_s
+  when 2 then input_array.join(" #{final} ")
+  else 
+    input_array[-1] = "#{final} #{input_array[-1]}"
+    input_array.join(delimiter)
+  end
 end
 
 # test cases
@@ -45,3 +58,4 @@ p joinor([1, 2])                   # => "1 or 2"
 p joinor([1, 2, 3])                # => "1, 2, or 3"
 p joinor([1, 2, 3], '; ')          # => "1; 2; or 3"
 p joinor([1, 2, 3], ', ', 'and')   # => "1, 2, and 3"
+p joinor([1])                      # => "1"
