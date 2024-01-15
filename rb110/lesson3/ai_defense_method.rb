@@ -51,7 +51,8 @@ Strategy A: This will instruct Computer to play the FIRST square it identifies a
   a. IF brd[line[0]] == PLAYER_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] ==   INITIAL_MARKER then return brd[line[2]]
   b. ELSIF brd[line[0]] == PLAYER_MARKER && brd[line[1]] == INITIAL_MARKER && brd[line[2]] ==   PLAYER_MARKER then return brd[line[1]]
   c. ELSIF brd[line[0]] == INITIAL_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] == PLAYER_MARKER then return brd[line[1]]
-5.
+
+Strategy B: 
 ______________________________________________________________________________
 
 Now CODE with intent!
@@ -94,24 +95,34 @@ end
 
 
 # solution 1 - Strategy A
-def ai_defense(brd)
-  WINNING_LINES.each do |line|
-    # binding.pry
-    if brd[line[0]] == PLAYER_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] == INITIAL_MARKER
-      return line[2]
-    elsif brd[line[0]] == PLAYER_MARKER && brd[line[1]] == INITIAL_MARKER && brd[line[2]] == PLAYER_MARKER
-      return line[1]
-    elsif brd[line[0]] == INITIAL_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] == PLAYER_MARKER
-      return line[0]
-    end
-  end
-  empty_squares(brd).sample
-end
+# def ai_defense(brd)
+#   WINNING_LINES.each do |line|
+#     # binding.pry
+#     if brd[line[0]] == PLAYER_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] == INITIAL_MARKER
+#       return line[2]
+#     elsif brd[line[0]] == PLAYER_MARKER && brd[line[1]] == INITIAL_MARKER && brd[line[2]] == PLAYER_MARKER
+#       return line[1]
+#     elsif brd[line[0]] == INITIAL_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] == PLAYER_MARKER
+#       return line[0]
+#     end
+#   end
+#   empty_squares(brd).sample
+# end
 
 
 # -------------------
 
-# solution 2 - 
+# solution 2 - Variation on LS Official solution: use #select after identifying the potential line to find the gap
+
+def ai_defense(brd)
+  WINNING_LINES.each do |line|
+    # binding.pry
+    if brd.values_at(*line).count(PLAYER_MARKER) == 2
+      return brd.select{|k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
+    end
+  end
+  empty_squares(brd).sample
+end
 
 # -------------------
 
