@@ -81,20 +81,6 @@ def empty_squares(brd)
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
-def ai_defense(brd)
-  WINNING_LINES.each do |line|
-    # binding.pry
-    if brd[line[0]] == PLAYER_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] ==     INITIAL_MARKER
-      return line[2]
-    elsif brd[line[0]] == PLAYER_MARKER && brd[line[1]] == INITIAL_MARKER && brd[line[2]] ==     PLAYER_MARKER
-      return line[1]
-    elsif brd[line[0]] == INITIAL_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] ==   PLAYER_MARKER
-      return line[0]
-    end
-  end
-  empty_squares(brd).sample
-end
-
 def computer_places_piece!(brd)
   square = ai_defense(brd)
   brd[square] = COMPUTER_MARKER
@@ -107,9 +93,20 @@ def initialise_board
 end
 
 
-
 # solution 1 - Strategy A
-
+def ai_defense(brd)
+  WINNING_LINES.each do |line|
+    # binding.pry
+    if brd[line[0]] == PLAYER_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] == INITIAL_MARKER
+      return line[2]
+    elsif brd[line[0]] == PLAYER_MARKER && brd[line[1]] == INITIAL_MARKER && brd[line[2]] == PLAYER_MARKER
+      return line[1]
+    elsif brd[line[0]] == INITIAL_MARKER && brd[line[1]] == PLAYER_MARKER && brd[line[2]] == PLAYER_MARKER
+      return line[0]
+    end
+  end
+  empty_squares(brd).sample
+end
 
 
 # -------------------
