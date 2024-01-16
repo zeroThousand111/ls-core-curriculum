@@ -231,13 +231,16 @@ loop do
         computer_score += 1
         last_winner = 'Computer'
       end
+      prompt("The winner was #{last_winner}!")
     else
-      prompt("Its a tie!")
+      prompt("It's a tie!")
       tie_score += 1
-      last_winner = 'The game was tied'
+      last_winner = 'no-one! The game was tied'
     end
     
     break if player_score == target_games || computer_score == target_games
+    prompt("Press the Enter key to continue to the next round...")
+    gets.chomp
   end
   
   prompt("The match was won by #{declare_winner(player_score, computer_score)}")
