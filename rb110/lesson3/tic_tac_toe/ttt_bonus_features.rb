@@ -127,23 +127,38 @@ def detect_winner(brd)
   nil
 end
 
-def declare_winner(player_score, computer_score)
-  if player_score > computer_score
+def declare_winner(scoreboard)
+  if scoreboard['PLAYER'] > scoreboard['COMPUTER']
     'PLAYER'
   else
     'COMPUTER'
   end
 end
 
-# rubocop:disable Metrics / MethodLength, Metrics / ParameterLists, Metrics / AbcSize, Metrics / Methodlength
-# rubocop:disable Layout / Linelength
-def display_board(brd, player_score, computer_score, tie_score, target_rounds,
-                  last_winner, first_player)
+def increment_score(last_winner, scoreboard)
+  case last_winner
+  when "PLAYER"
+    scoreboard['PLAYER'] += 1
+  when "COMPUTER"
+    scoreboard['COMPUTER'] += 1
+  when "no-one! The round was tied"
+    scoreboard['TIED'] += 1
+  end
+end
+
+def display_top_scoreboard(first_player, target_rounds, round_count)
   system 'clear'
+  puts ""
   puts "- - - - Tic Tac Toe - - - -"
   puts "PLAYER is an #{PLAYER_MARKER}.  COMPUTER is a #{COMPUTER_MARKER}."
   puts "#{first_player} takes the first turn."
-  puts "The target to win the match is #{target_rounds} rounds!"
+  puts "The match winner will be the first to win #{target_rounds} rounds!"
+  puts "This is round #{round_count}."
+end
+
+# rubocop:disable Metrics /Metrics / AbcSize
+
+def display_board(brd)
   puts ""
   puts "     |     |"
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -157,17 +172,29 @@ def display_board(brd, player_score, computer_score, tie_score, target_rounds,
   puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
   puts "     |     |"
   puts ""
-  puts "Current score (rounds): PLAYER #{player_score} - COMPUTER #{computer_score} - TIED #{tie_score}"
+end
+
+# rubocop:enable Metrics / AbcSize
+
+# rubocop:disable Layout / LineLength
+
+def display_bottom_scoreboard(scoreboard, last_winner)
+  puts "Current score (rounds):"
+  puts "PLAYER #{scoreboard['PLAYER']} - COMPUTER #{scoreboard['COMPUTER']} - TIED #{scoreboard['TIED']}"
   puts "The previous round was won by: #{last_winner}"
   puts ""
 end
-# rubocop:enable Metrics / MethodLength, Metrics / ParameterLists, Metrics / AbcSize, Metrics / Methodlength
-# rubocop:enable Layout / Linelength
+
+# rubocop:enable Layout / LineLength
 
 def initialise_board
   new_board = {}
   (1..9).each { |num| new_board[num] = INITIAL_MARKER }
   new_board
+end
+
+def initialise_scoreboard
+  { "PLAYER" => 0, "COMPUTER" => 0, "TIED" => 0 }
 end
 
 def alternate_player(current_player)
@@ -196,6 +223,7 @@ def player_places_piece!(brd)
 end
 
 # rubocop:disable Metrics / MethodLength
+
 def computer_places_piece!(brd)
   square = nil
 
@@ -225,73 +253,94 @@ def computer_places_piece!(brd)
 
   brd[square] = COMPUTER_MARKER
 end
+
 # rubocop:enable Metrics / MethodLength
 
 def board_full?(brd)
   empty_squares(brd).empty?
 end
 
+def evaluate_board(board)
+  if someone_won?(board)
+    last_winner = detect_winner(board)
+    prompt("The winner of the round was #{last_winner}!")
+  else
+    last_winner = 'no-one! The round was tied'
+    prompt("It's a TIE!")
+  end
+  last_winner
+end
+
+# rubocop:disable Layout / Linelength
+
+def outro(scoreboard)
+  prompt("The match was won by #{declare_winner(scoreboard)}")
+  prompt("The final score is PLAYER #{scoreboard['PLAYER']} - COMPUTER #{scoreboard['COMPUTER']} - TIED #{scoreboard['TIED']}")
+  prompt("Play again? (y or n)")
+  answer = gets.chomp
+  answer.downcase.start_with?('y')
+end
+
+# rubocop:enable Layout / Linelength
+
 # main game loop
 # rubocop:disable Metrics / BlockLength
+
 loop do
   system 'clear'
+  round_count = 1
   target_rounds = set_target_rounds
   first_player = starting_chooser?
+  scoreboard = initialise_scoreboard
   current_player = first_player
-  player_score = 0
-  computer_score = 0
-  tie_score = 0
   last_winner = "no-one (it's the first round)"
 
   # one round loop
+
   loop do
+    # set up board and two scoreboards
+
     board = initialise_board
 
-    # rubocop:disable Layout / Linelength
-    display_board(board, player_score, computer_score, tie_score, target_rounds, last_winner, first_player)
-    
+    display_top_scoreboard(first_player, target_rounds, round_count)
+    display_board(board)
+    display_bottom_scoreboard(scoreboard, last_winner)
 
     # loop for alternate players to take turns
+
     loop do
-      display_board(board, player_score, computer_score, tie_score, target_rounds, last_winner, first_player)
+      display_top_scoreboard(first_player, target_rounds, round_count)
+      display_board(board)
+      display_bottom_scoreboard(scoreboard, last_winner)
       place_piece!(board, current_player)
-      # binding.pry
       current_player = alternate_player(current_player)
       break if someone_won?(board) || board_full?(board)
     end
 
-    display_board(board, player_score, computer_score, tie_score, target_rounds, last_winner, first_player)
+    # evaluation of winner and scoring at end of round
 
-    if someone_won?(board)
-      if detect_winner(board) == 'PLAYER'
-        player_score += 1
-        last_winner = 'PLAYER'
-      elsif detect_winner(board) == 'COMPUTER'
-        computer_score += 1
-        last_winner = 'COMPUTER'
-      end
-      prompt("The winner of the round was #{last_winner}!")
-    else
-      prompt("It's a TIE!")
-      tie_score += 1
-      last_winner = 'no-one! The round was tied'
-    end
+    display_top_scoreboard(first_player, target_rounds, round_count)
+    display_board(board)
+    display_bottom_scoreboard(scoreboard, last_winner)
+    last_winner = evaluate_board(board)
 
+    increment_score(last_winner, scoreboard)
+    round_count += 1
     first_player = alternate_player(first_player)
-    break if player_score == target_rounds || computer_score == target_rounds
+    # rubocop:disable Layout / Linelength
+    break if scoreboard['PLAYER'] == target_rounds || scoreboard['COMPUTER'] == target_rounds
+    # rubocop:enable Layout / Linelength
     prompt("Press the ENTER key to continue to the next round...")
     gets.chomp
   end
 
-  prompt("The match was won by #{declare_winner(player_score, computer_score)}")
-  prompt("The final score is PLAYER #{player_score} - COMPUTER #{computer_score} - TIED #{tie_score}")
-  prompt("Play again? (y or n)")
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  # outro after end of match
+
+  break unless outro(scoreboard)
 end
-# rubocop:enable Layout / Linelength
+
 # rubocop:enable Metrics / BlockLength
 
-# outro after game
+# outro after game exit
 
 prompt("Thanks for playing Tic Tac Toe.  Good bye!")
