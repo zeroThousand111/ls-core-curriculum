@@ -47,6 +47,7 @@ end
 # starting methods for player choices
 
 def set_target_rounds
+  puts ""
   prompt("Welcome to Tic Tac Toe!")
   input = 0
   loop do
@@ -147,7 +148,6 @@ def increment_score(last_winner, scoreboard)
 end
 
 def display_top_scoreboard(first_player, target_rounds, round_count)
-  system 'clear'
   puts ""
   puts "- - - - Tic Tac Toe - - - -"
   puts "PLAYER is an #{PLAYER_MARKER}.  COMPUTER is a #{COMPUTER_MARKER}."
@@ -184,6 +184,17 @@ def display_bottom_scoreboard(scoreboard, last_winner)
   puts "The previous round was won by: #{last_winner}"
   puts ""
 end
+
+ # rubocop:disable Metrics / ParameterLists
+
+def displays(first_player, target_rounds, round_count, board, scoreboard, last_winner)
+  system 'clear'
+  display_top_scoreboard(first_player, target_rounds, round_count)
+  display_board(board)
+  display_bottom_scoreboard(scoreboard, last_winner)
+end
+
+# rubocop:enable Metrics / ParameterLists
 
 # rubocop:enable Layout / LineLength
 
@@ -281,8 +292,6 @@ def outro(scoreboard)
   answer.downcase.start_with?('y')
 end
 
-# rubocop:enable Layout / Linelength
-
 # main game loop
 # rubocop:disable Metrics / BlockLength
 
@@ -301,17 +310,12 @@ loop do
     # set up board and two scoreboards
 
     board = initialise_board
-
-    display_top_scoreboard(first_player, target_rounds, round_count)
-    display_board(board)
-    display_bottom_scoreboard(scoreboard, last_winner)
+    displays(first_player, target_rounds, round_count, board, scoreboard, last_winner)
 
     # loop for alternate players to take turns
 
     loop do
-      display_top_scoreboard(first_player, target_rounds, round_count)
-      display_board(board)
-      display_bottom_scoreboard(scoreboard, last_winner)
+      displays(first_player, target_rounds, round_count, board, scoreboard, last_winner)
       place_piece!(board, current_player)
       current_player = alternate_player(current_player)
       break if someone_won?(board) || board_full?(board)
@@ -319,17 +323,13 @@ loop do
 
     # evaluation of winner and scoring at end of round
 
-    display_top_scoreboard(first_player, target_rounds, round_count)
-    display_board(board)
-    display_bottom_scoreboard(scoreboard, last_winner)
+    displays(first_player, target_rounds, round_count, board, scoreboard, last_winner)
     last_winner = evaluate_board(board)
 
     increment_score(last_winner, scoreboard)
     round_count += 1
     first_player = alternate_player(first_player)
-    # rubocop:disable Layout / Linelength
     break if scoreboard['PLAYER'] == target_rounds || scoreboard['COMPUTER'] == target_rounds
-    # rubocop:enable Layout / Linelength
     prompt("Press the ENTER key to continue to the next round...")
     gets.chomp
   end
@@ -339,6 +339,7 @@ loop do
   break unless outro(scoreboard)
 end
 
+# rubocop:enable Layout / Linelength
 # rubocop:enable Metrics / BlockLength
 
 # outro after game exit
