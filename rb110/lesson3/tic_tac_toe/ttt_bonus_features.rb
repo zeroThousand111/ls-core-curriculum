@@ -27,7 +27,7 @@ def valid_input_string?(str)
   str.to_i.to_s == str
 end
 
-def valid_choice?(str)
+def valid_player_choice?(str)
   str == '1' || str == '2'
 end
 
@@ -51,7 +51,7 @@ def set_target_rounds
   prompt("Welcome to Tic Tac Toe!")
   input = 0
   loop do
-    prompt("How many rounds to win the match?  Type a number greater than 1.")
+    prompt("How many rounds to win the match?  Type a number greater than 0.")
     prompt("(3 or 5 rounds is recommended)")
     input = gets.chomp
     break if valid_input_string?(input) && input.to_i > 0
@@ -70,7 +70,7 @@ def player_choice
     prompt("Who goes first: PLAYER or COMPUTER?")
     prompt("Choose 1 for PLAYER | Choose 2 for COMPUTER")
     answer = gets.chomp
-    break if valid_input_string?(answer) && valid_choice?(answer)
+    break if valid_input_string?(answer) && valid_player_choice?(answer)
     prompt("Sorry, that's not a valid choice, please try again.")
   end
 
@@ -81,7 +81,7 @@ def player_choice
   end
 end
 
-def starting_chooser?
+def who_gets_to_choose
   chooser = nil
   first = nil
 
@@ -89,7 +89,7 @@ def starting_chooser?
     prompt("Who should choose who goes first: PLAYER or COMPUTER?")
     prompt("Type 1 for PLAYER | Type 2 for COMPUTER")
     chooser = gets.chomp
-    break if valid_input_string?(chooser) && valid_choice?(chooser)
+    break if valid_input_string?(chooser) && valid_player_choice?(chooser)
     prompt("Sorry, that's not a valid choice, please try again.")
   end
 
@@ -176,16 +176,17 @@ end
 
 # rubocop:enable Metrics / AbcSize
 
-# rubocop:disable Layout / LineLength
-
 def display_bottom_scoreboard(scoreboard, last_winner)
   puts "Current score (rounds):"
-  puts "PLAYER #{scoreboard['PLAYER']} - COMPUTER #{scoreboard['COMPUTER']} - TIED #{scoreboard['TIED']}"
+  puts "PLAYER #{scoreboard['PLAYER']} - " \
+       "COMPUTER #{scoreboard['COMPUTER']} - " \
+       "TIED #{scoreboard['TIED']}"
   puts "The previous round was won by: #{last_winner}"
   puts ""
 end
 
- # rubocop:disable Metrics / ParameterLists
+# rubocop:disable Layout / LineLength
+# rubocop:disable Metrics / ParameterLists
 
 def displays(first_player, target_rounds, round_count, board, scoreboard, last_winner)
   system 'clear'
@@ -195,7 +196,6 @@ def displays(first_player, target_rounds, round_count, board, scoreboard, last_w
 end
 
 # rubocop:enable Metrics / ParameterLists
-
 # rubocop:enable Layout / LineLength
 
 def initialise_board
@@ -293,13 +293,13 @@ def outro(scoreboard)
 end
 
 # main game loop
-# rubocop:disable Metrics / BlockLength
+
 
 loop do
   system 'clear'
   round_count = 1
   target_rounds = set_target_rounds
-  first_player = starting_chooser?
+  first_player = who_gets_to_choose
   scoreboard = initialise_scoreboard
   current_player = first_player
   last_winner = "no-one (it's the first round)"
@@ -307,10 +307,8 @@ loop do
   # one round loop
 
   loop do
-    # set up board and two scoreboards
-
+    
     board = initialise_board
-    displays(first_player, target_rounds, round_count, board, scoreboard, last_winner)
 
     # loop for alternate players to take turns
 
@@ -340,7 +338,6 @@ loop do
 end
 
 # rubocop:enable Layout / Linelength
-# rubocop:enable Metrics / BlockLength
 
 # outro after game exit
 
