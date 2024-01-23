@@ -356,7 +356,7 @@ end
 # rubocop:enable Metrics/BlockLength
 # rubocop:enable Lint/ConstantResolution
 
-# outro
+# outro from here
 
 display_line_break
 puts "Thanks for playing Twenty-One, #{name}!"
