@@ -197,7 +197,7 @@ def initialise_deck
     end
     deck.push('jack', 'queen', 'king', 'ace')
   end
-  deck.shuffle # randomises index numbers
+  deck.shuffle
 end
 
 def deal_new_hand!(deck)
@@ -241,21 +241,19 @@ def busted?(total)
 end
 
 # rubocop:disable Lint / DuplicateBranch
-# rubocop:disable Style / ConditionalAssignment
 
 def determine_winner(player_total, dealer_total)
   if busted?(player_total)
-    winner = :dealer
+    :dealer
   elsif busted?(dealer_total)
-    winner = :player
+    :player
   elsif player_total > dealer_total
-    winner = :player
+    :player
   elsif player_total < dealer_total
-    winner = :dealer
+    :dealer
   else
-    winner = :neither
+    :neither
   end
-  winner
 end
 
 # rubocop:enable Lint / DuplicateBranch
@@ -286,7 +284,7 @@ def player_turn!(player_cards, deck, name, player_total)
     puts ""
     puts "Hit or Stay, #{name}?"
     puts "Type 'stay' or 's' to stay; or any other key to hit..."
-    answer = gets.chomp # do i need input validation here?
+    answer = gets.chomp
     break if valid_answer?(answer) || busted?(player_total)
 
     hit!(player_cards, deck)
