@@ -24,8 +24,14 @@ DEALER_STAY_VALUE = 17
 # helper methods
 
 def ask_name
-  puts "Please enter your name:"
-  gets.chomp.upcase
+  name = nil
+  loop do
+    puts "Please enter your name:"
+    name = gets.chomp.upcase
+    break unless name.gsub(" ", "").empty?
+    puts "Please enter a valid name..."
+  end
+  name
 end
 
 def valid_answer?(input)
@@ -36,9 +42,31 @@ end
 
 # rubocop:disable Metrics / MethodLength
 
+def display_rules
+  rules = <<-RULES
+  The goal of Twenty-One is to try to get as close to 21 as possible, without going over.
+  If you go over 21, it's a "bust" and you lose.
+
+  Setup: the game consists of a "dealer" and a "player".
+  Both participants are initially dealt 2 cards.
+  The player can see their 2 cards, but can only see one of the dealer's cards.
+  Player goes first, dealer goes last.
+  Player chooses to "hit" — get another random card from the deck — or "stay".
+  If the player goes bust, the game ends and dealer doesn't have a turn.
+  The cards have a value of:
+    - Their number (for number cards);
+    - 10 for the face cards Jack, Queen and King;
+    - Aces are worth 11, or 1 if the total value of the hand would otherwise be over 21.
+
+  In this version of Twenty-One, the match winner is the first to reach 5 rounds won.
+  RULES
+  puts rules
+  display_line_break
+end
+
 def welcome_screen
   welcome = <<-WELCOME
-    8               88
+                   88
     8     eeee eeeee 8 eeeee    eeeee e     eeeee e    e
     8e    8      8     8   "    8   8 8     8   8 8    8
     88    8eee   8e    8eeee    8eee8 8e    8eee8 8eeee8
@@ -74,7 +102,7 @@ def display_scoreboard(player_rounds, dealer_rounds, tied_rounds, name)
 end
 
 def describe_hand(hand, hidden)
-  array = hand.map { |card| card } # a version of deep copy?
+  array = hand.map { |card| card }
   array[-1] = "and #{array[-1]}"
   if hidden == 'hidden'
     array.pop
@@ -111,22 +139,32 @@ def display_line_break
   puts ""
 end
 
+# rubocop:disable Metrics / MethodLength
+
 def display_round_winner(player_cards, dealer_cards, name,
                          player_total, dealer_total)
   if busted?(player_total)
-    player_busted(player_cards, dealer_cards, name, player_total, dealer_total)
+    display_player_busted(player_cards, dealer_cards, name, player_total,
+                          dealer_total)
   elsif busted?(dealer_total)
-    dealer_busted(player_cards, dealer_cards, name, player_total, dealer_total)
+    display_dealer_busted(player_cards, dealer_cards, name, player_total,
+                          dealer_total)
   elsif player_total > dealer_total
-    player_win(player_cards, dealer_cards, name, player_total, dealer_total)
+    display_player_win(player_cards, dealer_cards, name, player_total,
+                       dealer_total)
   elsif player_total < dealer_total
-    dealer_win(player_cards, dealer_cards, name, player_total, dealer_total)
+    display_dealer_win(player_cards, dealer_cards, name, player_total,
+                       dealer_total)
   else
-    neither_win(player_cards, dealer_cards, name, player_total, dealer_total)
+    display_neither_win(player_cards, dealer_cards, name, player_total,
+                        dealer_total)
   end
 end
 
-def player_busted(player_cards, dealer_cards, name, player_total, dealer_total)
+# rubocop:enable Metrics / MethodLength
+
+def display_player_busted(player_cards, dealer_cards, name, player_total,
+                          dealer_total)
   display_line_break
   display_final_hands_and_scores(player_cards, dealer_cards,
                                  player_total, dealer_total)
@@ -134,7 +172,8 @@ def player_busted(player_cards, dealer_cards, name, player_total, dealer_total)
   puts "Sorry, #{name}, you went bust!"
 end
 
-def dealer_busted(player_cards, dealer_cards, name, player_total, dealer_total)
+def display_dealer_busted(player_cards, dealer_cards, name, player_total,
+                          dealer_total)
   display_line_break
   display_final_hands_and_scores(player_cards, dealer_cards, player_total,
                                  dealer_total)
@@ -143,7 +182,8 @@ def dealer_busted(player_cards, dealer_cards, name, player_total, dealer_total)
   puts "Congratulations, #{name}! You won!"
 end
 
-def player_win(player_cards, dealer_cards, name, player_total, dealer_total)
+def display_player_win(player_cards, dealer_cards, name, player_total,
+                       dealer_total)
   display_line_break
   display_final_hands_and_scores(player_cards, dealer_cards, player_total,
                                  dealer_total)
@@ -151,7 +191,8 @@ def player_win(player_cards, dealer_cards, name, player_total, dealer_total)
   puts "Congratulations, #{name}!  YOU won!"
 end
 
-def dealer_win(player_cards, dealer_cards, name, player_total, dealer_total)
+def display_dealer_win(player_cards, dealer_cards, name, player_total,
+                       dealer_total)
   display_line_break
   display_final_hands_and_scores(player_cards, dealer_cards, player_total,
                                  dealer_total)
@@ -159,7 +200,8 @@ def dealer_win(player_cards, dealer_cards, name, player_total, dealer_total)
   puts "Commiserations, #{name}! The DEALER won!"
 end
 
-def neither_win(player_cards, dealer_cards, name, player_total, dealer_total)
+def display_neither_win(player_cards, dealer_cards, name, player_total,
+                        dealer_total)
   display_line_break
   display_final_hands_and_scores(player_cards, dealer_cards, player_total,
                                  dealer_total)
@@ -168,11 +210,9 @@ def neither_win(player_cards, dealer_cards, name, player_total, dealer_total)
   puts "The values of both hands are the same: it is a TIE!"
 end
 
-# rubocop:disable Style/RedundantInterpolation
-
 def declare_match_winner(player_rounds, dealer_rounds, tied_rounds, name)
   if player_rounds > dealer_rounds
-    match_winner = "#{name}"
+    match_winner = name.to_s
   elsif dealer_rounds > player_rounds
     match_winner = "DEALER"
   end
@@ -185,7 +225,18 @@ def declare_match_winner(player_rounds, dealer_rounds, tied_rounds, name)
   puts "The match winner is #{match_winner}!"
 end
 
-# rubocop:enable Style/RedundantInterpolation
+def wait_for_enter
+  puts ""
+  puts "Press ENTER to continue to the next round..."
+  gets.chomp
+end
+
+def display_outro(name)
+  display_line_break
+  puts "Thanks for playing Twenty-One, #{name}!"
+  puts "I hope to see you again soon!"
+  display_line_break
+end
 
 # deck methods
 
@@ -258,8 +309,6 @@ end
 
 # rubocop:enable Lint / DuplicateBranch
 
-# dealer decision method
-
 # rubocop:disable Lint/ConstantResolution
 
 def dealer_turn!(dealer_cards, deck, dealer_total)
@@ -272,8 +321,6 @@ def dealer_turn!(dealer_cards, deck, dealer_total)
 end
 
 # rubocop:enable Lint/ConstantResolution
-
-# player decision methods
 
 def player_turn!(player_cards, deck, name, player_total)
   answer = nil
@@ -299,66 +346,66 @@ def play_again?(name)
   gets.chomp
 end
 
+# rubocop:disable Metrics / MethodLength, Metrics / AbcSize
+
 # main game
-
-system 'clear'
-welcome_screen
-name = ask_name
-
-# rubocop:disable Metrics/BlockLength
-
-loop do # 5-round match loop
-  player_rounds = 0
-  dealer_rounds = 0
-  tied_rounds = 0
-  round_winner = nil
+def play_game
   system 'clear'
+  welcome_screen
+  display_rules
+  name = ask_name
 
-  # rubocop:disable Lint/ConstantResolution
+  loop do # 5-round match loop
+    player_rounds = 0
+    dealer_rounds = 0
+    tied_rounds = 0
+    round_winner = nil
+    system 'clear'
 
-  loop do # 1-round loop
-    welcome_screen
-    deck = initialise_deck
-    player_cards = deal_new_hand!(deck)
-    player_total = calculate_min_hand_value(player_cards)
-    dealer_cards = deal_new_hand!(deck)
-    dealer_total = calculate_min_hand_value(dealer_cards)
-    display_scoreboard(player_rounds, dealer_rounds, tied_rounds, name)
-    display_dealer_cards(dealer_cards, 'hidden')
-    player_turn!(player_cards, deck, name, player_total)
-    player_total = calculate_min_hand_value(player_cards)
-    loop do
-      break if busted?(player_total) || dealer_total >= DEALER_STAY_VALUE
-      dealer_turn!(dealer_cards, deck, dealer_total)
+    # rubocop:disable Lint/ConstantResolution
+
+    loop do # 1-round loop
+      welcome_screen
+      deck = initialise_deck
+      player_cards = deal_new_hand!(deck)
+      player_total = calculate_min_hand_value(player_cards)
+      dealer_cards = deal_new_hand!(deck)
       dealer_total = calculate_min_hand_value(dealer_cards)
+      display_scoreboard(player_rounds, dealer_rounds, tied_rounds, name)
+      display_dealer_cards(dealer_cards, 'hidden')
+      player_turn!(player_cards, deck, name, player_total)
+      player_total = calculate_min_hand_value(player_cards)
+      loop do
+        break if busted?(player_total) || dealer_total >= DEALER_STAY_VALUE
+        dealer_turn!(dealer_cards, deck, dealer_total)
+        dealer_total = calculate_min_hand_value(dealer_cards)
+      end
+      display_round_winner(player_cards, dealer_cards, name, player_total,
+                           dealer_total)
+      round_winner = determine_winner(player_total, dealer_total)
+      if round_winner == :player
+        player_rounds += 1
+      elsif round_winner == :dealer
+        dealer_rounds += 1
+      else
+        tied_rounds += 1
+      end
+      break if player_rounds >= 5 || dealer_rounds >= 5
+      wait_for_enter
     end
-    display_round_winner(player_cards, dealer_cards, name, player_total,
-                         dealer_total)
-    round_winner = determine_winner(player_total, dealer_total)
-    if round_winner == :player
-      player_rounds += 1
-    elsif round_winner == :dealer
-      dealer_rounds += 1
-    else
-      tied_rounds += 1
-    end
-    break if player_rounds >= 5 || dealer_rounds >= 5
-    puts ""
-    puts "Press ENTER to continue to the next round..."
-    gets.chomp
+
+    declare_match_winner(player_rounds, dealer_rounds, tied_rounds, name)
+    answer = play_again?(name)
+    break unless answer.downcase == 'y'
   end
 
-  declare_match_winner(player_rounds, dealer_rounds, tied_rounds, name)
-  answer = play_again?(name)
-  break unless answer.downcase == 'y'
+  # rubocop:enable Lint/ConstantResolution
+
+  # outro from here
+
+  display_outro(name)
 end
 
-# rubocop:enable Metrics/BlockLength
-# rubocop:enable Lint/ConstantResolution
+# rubocop:enable Metrics / MethodLength, Metrics / AbcSize
 
-# outro from here
-
-display_line_break
-puts "Thanks for playing Twenty-One, #{name}!"
-puts "I hope to see you again soon!"
-display_line_break
+play_game
