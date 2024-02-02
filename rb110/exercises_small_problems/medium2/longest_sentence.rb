@@ -88,5 +88,5 @@ end
 
 # Test Cases
 
-longest_sentence("longest_sentence_read_file.txt")
-# longest_sentence("frankenstein.txt")
+# longest_sentence("longest_sentence_read_file.txt")
+longest_sentence("frankenstein.txt")
