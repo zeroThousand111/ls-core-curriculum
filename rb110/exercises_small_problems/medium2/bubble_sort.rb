@@ -64,6 +64,9 @@ ______________________________________________________________________________
 Now CODE with intent!
 =end
 
+require 'pry'
+require 'pry-byebug'
+
 # solution 1 - My 1st solution using a simple loop within an until loop
 
 # def bubble_sort!(array)
@@ -101,19 +104,39 @@ Now CODE with intent!
 
 # solution 3 - Using the Ruby swap in my solution
 
+# def bubble_sort!(array)
+#   until array == array.sort
+#   counter = 0
+#     loop do
+#       if array[counter] > array[counter + 1]
+#         array[counter], array[counter + 1] = array[counter + 1], array[counter]
+#       end
+#       counter += 1
+#       break if counter == array.size - 1
+#     end
+#   end
+#   array
+# end
+
+# -------------------
+
+# solution 4 - Writing the LS solution from memory and first principles
+
 def bubble_sort!(array)
-  until array == array.sort
-  counter = 0
-    loop do
-      if array[counter] > array[counter + 1]
-        array[counter], array[counter + 1] = array[counter + 1], array[counter]
-      end
-      counter += 1
-      break if counter == array.size - 1
+  loop do 
+    finished = false
+    1.upto(array.size - 1) do |index|
+      # binding.pry
+      next if array[index - 1] <= array[index]
+      array[index - 1], array[index] = array[index], array[index - 1]
+      finished = true
     end
+  
+    break unless finished
   end
   array
 end
+
 
 # -------------------
 
@@ -130,4 +153,4 @@ p bubble_sort!(array) == [1, 2, 4, 6, 7]
 
 array = %w(Sue Pete Alice Tyler Rachel Kim Bonnie)
 p bubble_sort!(array) == %w(Alice Bonnie Kim Pete Rachel Sue Tyler)
-# array == %w(Alice Bonnie Kim Pete Rachel Sue Tyler)
+array == %w(Alice Bonnie Kim Pete Rachel Sue Tyler)
