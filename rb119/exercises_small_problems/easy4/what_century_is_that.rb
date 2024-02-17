@@ -84,9 +84,6 @@ def century(integer)
            when century.digits[0] == 1 && century.digits[1] != 1 then 'st'
            when century.digits[0] == 2 && century.digits[1] != 1 then 'nd'
            when century.digits[0] == 3 && century.digits[1] != 1 then 'rd'
-          # when century.digits[0] == 1 && century.digits[1] == 1 then 'th'
-          # when century.digits[0] == 2 && century.digits[1] == 1 then 'th'
-          # when century.digits[0] == 3 && century.digits[1] == 1 then 'th'
            else 'th'
            end
 
