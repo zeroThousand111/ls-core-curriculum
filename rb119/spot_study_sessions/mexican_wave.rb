@@ -169,21 +169,85 @@ end
 
 # solution 3 - As above but inner loop refactored using Array#chars and Enumerable#each_with_index
 
-def wave(string)
-  lowercase_string = string.downcase
-  array_of_strings = []
-  return array_of_strings if string.length == 0
+# def wave(string)
+#   lowercase_string = string.downcase
+#   array_of_strings = []
+#   return array_of_strings if string.length == 0
   
-  string.length.times do |array_index| # array loop
-    temp_string = ''
-    lowercase_string.chars.each_with_index do |char, string_index| # string loop
-      if string_index == array_index
-        temp_string << lowercase_string[string_index].upcase
-      else
-        temp_string << lowercase_string[string_index]
-      end
-    end
-    array_of_strings << temp_string if lowercase_string[array_index].match?(/[A-Za-z]/)
+#   string.length.times do |array_index| # array loop
+#     temp_string = ''
+#     lowercase_string.chars.each_with_index do |char, string_index| # string loop
+#       if string_index == array_index
+#         temp_string << lowercase_string[string_index].upcase
+#       else
+#         temp_string << lowercase_string[string_index]
+#       end
+#     end
+#     array_of_strings << temp_string if lowercase_string[array_index].match?(/[A-Za-z]/)
+#   end
+  
+#   array_of_strings
+# end
+
+# -------------------
+
+# solution 4 - Ewa's PEDAC and Solution
+
+=begin
+- initialize `return_array_target_size` where I will store target size of the return array, store there size after you’ve deleted spaces from the string
+- return [] if str arg is empty
+- initialize `result`which will be populated with strings
+- initialize a counter
+- start a loop
+ -- increase counter if the char at the current counter is a space
+ -- upcase the char at the current counter in the arg string
+ -- add the str with upcased char to the `result` array
+ --downcase the string because you’ll need it as it originally was for the next loop iteration
+ -- add 1 to counter
+ -- break if counter is equal or greater from the `return_array_target_size` because this means that I have required number of strings in my `result` array
+-return `result`
+=end
+
+# def wave(str)
+#   return_array_target_size = str.delete(" ").size
+#   return [] if str.empty?
+
+#   result = []
+#   counter = 0
+
+#   loop do
+#     counter += 1 if str[counter] == " "
+#     str[counter] = str[counter].upcase
+#     result << str
+#     str = str.downcase
+#     counter += 1
+#     break if result.size >= return_array_target_size
+#   end
+#   result
+# end
+
+# -------------------
+
+# solution 5 - My Take On Ewa's Solution
+
+def wave(string)
+  alphabetic_string = string.delete(" ")
+  array_of_strings = []
+  return array_of_strings if string.empty?
+  
+  counter = 0
+  
+  loop do
+    # skip character if it is whitespace
+    counter += 1 if string[counter] == " "
+    # upcase one letter in the string
+    string[counter] = string[counter].upcase
+    # shovel the string into the array of strings
+    array_of_strings << string
+    # then downcase the whole string back to default again
+    string = string.downcase
+    counter += 1
+    break if array_of_strings.size == alphabetic_string.length
   end
   
   array_of_strings
