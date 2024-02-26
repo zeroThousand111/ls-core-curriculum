@@ -135,7 +135,38 @@ end
 
 # -------------------
 
-# solution 5 - 
+# solution 5 - Further Exploration use #each_with_object or #inject
+
+def reverse(array)
+  array.each_with_object([]) do |element, new_array|
+    new_array.unshift(element)
+  end
+end
+
+# -------------------
+
+# solution 6 - Using Integer#downto to iterate in reverse through input array
+
+# def reverse(array)
+#   new_array = []
+#   (array.size - 1).downto(0) do |n|
+#     new_array << array[n]
+#   end
+  
+#   new_array
+# end
+
+# -------------------
+
+# solution 7 - Further Exploration Using Enumerable#inject.  This needs the memo to be the first element of the array array[0], else it will be missed from the action in the block
+
+def reverse(array)
+  new_array = []
+  # binding.pry
+  array.inject(array[0]){ |first, element| new_array.unshift(element) }
+  p new_array
+end
+
 
 # -------------------
 
