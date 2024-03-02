@@ -128,7 +128,35 @@ end
 
 # -------------------
 
-# solution 4 - 
+# solution 4 - FURTHER EXPLORATION
+
+def staggered_case_fe(string, start='caps')
+  new_string = ""
+  
+  index = 0
+  loop do
+    if string[index].match?(/[A-Za-z]/)
+      if start == 'caps'
+        if index.odd?
+          new_string << string[index].downcase
+        else
+          new_string << string[index].upcase
+        end
+      elsif start == 'reverse'
+        if index.even?
+          new_string << string[index].downcase
+        else
+          new_string << string[index].upcase
+        end
+      end
+    else
+      new_string << string[index]
+    end
+    index += 1
+    break if index == string.length
+  end
+  new_string
+end
 
 # -------------------
 
@@ -140,6 +168,11 @@ end
 
 # Test Cases
 
-p staggered_case('I Love Launch School!') == 'I LoVe lAuNcH ScHoOl!'
-p staggered_case('ALL_CAPS') == 'AlL_CaPs'
-p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 NuMbErS'
+# p staggered_case('I Love Launch School!') == 'I LoVe lAuNcH ScHoOl!'
+# p staggered_case('ALL_CAPS') == 'AlL_CaPs'
+# p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 NuMbErS'
+
+# Test Cases for Further Exploration
+
+p staggered_case_fe('ALL_CAPS') == 'AlL_CaPs'
+p staggered_case_fe('ALL_CAPS', 'reverse') == 'aLl_cApS'
