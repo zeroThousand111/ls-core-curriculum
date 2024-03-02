@@ -137,7 +137,35 @@ end
 
 # -------------------
 
-# solution 4 - 
+# solution 4 - FURTHER EXPLORATION
+
+def staggered_case(string, order='caps_first')
+  new_string = ''
+  index = 0
+  
+  if order == 'caps_first'
+    caps_switch = true
+  elsif order == 'caps_second'
+    caps_switch = false
+  end
+  
+  loop do
+    if string[index].match?(/[^A-Za-z]/)
+      new_string << string[index]
+    else
+      if caps_switch == false
+        new_string << string[index].downcase
+        caps_switch = !caps_switch
+      else
+        new_string << string[index].upcase
+        caps_switch = !caps_switch
+      end
+    end
+    index += 1
+    break if index == string.length
+  end
+  new_string
+end
 
 # -------------------
 
@@ -146,9 +174,13 @@ end
 # -------------------
 
 # Print Tests
-p staggered_case('ALL CAPS') # 'AlL CaPs'
+# p staggered_case('ALL CAPS') # 'AlL CaPs'
 
 # Test Cases
-p staggered_case('I Love Launch School!') == 'I lOvE lAuNcH sChOoL!'
+# p staggered_case('I Love Launch School!') == 'I lOvE lAuNcH sChOoL!'
+# p staggered_case('ALL CAPS') == 'AlL cApS'
+# p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 nUmBeRs'
+
+# Test Cases for Further Exploration
 p staggered_case('ALL CAPS') == 'AlL cApS'
-p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 nUmBeRs'
+p staggered_case('ALL CAPS', 'caps_second') == 'aLl CaPs'
