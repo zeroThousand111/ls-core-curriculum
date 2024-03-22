@@ -142,7 +142,27 @@ end
 
 # -------------------
 
-# solution 4 - 
+# solution 4 - FURTHER EXPLORATION - refactor of above using a much simpler different method to check characters in a case statement - no need to use String#include?
+
+def balanced?(string)
+  parentheses_tally = 0
+  curly_tally = 0
+  square_tally = 0
+  
+  string.each_char do |char|
+    case char
+    when '(' then parentheses_tally += 1
+    when ')' then parentheses_tally -= 1
+    when '{' then curly_tally += 1
+    when '}' then curly_tally -= 1
+    when '[' then square_tally += 1
+    when ']' then square_tally -= 1
+    end
+    
+    return false if parentheses_tally < 0 || curly_tally < 0 || square_tally < 0
+  end
+  parentheses_tally == 0 && curly_tally == 0 && square_tally == 0
+end
 
 # -------------------
 
