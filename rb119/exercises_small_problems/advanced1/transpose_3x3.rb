@@ -55,7 +55,10 @@ transposition_pattern = [
   [input_matrix[0][2], input_matrix[1][2], input_matrix[2][2]]
 ]
 
-In other words, 
+mutated_matrix 
+input_matrix[0][1], input_matrix[1][0] = input_matrix[1][0], input_matrix[0][1]
+input_matrix[0][2], input_matrix[2][0] = input_matrix[2][0], input_matrix[0][2]
+input_matrix[1][2], input_matrix[2][1] = input_matrix[2][1], input_matrix[1][2]
 
 RULES
 EXPLICIT REQUIREMENTS:
@@ -139,46 +142,46 @@ end
 
 # solution 2 - Programatically mapping using simple loops
 
-def transpose(input_matrix)
+# def transpose(input_matrix)
   
-  second_counter = 0
-  output_matrix = []
+#   element_counter = 0
+#   output_matrix = []
   
-  loop do
-    first_counter = 0
-    subarray = []
+#   loop do
+#     subarray_counter = 0
+#     subarray = []
     
-    loop do 
-      subarray << input_matrix[first_counter][second_counter]
-      first_counter += 1
-      break if first_counter > 2
-    end
+#     loop do 
+#       subarray << input_matrix[subarray_counter][element_counter]
+#       subarray_counter += 1
+#       break if subarray_counter > 2
+#     end
     
-    output_matrix << subarray
-    second_counter += 1
-    break if second_counter > 2
-  end
+#     output_matrix << subarray
+#     element_counter += 1
+#     break if element_counter > 2
+#   end
   
-  output_matrix
-end
+#   output_matrix
+# end
 
 # -------------------
 
 # solution 3 - Programatically using #upto to iterate
 
-def transpose(input_matrix)
-  output_matrix = []
+# def transpose(input_matrix)
+#   output_matrix = []
   
-  0.upto(2) do |second_counter|
-    subarray = []
-    0.upto(2) do |first_counter|
-      subarray << input_matrix[first_counter][second_counter]
-    end
-    output_matrix << subarray
-  end
+#   0.upto(2) do |element_counter|
+#     subarray = []
+#     0.upto(2) do |subarray_counter|
+#       subarray << input_matrix[subarray_counter][element_counter]
+#     end
+#     output_matrix << subarray
+#   end
   
-  output_matrix
-end
+#   output_matrix
+# end
 
 # -------------------
 
@@ -190,21 +193,26 @@ end
 
 # solution 5 - Official LS solution
 
-def transpose(matrix)
-  result = []
-  (0..2).each do |column_index|
-    new_row = (0..2).map { |row_index| matrix[row_index][column_index] }
-    result << new_row
-  end
-  result
-end
+# def transpose(matrix)
+#   result = []
+#   (0..2).each do |column_index|
+#     new_row = (0..2).map { |row_index| matrix[row_index][column_index] }
+#     result << new_row
+#   end
+#   result
+# end
 
 # -------------------
 
 # solution 6 - FURTHER EXPLORATION 
 
+# Three values don't change, 6 do change.  I'm using brute force multiple variable parallel assignment and array element reference
+
 def transpose!(matrix)
-  
+  matrix[0][1], matrix[1][0] = matrix[1][0], matrix[0][1]
+  matrix[0][2], matrix[2][0] = matrix[2][0], matrix[0][2]
+  matrix[1][2], matrix[2][1] = matrix[2][1], matrix[1][2]
+  matrix
 end
 
 # -------------------
@@ -219,12 +227,28 @@ matrix = [
   [3, 9, 6]
 ]
 
+matrix2 = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+]
+
 # new_matrix = transpose(matrix)
 
 # p new_matrix == [[1, 4, 3], [5, 7, 9], [8, 2, 6]]
 # p matrix == [[1, 5, 8], [4, 7, 2], [3, 9, 6]]
 
 # FURTHER EXPLORATION Test Cases
-transpose!(matrix)
+p transpose!(matrix)
 p matrix == [[1, 4, 3], [5, 7, 9], [8, 2, 6]]
 
+p transpose!(matrix2) == [
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9]
+]
+p matrix2 == [
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9]
+]
