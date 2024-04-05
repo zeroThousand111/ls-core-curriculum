@@ -50,10 +50,11 @@ ______________________________________________________________________________
   a.
     i. output = []
 2.MOVE through both arrays somehow
-  a. One way would be to provide a reference index counter that works on both arrays
+  a. One way would be to provide a universal reference index counter that works on both arrays, but this would not help in the case of the test case with multiple elements of the same value...
   b. #each iteration would need to be on one of the arrays only, perhaps each array in turn, but that wouldn't help ordering
   c.CREATE TWO index counters, one for array1 and one for array2
-    i.
+    i.array1_counter, array2_counter
+  d.
 3.COMPARE first element of array1 with first element of array2
   a.Use an IF statement structure
   b.The lower value integer is selected
@@ -94,26 +95,26 @@ require 'pry-byebug'
 
 # FAILED solution 2 - Using two independent index counters to move through arrays BUT CAN'T COMPARE INTEGERS WITH NIL VALUES!
 
-def merge(array1, array2)
-  output_array = []
-  array1_counter = 0
-  array2_counter = 0
+# def merge(array1, array2)
+#   output_array = []
+#   array1_counter = 0
+#   array2_counter = 0
   
-  loop do
-    # binding.pry
-    if array1[array1_counter] >= array2[array2_counter]
-      output_array << array2[array2_counter]
-      array2_counter += 1
-    elsif array2[array2_counter] > array1[array1_counter]
-      output_array << array1[array1_counter]
-      array1_counter += 1
-    end
+#   loop do
+#     # binding.pry
+#     if array1[array1_counter] >= array2[array2_counter]
+#       output_array << array2[array2_counter]
+#       array2_counter += 1
+#     elsif array2[array2_counter] > array1[array1_counter]
+#       output_array << array1[array1_counter]
+#       array1_counter += 1
+#     end
     
-    break if array1_counter == array1.size && array2_counter == array2.size
-  end
+#     break if array1_counter == array1.size && array2_counter == array2.size
+#   end
   
-  output_array
-end
+#   output_array
+# end
 
 # -------------------
 
@@ -131,6 +132,7 @@ end
 
 # Print Tests
 p merge([1, 5, 9], [2, 6, 8]) # [1, 2, 5, 6, 8, 9]
+p merge([1, 1, 3], [2, 2]) # [1, 1, 2, 2, 3] - this is a challenging test case!
 
 # Test Cases
 # p merge([1, 5, 9], [2, 6, 8]) == [1, 2, 5, 6, 8, 9]
