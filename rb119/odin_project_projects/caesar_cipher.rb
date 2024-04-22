@@ -134,9 +134,10 @@ end
 # p caesar_cipher("A", 5) # "F"
 # p caesar_cipher("Z", 1) # "A"
 # p caesar_cipher("z", 1) # "a"
-p caesar_cipher("What a string!", 5) # "Bmfy f xywnsl!"
-p caesar_cipher("My name is Maximus Meridius.  And I am SPARTACUS!", 11) # ?
+# p caesar_cipher("What a string!", 5) # "Bmfy f xywnsl!"
+# p caesar_cipher("My name is Maximus Meridius.  And I am SPARTACUS!", 11) # ?
+p caesar_cipher("Hi! And nothing else...", 6) # ?
 
 # test cases
 
-p caesar_cipher("What a string!", 5) == "Bmfy f xywnsl!"
+# p caesar_cipher("What a string!", 5) == "Bmfy f xywnsl!"
