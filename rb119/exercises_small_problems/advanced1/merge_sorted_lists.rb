@@ -24,6 +24,9 @@ IMPLICIT REQUIREMENTS:
   - Input array might be empty
   - Input arrays may be of different sizes
   - Integers appear to only be 1 through to 9, not higher or lower
+  - There are no zeroes 0
+  - Input arrays are already in numerical order, not random order
+  - Arrays can contain MULTIPLES of the same value!  How to handle this?
 
 ______________________________________________________________________________
 *****EXAMPLES/TEST CASES*****
@@ -45,27 +48,35 @@ ______________________________________________________________________________
   a. Approach — The process that will be utilized to accomplish each Requirement.
     i. Procedure — Specific details to implement the Approach.
 
+COMPARISON WITH TWO INDEPENDENT INCREMENTING INDEXES
 
-1.CREATE output array
-  a.
-    i. output = []
-2.MOVE through both arrays somehow
-  a. One way would be to provide a universal reference index counter that works on both arrays, but this would not help in the case of the test case with multiple elements of the same value...
-  b. #each iteration would need to be on one of the arrays only, perhaps each array in turn, but that wouldn't help ordering
-  c.CREATE TWO index counters, one for array1 and one for array2
-    i.array1_counter, array2_counter
-  d.
-3.COMPARE first element of array1 with first element of array2
-  a.Use an IF statement structure
-  b.The lower value integer is selected
-  c.But what about `nil` values?  They can't be compared!!
-    i.
-4.ADD the lower value integer to the output matrix
-  a.
-    i.
-5.INCREMENT the index counter of the array who supplied the Integer by 1
-  a.
-    i.
+- CREATE result array
+- CREATE an index number for array1
+- CREATE an index number for array2
+- MOVE through both arrays in a simple loop
+- COMPARE array1[index1] with array2[index2]
+- ACT
+  - IF array1[index1] < array2[index2]
+    - add array1[index1] to result array
+    - increment index1 by 1
+  - IF array1[index1] > array2[index2]; 
+    - add array2[index2] to result array
+    - increment index2 by 1
+  - IF array1[index1] == array2[index2];
+    - add array1[index1] AND array2[index2] to result array
+    - increment index1 AND index2
+  - IF array1[index1] == nil
+    - add array2[index2] to result array
+    - increment index2 by 1
+  - IF array2[index2] == nil
+    - add array1[index1] to result array
+    - increment index1 by 1
+  - ELSE (where both array1[index1] == nil && array2[index2] == nil)
+    - break from the loop
+- REPEAT until break condition;
+  - index1 >= array1.size && index2 >= array2.size
+- RETURN result array
+
 ______________________________________________________________________________
 
 Now CODE with intent!
@@ -74,59 +85,41 @@ Now CODE with intent!
 require 'pry'
 require 'pry-byebug'
 
-# FAILED solution 1 - using a reference index counter from zero to nine, but doesn't work for input arrays containing more than one Integer of the same value
 
-# def merge(array1, array2)
-#   output_array = []
-#   index_counter = 0
+# solution 5 - COMPARISON WITH TWO INDEPENDENT INCREMENTING INDEXES 05/05/2024
+
+def merge(array1, array2)
+  result = []
+  index1 = 0
+  index2 = 0
   
-#   loop do
-#     # binding.pry
-#     output_array << index_counter if array1.include?(index_counter)
-#     output_array << index_counter if array2.include?(index_counter)
-#     index_counter += 1
-#     break if index_counter == 10
-#   end
-  
-#   output_array
-# end
-
-# -------------------
-
-# FAILED solution 2 - Using two independent index counters to move through arrays BUT CAN'T COMPARE INTEGERS WITH NIL VALUES!
-
-# def merge(array1, array2)
-#   output_array = []
-#   array1_counter = 0
-#   array2_counter = 0
-  
-#   loop do
-#     # binding.pry
-#     if array1[array1_counter] >= array2[array2_counter]
-#       output_array << array2[array2_counter]
-#       array2_counter += 1
-#     elsif array2[array2_counter] > array1[array1_counter]
-#       output_array << array1[array1_counter]
-#       array1_counter += 1
-#     end
+  loop do
+    # binding.pry
+    if array1[index1] == nil
+      result << array2[index2]
+      index2 += 1
+    elsif array2[index2] == nil
+      result << array1[index1]
+      index1 += 1 
+    elsif array1[index1] < array2[index2]
+      result << array1[index1]
+      index1 += 1
+    elsif array1[index1] > array2[index2]
+      result << array2[index2]
+      index2 += 1
+    elsif array1[index1] == array2[index2]
+      result << array1[index1]
+      result << array2[index2]
+      index1 += 1
+      index2 += 1
+    end
     
-#     break if array1_counter == array1.size && array2_counter == array2.size
-#   end
+    # break if index1 >= array1.size && index2 >= array2.size
+    break if array1[index1] == nil && array2[index2] == nil
+  end
   
-#   output_array
-# end
-
-# -------------------
-
-# solution 3 - 
-
-# -------------------
-
-# solution 4 - 
-
-# -------------------
-
-# solution 5 - 
+  result
+end
 
 # -------------------
 
@@ -135,7 +128,7 @@ p merge([1, 5, 9], [2, 6, 8]) # [1, 2, 5, 6, 8, 9]
 p merge([1, 1, 3], [2, 2]) # [1, 1, 2, 2, 3] - this is a challenging test case!
 
 # Test Cases
-# p merge([1, 5, 9], [2, 6, 8]) == [1, 2, 5, 6, 8, 9]
-# p merge([1, 1, 3], [2, 2]) == [1, 1, 2, 2, 3]
-# p merge([], [1, 4, 5]) == [1, 4, 5]
-# p merge([1, 4, 5], []) == [1, 4, 5]
+p merge([1, 5, 9], [2, 6, 8]) == [1, 2, 5, 6, 8, 9]
+p merge([1, 1, 3], [2, 2]) == [1, 1, 2, 2, 3]
+p merge([], [1, 4, 5]) == [1, 4, 5]
+p merge([1, 4, 5], []) == [1, 4, 5]
