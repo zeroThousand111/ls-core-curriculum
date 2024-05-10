@@ -126,6 +126,30 @@ end
 #   return false
 # end
 
+# My solution 4 - refactor solution 2 to create an array of substrings first, but this ends up being more verbose than solution 2
+
+def repeated_substring_pattern(input_string)
+  final_index = input_string.length - 1
+  array_of_substrings = []
+  
+  # create array of substrings
+  0.upto(final_index) do |start_index| 
+    start_index.upto(final_index) do |end_index|
+      array_of_substrings << input_string[start_index..end_index]
+    end
+  end
+  
+  # compare multiples of each substring against input string
+  array_of_substrings.each do |substring|
+    2.upto(input_string.length) do |multiple|
+      multiplied_substring = substring * multiple
+      return true if multiplied_substring == input_string
+    end
+  end
+  
+  return false
+end
+
 # print cases
 # p repeated_substring_pattern("abab") #true
 # p repeated_substring_pattern("aba") # false
