@@ -23,6 +23,8 @@ Example collections:
 ### Using Loops
 #### Using A Simple Loop
 
+![string animation](https://i.imgur.com/iVgZds7.gif)
+
 ```ruby
 array = [1, 2, 3, 4, 5]
 
