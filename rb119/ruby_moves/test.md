@@ -6,11 +6,11 @@ Example collections:
 
 `array = [1, 2, 3, 4, 5]`
 
-<img src="https://i.imgur.com/IcXWx0A.gif" width="400" />
+<img src="https://i.imgur.com/IcXWx0A.gif" width="500" />
 
 `string = "hello"`
 
-<img src="https://i.imgur.com/iVgZds7.gif" width="400" />
+<img src="https://i.imgur.com/iVgZds7.gif" width="500" />
 
 ### Using Loops
 #### Using A Simple Loop
