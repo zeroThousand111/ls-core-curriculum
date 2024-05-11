@@ -8,11 +8,11 @@
 
 `array = [0, 1, 2, 3, 4]`
 
-<img src="https://imgur.com/IcXWx0A" width="500" />
+<img src="https://i.imgur.com/IcXWx0A.gif" width="500" />
 
 `string = "hello"`
 
-<img src="https://imgur.com/iVgZds7" width="500" />
+<img src="https://i.imgur.com/iVgZds7.gif" width="500" />
 
 
 ### Using Loops
