@@ -6,13 +6,19 @@ Example collections:
 
 `array = [1, 2, 3, 4, 5]`
 
-
-https://imgur.com/IcXWx0A
+<picture>
+ <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/IcXWx0A.gif">
+ <source media="(prefers-color-scheme: light)" srcset="https://i.imgur.com/IcXWx0A.gif">
+ <img alt="A gif animation of each element of an array of integers [0, 1, 2, 3, 4] being selected sequentially in a forwards motion" src="https://i.imgur.com/IcXWx0A.gif">
+</picture>
 
 `string = "hello"`
 
-
-https://imgur.com/iVgZds7
+<picture>
+ <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/iVgZds7.gif">
+ <source media="(prefers-color-scheme: light)" srcset="https://i.imgur.com/iVgZds7.gif">
+ <img alt="A gif animation of a string object "hello" where each character is selected sequentially in a forwards motion" src="https://i.imgur.com/iVgZds7.gif">
+</picture>
 
 ### Using Loops
 #### Using A Simple Loop
