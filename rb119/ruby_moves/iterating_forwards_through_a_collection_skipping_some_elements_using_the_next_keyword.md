@@ -10,9 +10,25 @@
 
 <img src="https://i.imgur.com/pRvmRyt.gif" width="500" />
 
+**Expected output:**
+
+```
+# => 1
+# => 3
+# => 5
+```
+
 `string = "hello"` - only select the consonants
 
 <img src="https://i.imgur.com/Jq6j6J8.gif" width="500" />
+
+**Expected output:**
+
+```
+# => "h"
+# => "l"
+# => "l"
+```
 
 ### Using Loops
 #### Using A Simple Loop

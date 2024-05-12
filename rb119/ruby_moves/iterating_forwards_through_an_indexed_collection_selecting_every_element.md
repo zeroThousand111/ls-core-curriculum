@@ -10,9 +10,29 @@
 
 <img src="https://i.imgur.com/IcXWx0A.gif" width="500" />
 
+**Expected output:**
+
+```
+# => 1
+# => 2
+# => 3
+# => 4
+# => 5
+```
+
 `string = "hello"`
 
 <img src="https://i.imgur.com/iVgZds7.gif" width="500" />
+
+**Expected output:**
+
+```
+# => "h"
+# => "e"
+# => "l"
+# => "l"
+# => "o"
+```
 
 
 ### Using Loops
