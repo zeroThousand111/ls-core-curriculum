@@ -1,6 +1,6 @@
 ## Select All Substrings from a String
 
-**The task:**  Sequentially select every possible substring in a string.
+**The task:**  Sequentially select every possible substring in a string.  (Assume the characters of the string stay in a fixed order.)
 
 **Notes:**  You might want to do something with each substring when it is selected, such as output it or push it to a new array collection.  For the sake of simplicity, in the case of these code snippet illustrations, the selected substring is passed as an argument to the `Kernel#p` method and is output to the console.  Each snippet may return a different value.
 
