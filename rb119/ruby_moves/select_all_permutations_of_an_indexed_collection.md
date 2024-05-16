@@ -8,7 +8,7 @@
 
 **Example collection:** `string = "abc"`
 
-<img src="https://i.imgur.com/VxXF4dX.gif" width="500" />
+<img src="https://i.imgur.com/IW1qw6q.gif" width="500" />
 
 **Expected output:**
 ```
