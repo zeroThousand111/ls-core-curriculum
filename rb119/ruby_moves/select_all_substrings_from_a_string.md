@@ -183,4 +183,21 @@ max_length = string.length
 end
 ```
 
+#### Using Nested `#each` Methods on a Range Value
+
+This solution is courtesy of Drew Dowdy.  It uses two range values that have `#each` invoked upon them, passing in incrementing values of block local variables `idx1` and `idx2`, which are used to create all the range values needed to get the required output when they are passed to the `String#slice` method as arguments.
+
+```ruby
+string = "abcde"
+
+result = []
+(0..string.length).each do |idx1|
+  (idx1...string.length).each do |idx2| 
+    result << string[idx1..idx2]
+  end
+end
+
+p result
+```
+
 **None of these options are inherently better than the others.  The circumstances will dictate which might be the most appropriate to use.**
