@@ -19,21 +19,23 @@ All given inputs are in lowercase a-z
 
 
 =end
+require 'pry'
+require 'pry-byebug'
+
 def common_prefix(input_array)
     common_characters =[]
       index = 0
       loop do
         comparison_array = []
         input_array.each do |word|
-        comparison_array << word[index]
+          comparison_array << word[index]
         end
-        common_characters << word[index] if comparison_array.all?(comparison_array[0])
+        common_characters << comparison_array[0] if comparison_array.all?(input_array[0][index])
         index += 1
         break if index == input_array.min_by { |str| str.length}.length
       end
     common_characters.join
 end
-
 
 p common_prefix(["flower", "flow", "flight"]) == "fl"
 p common_prefix(["dog", "racecar", "car"]) == ""
