@@ -235,3 +235,20 @@ end
 
 pp array_of_subarrays
 ```
+
+#### Using `Array#combination`
+
+This produces the same subarrays but in a different order to the above snippets and uses the method `Array#combination` passed an integer argument that is the current value of the block local variable `length`.
+
+```ruby 
+array = [0, 1, 2, 3, 4]
+array_of_subarrays = []
+
+(1..array.size).each do |length|
+  array.combination(length) do |combo|
+    array_of_subarrays << combo.join
+  end
+end
+
+pp array_of_subarrays
+```
