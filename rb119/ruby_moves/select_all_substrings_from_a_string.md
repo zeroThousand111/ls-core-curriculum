@@ -4,6 +4,8 @@
 
 **Notes:**  You might want to do something with each substring when it is selected, such as output it or push it to a new array collection.  For the sake of simplicity, in the case of these code snippet illustrations, the selected substring is passed as an argument to the `Kernel#p` method and is output to the console.  Each snippet may return a different value.
 
+This is a similar task to [selecting all subarrays from an array](https://github.com/zeroThousand111/ls-core-curriculum/blob/main/rb119/ruby_moves/select_all_subarrays_from_an_array.md) and the solutions are similar.
+
 **Example collections and criteria:** `string = "abcde"`
 
 <img src="https://i.imgur.com/9d3viNn.gif" width="500" />
