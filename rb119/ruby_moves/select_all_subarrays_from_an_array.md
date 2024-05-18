@@ -167,6 +167,22 @@ end
 pp array_of_subarrays
 ```
 
+To make it even more readable, extract the size of the array to a local variable `last_index`:
+
+```ruby
+array = [0, 1, 2, 3, 4]
+array_of_subarrays = []
+last_index = array.size - 1
+
+0.upto(last_index) do |start_index|
+  start_index.upto(last_index) do |stop_index|
+    array_of_subarrays << array[start_index..stop_index]
+  end
+end
+
+pp array_of_subarrays
+```
+
 #### Using Two Nested `Integer#upto` Method Invocations and  Start/Length Selection
 
 ```ruby
