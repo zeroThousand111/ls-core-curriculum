@@ -199,4 +199,18 @@ string = "abcde"
 end
 ```
 
+#### Using `Array#combination`
+
+This produces the same substrings but in a different order to the above snippets and uses a method chain of `String#chars.combination` passed an integer argument that is the current value of the block local variable `length`.
+
+```ruby
+string = "abcde"
+
+(1..string.length).each do |length|
+  string.chars.combination(length) do |combo|
+    p combo.join
+  end
+end
+```
+
 **None of these options are inherently better than the others.  The circumstances will dictate which might be the most appropriate to use.**
