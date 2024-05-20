@@ -54,54 +54,75 @@ Arrays
 * CHECK to see if string2 matches any substring in the array of permutations, then return true if there is a match, return false otherwise
   + could use a ternary statement
 
-# Algorithm 2 - shortcut if string2 is detected
+# Algorithm 2 
 
-* CREATE an empty array of substrings from string1
-* CHECK if any substring matches string2
-* CREATE an empty array of string permutations
-* SELECT every substring from string1 and copy each to the array of substrings
-  + use two nested #upto iterators
-* For every substring in the array of substrings, create every permutation of that substring and copy it to the array of string permutations
-  + use the Array#permutation method with the argument as the length of the substring
-  + this create a very large number of strings
-* CHECK to see if string2 matches any substring in the array of permutations, then return true if there is a match, return false otherwise
-  + could use a ternary statement
+Check that all the characters of string2 are present in string1 in equal or greater than the frequencies that exist in string1.  (To account for duplicate characters in strings, i.e. test case 1)
+
+* CREATE a tally hash of count frequencies of string1
+* CREATE a tally hash of count frequencies of string2
+  + DEFINE a helper method to create a tally hash from a string
+* CHECK that the same count frequences in tally_hash_1 or higher are present in tally_hash_2
+  + Use Enumerable#all? to iterate through each char-frequency pair
+    - tally_hash_2.all? { |char, frequency| tally_hash_1.has_key?(char) && tally_hash_1[char] >= frequency }
+* RETURN the boolean value returned by the Enumerable#all? method
 
 ```
 =end
 
-def create_permutations(string)
-  array_of_substrings = []
-  array_of_permutations = []
-  0.upto(string.length - 1) do |start_index|
-    start_index.upto(string.length - 1) do |stop_index|
-      array_of_substrings << string[start_index..stop_index]
+# def create_permutations(string)
+#   array_of_substrings = []
+#   array_of_permutations = []
+#   0.upto(string.length - 1) do |start_index|
+#     start_index.upto(string.length - 1) do |stop_index|
+#       array_of_substrings << string[start_index..stop_index]
+#     end
+#   end
+
+#   array_of_substrings.each do |substring|
+#     substring.chars.permutation(substring.length) { |word| array_of_permutations << word.join }
+#   end
+#   array_of_permutations
+# end
+
+# def scramble(string1, string2)
+#   array_of_substrings = []
+  
+#   0.upto(string1.length - 1) do |start_index|
+#     start_index.upto(string1.length - 1) do |stop_index|
+#       array_of_substrings << string1[start_index..stop_index]
+#     end
+#   end
+  
+#   array_of_substrings.each do |substring|
+#     substring.chars.permutation(substring.length) do |permutation|
+#       return true if permutation.join == string2
+#     end
+#     false
+#   end
+  
+#   false
+# end
+
+def create_tally_hash(string)
+  tally_hash = {}
+  string.chars.each do |char|
+    if tally_hash.include?(char)
+      tally_hash[char] += 1
+    else
+      tally_hash[char] = 1
     end
   end
-
-  array_of_substrings.each do |substring|
-    substring.chars.permutation(substring.length) { |word| array_of_permutations << word.join }
-  end
-  array_of_permutations
+  tally_hash
 end
 
+# for each k-v pair in string2, does string1 have that key and does it have the value of that key in that frequency or greater?
+
 def scramble(string1, string2)
-  array_of_substrings = []
-  
-  0.upto(string1.length - 1) do |start_index|
-    start_index.upto(string1.length - 1) do |stop_index|
-      array_of_substrings << string1[start_index..stop_index]
-    end
+  tally_hash_1 = create_tally_hash(string1)
+  tally_hash_2 = create_tally_hash(string2)
+  tally_hash_2.all? do |char, frequency| 
+    tally_hash_1.include?(char) && tally_hash_1[char] >= frequency
   end
-  
-  array_of_substrings.each do |substring|
-    substring.chars.permutation(substring.length) do |permutation|
-      return true if permutation.join == string2
-    end
-    false
-  end
-  
-  false
 end
 
 p scramble('javaass', 'jjss') == false
@@ -109,4 +130,4 @@ p scramble('rkqodlw', 'world') == true
 p scramble('codewaraaossoqqyt', 'codewars') == true
 p scramble('katas', 'steak') == false
 p scramble('scriptjava', 'javascript') == true
-# p scramble('scriptingjava', 'javascript') == true
+p scramble('scriptingjava', 'javascript') == true
