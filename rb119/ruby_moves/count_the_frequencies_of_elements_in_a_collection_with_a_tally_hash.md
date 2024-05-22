@@ -18,7 +18,7 @@
 }
 ```
 
-Example solution 1:
+#### Using `String#each_char`
 
 ```ruby
 string = "abbccc"
@@ -38,7 +38,7 @@ end
 pp create_tally_hash(string)
 ```
 
-Example solution 2:
+#### Using `Enumerable#each_with_object`
 
 ```ruby
 string = "abbccc"
@@ -57,8 +57,6 @@ end
 pp create_tally_hash(string)
 ```
 
-
-
 ### Example 2 - An Array of Integers
 
 **Example collection:** `array = [1, 1, 1, 2, 2, 3]`
@@ -73,7 +71,7 @@ pp create_tally_hash(string)
 }
 ```
 
-Example solution 1:
+#### Using  `Array#each`
 
 ```ruby
 array = [1, 1, 1, 2, 2, 3]
@@ -93,7 +91,7 @@ end
 pp create_tally_hash(array)
 ```
 
-Example solution 2:
+#### Using `Enumerable#each_with_object`
 
 ```ruby
 array = [1, 1, 1, 2, 2, 3]
