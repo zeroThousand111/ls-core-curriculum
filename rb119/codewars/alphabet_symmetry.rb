@@ -125,15 +125,39 @@ end
 
 # -------------------
 
-# solution 4 - 
+# solution 4 - New solution 28th May 2024
+
+def solve(array_of_strings)
+  alphabet_array = ('a'..'z').to_a
+  array_of_counts = []
+  array_of_strings.each do |word|
+    count = 0
+    word.chars.each_with_index do |char, index|
+      count += 1 if alphabet_array.index(char.downcase) == index
+    end
+    array_of_counts << count
+  end
+  array_of_counts
+end
 
 # -------------------
 
-# solution 5 - 
+# solution 5 - using #map instead of #each
+
+def solve(array_of_strings)
+  alphabet_array = ('a'..'z').to_a
+  array_of_strings.map do |word|
+    count = 0
+    word.chars.each_with_index do |char, index|
+      count += 1 if alphabet_array.index(char.downcase) == index
+    end
+    count
+  end
+end
 
 # -------------------
 
 # Print Tests
 
 # Test Cases
-p solve(["abode","ABc","xyzD"]) == [4, 3, 1]
+p solve(["abode","ABc","xyzD"]) #== [4, 3, 1]
