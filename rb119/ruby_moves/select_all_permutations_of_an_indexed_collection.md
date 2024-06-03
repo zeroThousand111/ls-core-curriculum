@@ -64,6 +64,32 @@ string.chars.permutation(string.length) { |word| array_of_permutations << word.j
 p array_of_permutations
 ```
 
+#### Assembling Subarrays of Permutations 
+
+This method is courtesy of Drew Dowdy.  Its a way of building an array `permutations` containing subarrays of all possible permutations of the input string and then joining each subarray into a string at the end.
+
+```ruby
+def make_permutations(string)
+  array_of_characters = string.chars
+  permutations = [[array_of_characters.shift]]
+
+  until array_of_characters.empty?
+    current_char = array_of_characters.shift
+    new_permutations = []
+    permutations.each do |perm|
+      (0..perm.size).each do |i|
+        new_permutations << perm.dup.insert(i, current_char)
+      end
+    end
+    permutations = new_permutations
+  end
+  
+  permutations.map { |perm| perm.join }
+end
+
+p make_permutations("abc")
+# => ["cba", "bca", "bac", "cab", "acb", "abc"] i.e. the strings we want but in a different order in the returned array.
+```
 
 ### Example 2 - All Permutations of the Digits of an Integer
 
@@ -87,3 +113,27 @@ p array_of_possible_integers
 ```
 
 `Integer#digits` inexplicably creates an array of digits of the integer calling object in reverse order.  To recreate *exactly* the expected output the `Array#reverse` method can be included in the method chain i.e. `#digits.reverse.permutation`, or the `array_of_possible_integers` can be sorted in numerical order with `#sort` at the end, but if you aren't bothered by the order in which the permutations are added to the array, the above doesn't need modifying.
+
+#### Assembling Subarrays of Permutations 
+
+As before, this method is courtesy of Drew Dowdy, adapted for permutations of an integer rather than an input string:
+
+```ruby
+def make_permutations(number)
+  digits = number.to_s.chars
+  permutations = [[digits.shift]]
+
+  until digits.empty?
+    current_digit = digits.shift
+    new_permutations = []
+    permutations.each do |perm|
+      (0..perm.size).each do |i|
+        new_permutations << perm.dup.insert(i, current_digit)
+      end
+    end
+    permutations = new_permutations
+  end
+  
+  permutations.map { |perm| perm.join }
+end
+```
