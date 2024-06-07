@@ -19,7 +19,6 @@ Sometimes the seemingly simplest step of a multi-step problem can cause the bigg
 # => 1
 # => 2
 # => 3
-# => 4
 ```
 
 `string = "hello"`
