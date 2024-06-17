@@ -63,11 +63,12 @@ Feel free to use the merge method you wrote in the previous exercise.
 ## Output: An array containing the elements of the calling object, sorted in order
 ## Rules:
 ### Explicit requirements
-  - 
-  -
+  - Sort an array of passed in values 
+  - Use the merge sort algorithm
 ### Implicit requirements
   - Sorting, means reordering in ascending alphabetical or numerical order, depending upon the data type
-  -
+  - The recombination of subarrays also sorts them in ascending numerical or asciibetical order
+  - 
   
   
 # Examples/Test Cases
@@ -85,6 +86,23 @@ merge_sort([7, 3, 9, 15, 23, 1, 6, 51, 22, 37, 54, 43, 5, 25, 35, 18, 46]) == [1
   + approach
     - procedure
 
+* MEASURE size of array and ACT on result
+  + IF there is only one element in the list, consider it already sorted, so RETURN
+  + ELSE continue to next step
+* RECURSIVE Loop
+  + in other words, a method that references itself until a condition is reached, when something is returned
+  + condition is when subarray size is 1 element only
+  * The SPLIT component
+  + divide array, and every subarray into two half subarrays until an atomic subarray is reached i.e. array has just one element i.e. subarray.size == 1
+    - halfway = (array.size - 1) / 2
+    - left = array[0..halfway]
+    - right = array[(halfway + 1)..-1]
+  * The MERGE component
+    + MERGE and SORT two subarrays into one subarray
+    + use the method created for the previous exercise that merges and sorts two arrays
+      - return merge(left, right)
+  
+  
 =end
 
 # Code
@@ -92,7 +110,7 @@ require 'pry'
 require 'pry-byebug'
 
 
-# solution to merge_sorted_lists previous problem
+# my solution to merge_sorted_lists from the previous problem
 
 def merge(array1, array2)
   result = []
@@ -125,37 +143,32 @@ def merge(array1, array2)
   result
 end
 
-# solution to this problem
+# solution to this problem from the website https://www.tutorialspoint.com/data_structures_algorithms/merge_sort_algorithm.htm#how_merge_sort_works (written in JS)
 
-def halve(array)
-    index = (size / 2) - 1
-    [ [array[0..index]], [array[(index + 1)..-1]] ]
-end
+=begin
+procedure mergesort( var a as array )
+   if ( n == 1 ) return a
+      var l1 as array = a[0] ... a[n/2]
+      var l2 as array = a[n/2+1] ... a[n]
+      l1 = mergesort( l1 )
+      l2 = mergesort( l2 )
+      return merge( l1, l2 )
+end procedure
+=end
+
+# my interpretation of the pseudocode in ruby
 
 def merge_sort(array)
-  # Step 1: If it is only one element in the list, consider it already sorted, so return.
-  return array if array.size == 1
-  
-  # Step 2: Divide the list recursively into two halves until it can no more be divided.
-  size = array.size
-  until size == 1 do
-    index = (size / 2) - 1
-    array = [array[0..index]], [array[(index + 1)..-1]]
-    size = size / 2
-  end
-  
-  # Step 3: Merge the smaller lists into new list in sorted order.
-  
-  merge(subarray1, subarray2) # make this recursive. how?!
-  
+  return array if array.size <= 1
+  halfway = (array.size - 1) / 2
+  left = array[0..halfway]
+  right = array[(halfway + 1)..-1]
+  left = merge_sort(left)
+  right = merge_sort(right)
+  return merge(left, right)
 end
 
-
 # ---
-
-# print tests
-
-
 
 # truth tests
 p merge_sort([9, 5, 7, 1]) == [1, 5, 7, 9]
