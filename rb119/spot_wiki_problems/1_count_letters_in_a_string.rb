@@ -43,9 +43,9 @@ p letter_count('arithmetics') == {:a=>1, :c=>1, :e=>1, :h=>1, :i=>2, :m=>1, :r=>
     - counts.include?(char.to_sym)
 * ACT on the result of the above determination
   + IF the current character IS already in the hash, increment the value of that key-value pair by 1
-    - counts{char.to_sym} += 1
+    - counts[char.to_sym] += 1
   + ELSE if the current character IS NOT in the count hash, add a new key-value pair, with key being symbol equivalent of the string character and value being 1
-    - counts{char.to_sym} = 1
+    - counts[char.to_sym] = 1
 * STOP moving through the string characters when the last character is dealt with
 * RETURN the counts Hash
 =end
