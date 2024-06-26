@@ -16,17 +16,29 @@ Assumptions
 5) ignore capitalisation
 for reference: http://en.wikipedia.org/wiki/Typoglycemia =end
 
-
-# UNDERSTAND THE PROBLEM
-## INPUT: a string
-## OUTPUT: a string, could be a new string
-## RULES
-### EXPLICIT REQUIREMENTS
+# UNDERSTAND THE PROBLEM 
+## INPUT: a string of "words", 
+## OUTPUT: a NEW string of "words", with the characters in different order
+## RULES:
+### EXPLICIT REQUIREMENTS:
   - the first and last characters remain in original place for each word
-  - characters between the first and last characters must be sorted alphabetically
-  - punctuation should remain at the same place as it started, for example: shan't -> sahn't
-  - for this kata puctuation is limited to 4 characters: hyphen(-), apostrophe('), comma(,) and period(.)
-### IMPLICIT REQUIREMENTS
+  - characters between the first and last characters must be sorted alphabetically BUT...
+  - a "word" is separated by whitespace, and nothing else
+  - special characters do not take the position of the non special characters, in other words
+  - punctuation is limited to "-", '``, ',' or '.'
+  - punctuation should remain at the same place as it started, in other words, at the same index position in the output string as in the input string
+  - ignore capitalisation, in other words, the method of transformation is not case sensitive
+### IMPLICIT REQUIREMENTS:
+  - the string of "words" may contain one or more "words" or be an empty string
+  - any punctuation at the beginning or end of the input string doesn't count as the first or last character to stay in place, but it stays in place in the same index order at the front or back of the string
+
+# NOTABLE TEST CASES
+p scramble_words('-dcba') == '-dbca' # first character is "d"
+p scramble_words('dcba.') == 'dbca.' # last character is "a"
+
+# DATA STRUCTURES
+Strings
+Perhaps an array of characters to build a substring that is sorted
 
 # EXAMPLES / TEST CASES
 p scramble_words('professionals') == 'paefilnoorsss' 
@@ -42,101 +54,143 @@ p scramble_words('dcba.') == 'dbca.'
 p scramble_words("you've gotta dance like there's nobody watching, love like you'll never be hurt, sing like there's nobody listening, and live like it's heaven on earth.") == "you've gotta dacne like teehr's nbdooy wachintg, love like ylo'ul neevr be hrut, sing like teehr's nbdooy leiinnstg, and live like it's haeevn on earth."
 
 
-# DATA STRUCTURES
-Strings
-An array of characters to sort and build new string
-
 # ALGORITHM
 
---- for EACH word
+# HIGH LEVEL
+1. RETURN the input string if it is 1 character or empty
+2. SPLIT the string into words
+  * 
+  + use String#split(' ')
+    - array_of_words = string.split(' ')
+3. OPERATE on each word
+  + see below
+  + create a helper method that takes a word from the array_of_words and returns a new 
+4. JOIN all the words together
+5. RETURN the joined string
 
-* CREATE an empty string to collect characters and later output
-    - output_minus_punctuation = ''
-* CREATE an empty array to collect middle characters
-    - middle_characters = []
-* SHOVEL on the first character of the input string to the output string
+# SUB-PROBLEM - SCRAMBLE each word
 
---- start loop
-* MOVE through the input string from second character to penultimate character
-  + use Integer#upto
-    - 2.upto(string.length - 2)
-* DETERMINE type of character
-  + check for alphabetic character
-  + use #match?
-    - char.match?(/[a-z]/)
-* ACT upon result of determination
-  + IF alphabetic character, SHOVEL onto array of middle characters
-  + ELSE, move on
---- end loop
-* SORT array of middle characters into alphabetic order
-  - middle_characters.sort
-  
---- start iteration
-* MOVE through the input string again from SECOND to PENULTIMATE but track index
-* TRANSFORM to an array of characters and track index
-* DETERMINE if each character is punctuation i.e. not alphabetic
-    char.match?(/[!a-z]/)
-* ACT upon the determination
-  + IF the character is punctuation, then INSERT it into the sorted middle characters array at that index
---- end iteration
+* CREATE a helper method for this sub problem
+* RETURN the input string if the string is empty or has 3 characters or fewer
+    - return input_word if input_word.length <= 3
+* CREATE an empty string for the method to return later
+    - output_word = ''
+* CREATE a switch local variable to switch once the first alphabetic
+* TRANSFORM the string into an array of characters
+    - input_word.chars
+* MOVE through the array of chars from the first character to the last
+  + use #each_index
+  + OR use an #upto iterator?
+* IDENTIFY the INDEX of the first alphabetic character in the word
+  + use a helper method
+  + use #each_with_index
+  + use IF with condition char.match?(/[a-z]/)
+    - array.each_with_index { |char, index| return index if char.match?(/[a-z]/) }
+  + IF alphabetic, assign the index to a local variable
+  + ELSE move on
+* IDENTIFY the INDEX of the last alphabetic character in the word
+  + use a helper method
+  + use #reverse_each and #with_index in a method chain
+  + use IF with condition char.match?(/[a-z]/)
+    - array.reverse_each.with_index { |char, index| return index if char.match?(/[a-z]/) }
+    
+## SUB-SUB PROBLEM - sort middle alphabetic characters ONLY and INSERT punctuation back in the middle string at the correct indices
 
-* SHOVEL on the first character of the input string to the output string
-* JOIN array of middle characters and then SHOVEL onto output string
-* SHOVEL last character of intput string onto output string
-* RETURN output string
+* IDENTIFY the middle characters in the string, start index and stop index
+  + start_index will be first character index + 1
+  + stop_index will be the last character index - 1
+
+* SORT middle alphabetic characters ONLY
 
 =end
+
 require 'pry'
 require 'pry-byebug'
 
+def get_first_alpha_char_index(array)
+  array.each_with_index { |char, index| return index if char.match?(/[a-z]/) }
+end
+
+def get_last_alpha_char_index(array)
+  index = array.size - 1
+  loop do
+    return index if array[index].match?(/[a-z]/)
+    index -= 1
+    break if index <= 0
+  end
+end
+
+def sort_middle(input_array) # input is an array, output is a string
+  alphabetic_only = []
+  input_array.each_with_index do |char, index|
+    if char.match?(/[a-z]/)
+      alphabetic_only << input_array[index]
+    end
+  end
+  
+  output_array = alphabetic_only.sort
+  
+  input_array.each_with_index do |char, index|
+    if char.match?(/[^a-z]/)
+      output_array.insert(index, char)
+    end
+  end
+  
+  output_array.join
+end
+
+def scramble_word(input_word)
+  return input_word if input_word.length <= 3
+  output_word = ''
+  array_of_chars = input_word.chars
+  
+  first_char_index = get_first_alpha_char_index(array_of_chars)
+  last_char_index = get_last_alpha_char_index(array_of_chars)
+  
+  middle_characters = array_of_chars[(first_char_index + 1)...last_char_index]
+  
+  sorted_middle_characters = sort_middle(middle_characters) 
+  
+  output_word << input_word[0..first_char_index]
+  output_word << sorted_middle_characters
+  output_word << input_word[last_char_index..-1]
+  output_word
+end
+
 def scramble_words(input_string)
-  output = ''
   return input_string if input_string.length <= 1
   
-  middle_characters = []
+  array_of_words = input_string.split
+  array_of_scrambled_words = []
   
-  1.upto(input_string.length - 2) do |index|
-    if input_string[index].match?(/[a-z]/)
-      middle_characters << input_string[index]
-    end
+  array_of_words.each do |word|
+    array_of_scrambled_words << scramble_word(word)
   end
   
-  sorted_middle_characters = middle_characters.sort
-  
-  # index = 1
-  # loop do 
-  #   if input_string[index].match?(/[^a-z]/)
-  #     sorted_middle_characters.insert(index, input_string[index])
-  #     # index += 1
-  #   end
-  #   p input_string[index]
-  #   index += 1
-  #   break if index == input_string.length - 1
-  # end
-  binding.pry
-  
-  1.upto(input_string.length - 2) do |index|
-    if input_string[index].match?(/[^a-z]/)
-      sorted_middle_characters.insert(index - 1, input_string[index])
-    end
-  end
-  
-  output << input_string[0]
-  output << sorted_middle_characters.join
-  output << input_string[-1]
-  output
+  array_of_scrambled_words.join(' ')
 end
+
+# individual method tests
+# p get_first_alpha_char_index(["a"]) == 0
+# p get_first_alpha_char_index([",", "-", "a"]) == 2
+
+# p get_last_alpha_char_index(["a"]) == 0
+# p get_last_alpha_char_index(["b,", "a", ",", "-"]) == 1
+# p get_last_alpha_char_index(["b,", "a", "c", "f"]) == 3
+# p get_last_alpha_char_index([",", "-"]) == nil
+
+# p sort_middle(["c", "b", "a"]) == "abc"
 
 # test cases
 
-# p scramble_words('professionals') == 'paefilnoorsss' 
-# p scramble_words('i') == 'i'
-# p scramble_words('') == ''
-# p scramble_words('me') == 'me'
-# p scramble_words('you') == 'you'
-# p scramble_words('card-carrying') == 'caac-dinrrryg' 
-# p scramble_words("shan't") == "sahn't"
-p scramble_words('-dcba') #== '-dbca'
-# p scramble_words('dcba.') #== 'dbca.'
+p scramble_words('professionals') == 'paefilnoorsss' 
+p scramble_words('i') == 'i'
+p scramble_words('') == ''
+p scramble_words('me') == 'me'
+p scramble_words('you') == 'you'
+p scramble_words('card-carrying') == 'caac-dinrrryg' 
+p scramble_words("shan't") == "sahn't"
+p scramble_words('-dcba') == '-dbca'
+p scramble_words('dcba.') == 'dbca.'
 
 p scramble_words("you've gotta dance like there's nobody watching, love like you'll never be hurt, sing like there's nobody listening, and live like it's heaven on earth.") == "you've gotta dacne like teehr's nbdooy wachintg, love like ylo'ul neevr be hrut, sing like teehr's nbdooy leiinnstg, and live like it's haeevn on earth."
