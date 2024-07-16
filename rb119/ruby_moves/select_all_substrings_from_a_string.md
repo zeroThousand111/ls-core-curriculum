@@ -198,16 +198,15 @@ string = "abcde"
   end
 end
 ```
+#### Using `Enumerable#each_cons`
 
-#### Using `Array#combination`
-
-This produces the same substrings but in a different order to the above snippets and uses a method chain of `String#chars.combination` passed an integer argument that is the current value of the block local variable `length`.
+This produces the same substrings but in a different order.  Instead of an incrementing `#each` iterator, I've used `#upto` to create an incrementing method local variable `length`, but the effect is the same.
 
 ```ruby
 string = "abcde"
 
-(1..string.length).each do |length|
-  string.chars.combination(length) do |combo|
+1.upto(string.length) do |length|
+  string.chars.each_cons(length) do |combo|
     p combo.join
   end
 end
