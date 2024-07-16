@@ -235,20 +235,17 @@ end
 
 pp array_of_subarrays
 ```
+#### Using `Enumerable#each_cons`
 
-#### Using `Array#combination`
+This uses an incrementing method local variable `length`  in an `#upto` method invocation to invoke the `#each_cons` method with an Integer argument that increases from 1 to the size of the array.  It produces the expected output, but the subarrays are ordered differently to the other methods above.
 
-This produces the same subarrays but in a different order to the above snippets and uses the method `Array#combination` passed an integer argument that is the current value of the block local variable `length`.
-
-```ruby 
+```ruby
 array = [0, 1, 2, 3, 4]
-array_of_subarrays = []
+collection = []
 
-(1..array.size).each do |length|
-  array.combination(length) do |combo|
-    array_of_subarrays << combo.join
+1.upto(array.size) do |length|
+  array.each_cons(length) do |subarray|
+    collection << subarray
   end
 end
-
-pp array_of_subarrays
 ```
