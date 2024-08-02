@@ -57,6 +57,18 @@ end
 pp create_tally_hash(string)
 ```
 
+#### Using `Enumerable#tally`
+
+I discovered this very useful and boutique ruby core library method a few weeks after working on the above DIY ones.  The string needs to be turned into an array of characters first.  Other than that, it's embarrassingly simple:
+
+```ruby
+string = "abbccc"
+
+pp string.chars.tally
+
+# that's it
+```
+
 ### Example 2 - An Array of Integers
 
 **Example collection:** `array = [1, 1, 1, 2, 2, 3]`
@@ -108,4 +120,15 @@ def create_tally_hash(array)
 end
 
 pp create_tally_hash(array)
+```
+#### Using `Enumerable#tally`
+
+As the previous example of using this method, it's rather simple.  In the case of an array of elements, even easier than with a string.  Just invoke `#tally`:
+
+```ruby
+array = [1, 1, 1, 2, 2, 3]
+
+pp array.tally
+
+# that's all folks!
 ```
