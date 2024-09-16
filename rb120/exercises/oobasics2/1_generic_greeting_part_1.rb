@@ -21,3 +21,5 @@ end
 
 Cat.generic_greeting
 
+kitty = Cat.new
+kitty.class.generic_greeting
