@@ -83,7 +83,7 @@ end
 
 class Score
   attr_accessor :human_score, :computer_score, :ties
-  
+
   def initialize
     @human_score = 0
     @computer_score = 0
@@ -111,7 +111,7 @@ class RPSGame
     puts "#{computer.name} chose #{computer.move}."
     puts ""
   end
-  
+
   def display_score
     puts ""
     puts "The current score is..."
@@ -120,20 +120,28 @@ class RPSGame
     puts "...and #{score.ties} tied rounds!"
   end
 
+  def human_wins_round
+    puts "#{human.name} won the round!"
+    score.human_score += 1
+  end
+
+  def computer_wins_round
+    puts "#{computer.name} won the round!"
+    score.computer_score += 1
+  end
+
   def display_round_winner
     if human.move > computer.move
-      puts "#{human.name} won the round!"
-      score.human_score += 1
+      human_wins_round
     elsif human.move < computer.move
-      puts "#{computer.name} won the round!"
-      score.computer_score += 1
+      computer_wins_round
     else
       puts "Its a tie!"
       score.ties += 1
     end
     display_score
   end
-  
+
   def display_match_winner
     if score.human_score == 10
       puts "Congratulations, #{human.name}, you won the match!"
@@ -160,14 +168,18 @@ class RPSGame
     false
   end
 
+  def play_one_round
+    human.choose
+    computer.choose
+    display_moves
+    display_round_winner
+  end
+
   def play # the orchestration engine
     display_welcome_message
     loop do
       loop do
-        human.choose
-        computer.choose
-        display_moves
-        display_round_winner
+        play_one_round
         break if score.human_score == 10 || score.computer_score == 10
       end
       display_match_winner
