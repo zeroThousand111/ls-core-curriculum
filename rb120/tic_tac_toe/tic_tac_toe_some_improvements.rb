@@ -174,7 +174,6 @@ class TTTGame
     system 'clear'
   end
   
-
   def reset
     board.reset
     clear
