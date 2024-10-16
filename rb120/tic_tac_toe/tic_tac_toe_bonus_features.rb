@@ -86,17 +86,73 @@ class Board
   end
   
   class Player
-    attr_reader :marker
+    attr_reader :marker, :name
   
-    def initialize(marker)
-      @marker = marker
+    def initialize(type)
+      @type = type
+      @name = create_name
+      @marker = choose_marker
+    end
+
+    private
+
+    def choose_human_marker
+        valid_choices = ['x', 'X', 'o', 'O']
+        loop do
+            puts "Choose if you want to be X or O"
+            choice = gets.chomp
+            marker_choice = choice.upcase
+            break if valid_choices.include?(marker_choice)
+            puts "That's not a valid choice."
+        end
+        marker_choice
+    end
+
+    def choose_computer_marker
+        if TTTGame::human.marker == 'X'
+            marker_choice = 'O'
+        elsif TTTGame::human.marker == 'O'
+            marker_choice = 'X'
+        end
+        marker_choice
+    end
+
+    def choose_marker
+        if type == 'human'
+            choice = choose_human_marker
+        elsif type == 'computer'
+            choice = choose_computer_marker
+        end
+        choice
+    end
+
+    def create_name
+        if type == 'human'
+          create_human_name
+        elsif type == 'computer'
+          create_computer_name
+        end
+    end
+
+    def create_human_name
+        human_name = nil
+        loop do
+          puts "Please enter your name:"
+          human_name = gets.chomp
+          break unless human_name.empty?
+        end
+        human_name.upcase
+    end
+
+    def create_computer_name
+      ["R2D2", "C3PO", "HAL-2000"].sample
     end
   end
   
   class TTTGame
-    HUMAN_MARKER = "X"
-    COMPUTER_MARKER = "O"
-    FIRST_TO_MOVE = HUMAN_MARKER
+    HUMAN_MARKER = nil
+    COMPUTER_MARKER = nil
+    FIRST_TO_MOVE = human
   
     attr_reader :board, :human, :computer
   
@@ -105,6 +161,8 @@ class Board
       @human = Player.new(HUMAN_MARKER)
       @computer = Player.new(COMPUTER_MARKER)
       @current_marker = FIRST_TO_MOVE
+      HUMAN_MARKER = player.marker
+      COMPUTER_MARKER = computer.marker
     end
   
     def play
@@ -154,7 +212,7 @@ class Board
     end
   
     def display_board
-      puts "You're a #{human.marker}. Computer is a #{computer.marker}."
+      puts "#{human.name}, you're a #{human.marker}. #{computer.name } (computer) is a #{computer.marker}."
       puts ""
       board.draw
       puts ""
@@ -166,7 +224,7 @@ class Board
       loop do
         square = gets.chomp.to_i
         break if board.unmarked_keys.include?(square)
-        puts "Sorry, that's not a valid choice."
+        puts "Sorry, #{human.name}, that's not a valid choice."
       end
   
       board[square] = human.marker
@@ -193,7 +251,7 @@ class Board
       when human.marker
         puts "You won!"
       when computer.marker
-        puts "Computer won!"
+        puts "#{computer.name} won!"
       else
         puts "It's a tie!"
       end
@@ -202,7 +260,7 @@ class Board
     def play_again?
       answer = nil
       loop do
-        puts "Would you like to play again? (y/n)"
+        puts "Would you like to play again, #{human.name}? (y/n)"
         answer = gets.chomp.downcase
         break if %w(y n).include? answer
         puts "Sorry, must be y or n"
@@ -222,7 +280,7 @@ class Board
     end
   
     def display_play_again_message
-      puts "Let's play again!"
+      puts "Let's play again, #{human.name}!"
       puts ""
     end
   end
