@@ -88,19 +88,20 @@ class Square
 end
 
 class Player
-  attr_reader :marker, :name
+  attr_reader :marker, :name, :player_type
 
-  def initialize(marker)
+  def initialize(marker, player_type)
     @marker = marker
+    @player_type = player_type
     @name = create_name
   end
 
   private
 
   def create_name
-      if marker == TTTGame::HUMAN_MARKER
+      if player_type == "human"
         create_human_name
-      elsif marker == TTTGame::COMPUTER_MARKER
+      elsif player_type == "computer"
         create_computer_name
       end
   end
@@ -121,17 +122,16 @@ class Player
 end
 
 class TTTGame
-  HUMAN_MARKER = "X"
-  COMPUTER_MARKER = "O"
-  FIRST_TO_MOVE = HUMAN_MARKER
 
-  attr_reader :board, :human, :computer
+  attr_reader :board, :human, :computer, :human_marker, :computer_marker
 
   def initialize
     @board = Board.new
-    @human = Player.new(HUMAN_MARKER)
-    @computer = Player.new(COMPUTER_MARKER)
-    @current_marker = FIRST_TO_MOVE
+    @human_marker = choose_human_marker
+    @computer_marker = assign_computer_marker
+    @human = Player.new(human_marker, "human")
+    @computer = Player.new(computer_marker, "computer")
+    @current_marker = human_marker
   end
 
   def play
@@ -142,6 +142,26 @@ class TTTGame
   end
 
   private
+
+  def choose_human_marker
+    valid_choices = ['X', 'x', 'O', 'o']
+    choice = nil
+    loop do
+      puts "Please choose your marker: X or O"
+      choice = gets.chomp
+      break if valid_choices.include?(choice)
+      puts "That's not a valid choice. Please choose x or o"
+    end
+    choice.upcase
+  end
+
+  def assign_computer_marker
+    if human_marker == 'X'
+      return 'O'
+    elsif human_marker == 'O'
+      return 'X'
+    end
+  end
 
   def display_welcome_message
     puts "Welcome to Tic Tac Toe!"
@@ -158,11 +178,11 @@ class TTTGame
   end
 
   def human_turn?
-    @current_marker == HUMAN_MARKER
+    @current_marker == human_marker
   end
 
   def display_board
-    puts "#{human.name}, you're a #{human.marker}. #{computer.name} (computer) is a #{computer.marker}."
+    puts "#{human.name}, you're a #{human_marker}. #{computer.name} (computer) is a #{computer_marker}."
     puts ""
     board.draw
     puts ""
@@ -195,10 +215,10 @@ class TTTGame
   def current_player_moves
     if human_turn?
       human_moves
-      @current_marker = COMPUTER_MARKER
+      @current_marker = computer_marker
     else
       computer_moves
-      @current_marker = HUMAN_MARKER
+      @current_marker = human_marker
     end
   end
 
@@ -244,7 +264,7 @@ class TTTGame
 
   def reset
     board.reset
-    @current_marker = FIRST_TO_MOVE
+    @current_marker = human_marker
     clear
   end
 
