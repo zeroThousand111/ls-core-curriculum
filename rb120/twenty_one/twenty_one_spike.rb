@@ -9,11 +9,13 @@ Here is an overview of the game:
 - If he busts, the player wins. If both player and dealer stays, then the highest total wins.
 - If both totals are equal, then it's a tie, and nobody wins.
 =end
+require 'pry'
+require 'pry-byebug'
 
 class Participant
     attr_accessor   :hand, :total, :busted
 
-    def initialize #(type_of_player)
+    def initialize
         @hand = []
         @total = 0
         @busted = false
@@ -35,7 +37,7 @@ class Participant
     end
 
     def adjust_total_for_aces(value_of_hand)
-        if @total > 21
+        if value_of_hand > 21
             aces_in_hand = count_aces_in_hand
             return value_of_hand - (10 * aces_in_hand)
         else
@@ -64,10 +66,6 @@ class Dealer < Participant
     def initialize
       super
     end
-
-    def display_one_card
-        "The dealer has the #{hand[0][0].upcase} of #{hand[0][1].upcase}, and an unknown card."
-    end
 end
 
 class Deck
@@ -95,20 +93,17 @@ end
 class Game
     attr_reader :deck, :player, :dealer
     def initialize
-        # create randomised deck
         @deck = Deck.new
-        # create player object
-        @player = Player.new #("player")
-        # create dealer object
-        @dealer = Dealer.new #("dealer")
+        @player = Player.new
+        @dealer = Dealer.new
     end
 
     def start
       deal_cards
       show_initial_cards
       player_turn
-    #   dealer_turn
-    #   show_result
+      dealer_turn
+      show_result
     end
  
     private
@@ -142,6 +137,28 @@ class Game
         choice
     end
 
+    def dealer_turn
+        loop do
+            dealer_hit if dealer.total < 17
+            dealer.calculate_total
+            break if dealer.total > 16 || dealer.total < 22
+        end
+
+        if dealer.busted
+            display_dealer_busted
+        else
+            display_dealer_stay
+        end
+    end
+
+    def determine_winner
+        if player.busted || dealer.busted
+            display_who_went_bust
+        else
+            display_who_scored_highest
+        end
+    end
+
     # deck methods
 
     def deal_cards
@@ -153,6 +170,10 @@ class Game
         player.hand << deck.deal
     end
 
+    def dealer_hit
+        dealer.hand << deck.deal
+    end
+
     # display methods
 
     def show_initial_cards
@@ -161,7 +182,7 @@ class Game
         player.calculate_total
         display_player_hand
         puts ""
-        display_dealer_hand
+        puts display_dealer_hand
     end
 
     def display_player_hand
@@ -181,7 +202,11 @@ class Game
     end
 
     def display_dealer_hand
-        puts dealer.display_one_card
+        if dealer.hand.size == 2
+            "The dealer has the #{dealer.hand[0][0].upcase} of #{dealer.hand[0][1].upcase}, and 1 unknown card."
+        elsif dealer.hand.size > 2
+            "The dealer has the #{dealer.hand[0][0].upcase} of #{dealer.hand[0][1].upcase}, and #{dealer.hand.size - 1} unknown cards."
+        end
     end
 
     def display_total
@@ -195,6 +220,42 @@ class Game
     def display_stay
         puts "You have decided to stay."
         display_player_hand
+    end
+
+    def display_dealer_busted
+        puts "The dealer went BUST!"
+    end
+
+    def display_dealer_stay
+        puts "The dealer has decided to stay with #{dealer.hand.size} cards in the hand."
+    end
+
+    def show_result
+        puts ""
+        puts "At the end of the match..."
+        puts "Player bust? #{player.busted}, Dealer bust? #{dealer.busted}"
+        puts "Player score: #{player.total}, Dealer score: #{dealer.total}"
+        determine_winner
+    end
+
+    def display_who_went_bust
+        if player.busted && dealer.busted
+            puts "Both players went BUST!"
+        elsif player.busted && !dealer.busted
+            puts "Player went bust, Dealer wins!"
+        elsif !player.busted && dealer.busted
+            puts "Dealer went bust, Player wins!"
+        end
+    end
+
+    def display_who_scored_highest
+        if player.total > dealer.total
+            puts "player scored higher than dealer, player wins"
+        elsif player.total < dealer.total
+            puts "dealer scored higher than player, dealer wins"
+        elsif player.total == dealer.total
+            puts "The scores are tied!"
+        end
     end
 
     def clear_screen
