@@ -1,16 +1,16 @@
 # rubocop:disable Layout LineLength
 =begin
- - display Dealer's cards at the end of the game regardless of outcome
- - utilise Player and Dealer classes
-  - could some display methods go in here?
+ X - display Dealer's cards at the end of the game regardless of outcome
+ X - utilise Player and Dealer classes
+  X - could some display methods go in here?
  X - add a new clear screen after hit or stay
- - introduce a new play again feature
- - introduce a @matches_won instance variable in Participant for Player and Dealer
+ X - introduce a new play again feature
+ X - introduce a @matches_won instance variable in Participant for Player and Dealer
  X -  create a Card class of object for each card with three instance variables: @face/name, @value and @suit
   X - generate a deck of 52 unique Card objects to collaborate with the Deck object
- - extend end of game messages
+ X - extend end of game messages
   - use a YAML file to offload some strings?
- -
+ - fix issue with dealer scoring less than 17 (is this an aces effect?)
 =end
 # rubocop:enable Layout LineLength
 
@@ -18,12 +18,19 @@ require 'pry'
 require 'pry-byebug'
 
 class Participant
-  attr_accessor :hand, :total, :busted
+  attr_accessor :hand, :total, :busted, :matches_won
 
   def initialize
     @hand = []
     @total = 0
     @busted = false
+    @matches_won = 0
+  end
+
+  def participant_reset
+    self.hand = []
+    self.total = 0
+    self.busted = false
   end
 
   def calculate_total
@@ -33,6 +40,16 @@ class Participant
     end
     @total = adjust_total_for_aces(value_of_hand)
     change_busted_status?
+  end
+
+  def hit(current_deck)
+    self.hand << current_deck.deal
+  end
+
+  def display_whole_hand
+    self.hand.each do |card|
+      puts "#{card.face.upcase} of #{card.suit.capitalize}"
+    end
   end
 
   private
@@ -61,9 +78,52 @@ class Participant
 end
 
 class Player < Participant
+  def display_whole_hand
+    puts ""
+    puts "Your hand is:"
+    puts ""
+    super
+  end
+
+  def display_total
+    puts ""
+    puts "The total value of your cards is #{self.total}"
+  end
 end
 
 class Dealer < Participant
+  def display_whole_hand
+    puts ""
+    puts "The dealer's hand is:"
+    puts ""
+    super
+  end
+
+  def display_some_of_hand
+    if self.hand.size == 2
+      display_hand_two_cards
+    elsif self.hand.size > 2
+      display_hand_three_or_more_cards
+    end
+  end
+
+  def display_total
+    "The total value of the dealer's cards is #{self.total}"
+  end
+
+  private
+
+  def display_hand_two_cards
+    puts "The dealer has the " \
+      "#{self.hand[0].face.upcase} of #{self.hand[0].suit.upcase}, " \
+      "and 1 unknown card."
+  end
+
+  def display_hand_three_or_more_cards
+    puts "The dealer has the " \
+      "#{self.hand[0].face.upcase} of #{self.hand[0].suit.upcase}, " \
+      "and #{self.hand.size - 1} unknown cards."
+  end
 end
 
 class Deck
@@ -131,6 +191,17 @@ class Game
   end
 
   def start
+    display_welcome_message
+    any_key_to_begin = gets.chomp
+    loop do
+      one_game
+      break unless play_again?
+    end
+    puts "Thanks for playing Twenty One!  Goodbye!"
+  end
+
+  def one_game
+    reset_game
     deal_cards
     show_initial_cards
     player_turn
@@ -148,17 +219,28 @@ class Game
       choice = player_choice
       if choice == 'h' # deliberate separation of doing and displaying methods
         player_hit
-        clear_screen
-        display_player_hand
       elsif choice == 's'
-        clear_screen
-        display_stay
+        player_stay
       end
       break if choice == 's' || player.busted
     end
     display_busted if player.busted
   end
   # rubocop:enable Metrics/MethodLength
+
+  def player_hit
+    clear_screen
+    puts "You've chosen to hit!"
+    player.hit(deck)
+    player.display_whole_hand
+    player.calculate_total
+    player.display_total
+  end
+
+  def player_stay
+    clear_screen
+    display_stay
+  end
 
   def player_choice
     valid_choices = ['h', 's']
@@ -175,14 +257,26 @@ class Game
   end
 
   def dealer_turn
-    dealer.calculate_total
     loop do
-      dealer_hit if dealer.total < 17
       dealer.calculate_total
-      break if dealer.total > 16 || dealer.total < 22
+      dealer_hit unless dealer.total > 16
+      dealer.calculate_total
+      break if dealer.total > 16
     end
 
     display_dealer_turn
+  end
+
+  def dealer_hit
+    puts ""
+    puts "The dealer has decided to hit..."
+    dealer.hit(deck)
+    dealer.calculate_total
+  end
+
+  def reset_game
+    player.participant_reset
+    dealer.participant_reset
   end
 
   def determine_winner
@@ -193,6 +287,22 @@ class Game
     end
   end
 
+  def play_again?
+    valid_choices = ['y', 'n']
+    choice = nil
+    loop do
+      puts "Would you like to play again?  (y or n)"
+      choice = gets.chomp.downcase
+      break if valid_choices.include?(choice)
+
+      puts "That's not a valid choice."
+    end
+
+    return true if choice == 'y'
+
+    false
+  end
+
   # deck methods
 
   def deal_cards
@@ -200,59 +310,33 @@ class Game
     dealer.hand << deck.deal << deck.deal
   end
 
-  def player_hit
-    player.hand << deck.deal
-  end
-
-  def dealer_hit
-    dealer.hand << deck.deal
-  end
-
   # display methods
+
+  def display_welcome_message
+    clear_screen
+    puts "Welcome to Twenty One!"
+    puts ""
+    puts "Press the RETURN key to continue..."
+  end
 
   def show_initial_cards
     clear_screen
     puts "You have been dealt two cards from the deck."
     player.calculate_total
-    display_player_hand
+    player.display_whole_hand
+    player.display_total
     puts ""
-    puts display_dealer_hand
+    dealer.display_some_of_hand
   end
 
   def display_player_hand
     puts ""
     puts "Your hand is:"
     puts ""
-    display_all_cards
+    player.display_whole_hand
     puts ""
     player.calculate_total
-    puts display_total
-  end
-
-  def display_all_cards
-    player.hand.each do |card|
-      puts "#{card.face.upcase} of #{card.suit.capitalize}"
-    end
-  end
-
-  def display_dealer_hand
-    if dealer.hand.size == 2
-      display_dealer_hand_two_cards
-    elsif dealer.hand.size > 2
-      display_dealer_hand_three_or_more_cards
-    end
-  end
-
-  def display_dealer_hand_two_cards
-    "The dealer has the " \
-      "#{dealer.hand[0].face.upcase} of #{dealer.hand[0].suit.upcase}, " \
-      "and 1 unknown card."
-  end
-
-  def display_dealer_hand_three_or_more_cards
-    "The dealer has the " \
-      "#{dealer.hand[0].face.upcase} of #{dealer.hand[0].suit.upcase}, " \
-      "and #{dealer.hand.size - 1} unknown cards."
+    player.display_total
   end
 
   def display_dealer_turn
@@ -263,10 +347,6 @@ class Game
     end
   end
 
-  def display_total
-    "The total value of your cards is #{player.total}"
-  end
-
   def display_busted
     puts ""
     puts "Your total is #{player.total} and so you are BUST!"
@@ -275,7 +355,7 @@ class Game
 
   def display_stay
     puts "You have decided to stay."
-    display_player_hand
+    player.display_whole_hand
   end
 
   def display_dealer_busted
@@ -283,34 +363,42 @@ class Game
   end
 
   def display_dealer_stay
+    puts ""
     puts "The dealer has decided to stay."
     puts "The dealer has #{dealer.hand.size} cards in their hand."
   end
 
   def show_result
+    # clear_screen
     puts ""
-    puts "At the end of the match..."
-    puts display_dealer_hand
+    puts "At the end of that round..."
+    dealer.display_whole_hand
+    player.display_whole_hand
     display_final_totals
     determine_winner
+    display_matches_won
   end
 
   # rubocop:disable Metrics/AbcSize
   def display_who_went_bust
     if player.busted && dealer.busted
-      puts "Both player and dealer went BUST!"
+      puts "Both you and the dealer went BUST!"
     elsif player.busted && !dealer.busted
-      puts "Player went bust.  Dealer wins!"
+      puts "You went bust.  Dealer wins!"
+      dealer.matches_won += 1
     elsif !player.busted && dealer.busted
-      puts "Dealer went bust.  Player wins!"
+      puts "Dealer went bust.  You win!"
+      player.matches_won += 1
     end
   end
 
   def display_who_scored_highest
     if player.total > dealer.total
-      puts "Player scored higher than dealer; PLAYER wins!"
+      puts "You scored higher than the dealer; YOU win!"
+      player.matches_won += 1
     elsif player.total < dealer.total
-      puts "Dealer scored higher than player; DEALER wins!"
+      puts "The Dealer scored higher than you; DEALER wins!"
+      dealer.matches_won += 1
     elsif player.total == dealer.total
       puts "The scores are tied!"
     end
@@ -319,8 +407,14 @@ class Game
 
   def display_final_totals
     puts ""
-    puts "Player scored #{player.total}. Dealer scored #{dealer.total}."
+    puts "Your total is #{player.total}. The dealer's total is #{dealer.total}."
     puts ""
+  end
+
+  def display_matches_won
+    puts ""
+    puts "You have won #{player.matches_won} matches."
+    puts "The Dealer has won #{dealer.matches_won} matches."
   end
 
   def clear_screen
@@ -329,8 +423,3 @@ class Game
 end
 
 Game.new.start
-
-# six_of_hearts = Card.new("six", "hearts", 6)
-# puts six_of_hearts
-# deck = Deck.new
-# puts deck.deal
