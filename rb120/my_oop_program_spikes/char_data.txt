@@ -1,0 +1,2 @@
+2024-10-24 16:54:47 +0100 - User logged in
+#<Character:0x00000001091fec80>

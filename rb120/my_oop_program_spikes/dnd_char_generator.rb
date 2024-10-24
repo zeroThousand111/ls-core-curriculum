@@ -151,7 +151,7 @@ class Character
     @attributes = Attributes.new(race)
   end
 
-  def display
+  def to_s
     puts ""
     puts "The attributes of your #{race} character are:"
     puts ""
@@ -160,6 +160,8 @@ class Character
 end
 
 class Creation
+  attr_reader :my_character
+
   # rubocop:disable Metrics/MethodLength
   def reroll?
     valid_choices = ['y', 'n']
@@ -188,15 +190,26 @@ class Creation
     puts "Thanks for using DnD 5e Character Generator.  Goodbye!"
   end
 
+  def write_char_data
+    file = File.open("char_data.txt", "w") { |f| f.write "#{Time.now} - User logged in\n" }
+    File.write("char_data.txt", my_character, mode: "a")
+  end
+
   def initialize
     hello_message
+    @my_character = nil
     loop do
-      my_character = Character.new
+      @my_character = Character.new
       system "clear"
       my_character.display
       break unless reroll?
     end
+    write_char_data
     goodbye_message
+  end
+
+  def to_s
+    my_character.to_s
   end
 end
 
