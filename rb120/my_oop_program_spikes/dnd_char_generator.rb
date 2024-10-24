@@ -27,7 +27,7 @@ class Race
   def initialize
     @race = choose_race
   end
-  
+
   def to_s
     race.upcase
   end
@@ -49,7 +49,7 @@ class Attributes
   def halfling_modifiers
     self.dexterity += 2
   end
-  
+
   def dragonborn_modifiers
     self.strength += 2
     self.charisma += 1
@@ -60,18 +60,18 @@ class Attributes
   end
 
   def half_elf_modifiers
-    self.dexterity 
-    self.charisma 
+    self.dexterity
+    self.charisma
   end
 
   def dwarf_modifiers
     self.constitution += 2
   end
-  
+
   def gnome_modifiers
     self.intelligence += 2
   end
-  
+
   def half_orc_modifiers
     self.strength += 2
     self.constitution += 1
@@ -82,6 +82,8 @@ class Attributes
     self.charisma += 2
   end
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
   def racial_modifiers(race)
     case race
     when 'human'
@@ -104,6 +106,8 @@ class Attributes
       tiefling_modifiers
     end
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   def generate_attributes
     @strength = roll4d6
@@ -156,10 +160,12 @@ class Character
 end
 
 class Creation
+  # rubocop:disable Metrics/MethodLength
   def reroll?
     valid_choices = ['y', 'n']
     answer = ''
     loop do
+      puts ""
       puts "Do you want to re-roll new attributes? (y or n)"
       answer = gets.chomp.downcase
       break if valid_choices.include?(answer)
@@ -168,6 +174,7 @@ class Creation
     return true if answer == 'y'
     false
   end
+  # rubocop:enable Metrics/MethodLength
 
   def hello_message
     puts "Welcome to DnD 5e Character Generator!"
@@ -185,6 +192,7 @@ class Creation
     hello_message
     loop do
       my_character = Character.new
+      system "clear"
       my_character.display
       break unless reroll?
     end
