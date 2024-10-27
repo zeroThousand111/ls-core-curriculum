@@ -59,11 +59,13 @@ class CircularBuffer
   def put(new_element)
     empty_position = find_first_empty_space
 
-    if empty_position # if buffer is NOT full, i.e. empty_position is an Integer and not nil
+    if empty_position 
+    # if buffer is NOT full, i.e. return from empty_position is an Integer and not nil
       buffer[empty_position] = new_element
       entry_order << new_element
-    else # if buffer IS full, i.e. return from find_empty_space is falsy (nil) need to remove an element first
-      removed_object = buffer(find_and_remove_oldest_element_from_entry_order)
+    else 
+    # if buffer IS full, i.e. return from find_empty_space is falsy (nil) need to remove an element first
+      removed_object = find_and_remove_oldest_element_from_entry_order
       buffer[buffer.index(removed_object)] = new_element
       entry_order << new_element
     end
@@ -87,9 +89,7 @@ class CircularBuffer
   def find_first_empty_space # returns first empty space or nil if buffer full
     empty_index = nil
     buffer.each_with_index do |element, index|
-      # binding.pry
       if element.nil?
-        # puts "I've found a nil!"
         empty_index = index
         break
       end
@@ -104,25 +104,25 @@ end
 
 # My tests with additional output
 
-buffer = CircularBuffer.new(3)
-puts buffer.get == nil
-p buffer
+# buffer = CircularBuffer.new(3)
+# puts buffer.get == nil
+# p buffer
 
-buffer.put(1)
-p buffer
-buffer.put(2)
-p buffer
-puts buffer.get == 1
-p buffer
+# buffer.put(1)
+# p buffer
+# buffer.put(2)
+# p buffer
+# puts buffer.get == 1
+# p buffer
 
-buffer.put(3)
-p buffer
-buffer.put(4)
-puts buffer.get == 2
+# buffer.put(3)
+# p buffer
+# buffer.put(4)
+# puts buffer.get == 2
 
-buffer.put(5)
-p buffer
-buffer.put(6) # issue here with adding new element when buffer is full
+# buffer.put(5)
+# p buffer
+# buffer.put(6)
 
 # buffer.put(7)
 # puts buffer.get == 5
@@ -151,3 +151,42 @@ buffer.put(6) # issue here with adding new element when buffer is full
 # puts buffer.get == nil
 
 # Tests to ensure circular buffer class working as intended:
+
+buffer = CircularBuffer.new(3)
+puts buffer.get == nil
+
+buffer.put(1)
+buffer.put(2)
+puts buffer.get == 1
+
+buffer.put(3)
+buffer.put(4)
+puts buffer.get == 2
+
+buffer.put(5)
+buffer.put(6)
+buffer.put(7)
+puts buffer.get == 5
+puts buffer.get == 6
+puts buffer.get == 7
+puts buffer.get == nil
+
+buffer = CircularBuffer.new(4)
+puts buffer.get == nil
+
+buffer.put(1)
+buffer.put(2)
+puts buffer.get == 1
+
+buffer.put(3)
+buffer.put(4)
+puts buffer.get == 2
+
+buffer.put(5)
+buffer.put(6)
+buffer.put(7)
+puts buffer.get == 4
+puts buffer.get == 5
+puts buffer.get == 6
+puts buffer.get == 7
+puts buffer.get == nil
