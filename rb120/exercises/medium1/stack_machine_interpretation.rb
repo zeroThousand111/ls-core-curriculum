@@ -119,14 +119,12 @@ require 'pry-byebug'
 class UnrecognisedInstructionError < StandardError
   def initialize(substring)
     puts "Invalid token: #{substring}"
-    abort # or exit
   end
 end
 
 class EmptyStackError < StandardError
   def initialize
     puts "Empty stack!"
-    abort # or exit
   end
 end
 
@@ -141,20 +139,22 @@ class Minilang
   end
 
   def eval
-    instructions.each do |substring|
-      # binding.pry
-      if substring =~ /\A[-+]?\d+\z/
-        add_number_to_register(substring)
-      else
-        perform_instruction(substring)
+    begin
+      instructions.each do |substring|
+        if substring =~ /\A[-+]?\d+\z/ # regex taken from hint
+          add_number_to_register(substring)
+        else
+          perform_instruction(substring)
+        end
       end
+    rescue UnrecognisedInstructionError, EmptyStackError
+      return
     end
   end
 
   private
 
   def perform_instruction(substring)
-    # binding.pry
     case substring
     when 'PRINT' then puts register
     when 'POP'   then pop
@@ -164,7 +164,7 @@ class Minilang
     when 'MULT'  then self.register *= stack.pop.to_i
     when 'DIV'   then self.register /= stack.pop.to_i
     when 'MOD'   then self.register = register % stack.pop.to_i
-    when 'STACK' then p stack # my custom output branch of the case statement
+    when 'STACK' then p stack # my custom stack machine instruction for outputting the content of the stack as an array
     else 
       raise UnrecognisedInstructionError.new(substring)
     end
@@ -175,7 +175,7 @@ class Minilang
   end
 
   def pop
-    raise EmptyStackError.new unless !stack.empty?
+    raise EmptyStackError.new if stack.empty?
     self.register = stack.pop
   end
 
@@ -198,9 +198,14 @@ Minilang.new('5 PUSH 10 PRINT POP PRINT').eval
 # 10
 # 5
 
-Minilang.new('5 PUSH POP POP PRINT').eval # I don't want PRINT to work here and I want a custom exception to print a message and stop execution. But I need code below to continue to work not the whole program to stop!
-
+Minilang.new('5 PUSH POP POP PRINT').eval 
 # Empty stack!
+
+=begin
+SHOULD NOT PRINT 5; SHOULD STOP EXECUTING INSTRUCTIONS AT SECOND POP
+
+I don't want PRINT to work here and I want a custom exception to print a message and stop execution. I tried `exit` and `abort` keywords, but they both completely stop the execution of all the code below the instantation that raised the exception.  The answer is to use `return` in the `rescue` section to handle the raised exception and stop the remainder of the `#each` method execution.
+=end
 
 Minilang.new('3 PUSH PUSH 7 DIV MULT PRINT ').eval
 # 6
@@ -208,8 +213,13 @@ Minilang.new('3 PUSH PUSH 7 DIV MULT PRINT ').eval
 Minilang.new('4 PUSH PUSH 7 MOD MULT PRINT ').eval
 # 12
 
-# Minilang.new('-3 PUSH 5 XSUB PRINT').eval # this will require a different custom exception class to be created
+Minilang.new('-3 PUSH 5 XSUB PRINT').eval
 # Invalid token: XSUB
+
+=begin
+SHOULD NOT PRINT 5; SHOULD STOP EXECUTING INSTRUCTIONS after XSUB
+this will require a different custom exception class to be created.  As above, `return` will stop execution of `#each` and the subsequent stack machine instructions being processed.
+=end
 
 Minilang.new('-3 PUSH 5 SUB PRINT').eval
 # 8
