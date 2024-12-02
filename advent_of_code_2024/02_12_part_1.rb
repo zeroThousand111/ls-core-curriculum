@@ -34,10 +34,10 @@ Each line has 6-8 integers
 ### TERMINOLOGY USED BY THE QUESTION
   - A "report" is one line of integers;
   - "Levels" are the integer values on each line;
-  - "Safe" means the line of integers passes the two tests set, "unsafe" means that line doesn't
-  - The tests are based on the attributes of the lines of integers
-    1 - that each integer is of lower value than the previous, reading left to right
-    2 - that the difference in value between the integers is no more than 3
+  - "Safe" means the line of integers passes the two tests set, "unsafe" means that line doesn't;
+  - The tests are based on the attributes of the lines of integers:
+    1 - that each integer is of lower value than the previous, reading left to right OR that each each integer is of higher value than the previous
+    2 - that the difference in value between the integers is at least one and no more than 3
 
 ## OUTPUT
 
@@ -64,32 +64,46 @@ So, in this example, 2 reports are safe.
 How do I want to structure the 
 
 # ALGORITHM
+- INITIALISE a count variable with the value 0
 - Move through each line of integers from first to last
   - use #each_line
-- IF all the Integers are descending in value AND the difference between
-  
+- increment the count value for each report IF all the Integers are descending in value or ascending in value AND the difference between each integer is not more than 3
+
 
 =end
+require 'pry'
+require 'pry-byebug'
 
-# read txt file 
+# combined method to return true if levels are all ascending or all descending
+
+def safe_change?(array)
+  array == array.sort.reverse || array == array.sort
+end
+
+# method to check that the difference between levels isn't more than three
+
+def safe_difference?(array)
+  1.upto(array.length - 1) do |index|
+    difference = (array[index] - array[index - 1]).abs
+    return false if difference < 1 || difference > 3
+  end
+  true
+end
+
+# read txt file line by line and transform each line into an array of Integers
+# increment `safe_reports` by 1 if each report passes two tests
 
 safe_reports = 0
 
 input = File.open("02_12_input.txt")
 input.each_line do |report|
-  if levels_decreasing?(report) && safe_difference?(report)
+  array = report.split(" ").map(&:to_i)
+  if safe_change?(array) && safe_difference?(array)
     safe_reports += 1
   end
+  # binding.pry
 end
 
-# method to check that all levels are decreasing
+# output total of safe reports
 
-def levels_decreasing?(report)
-  
-end
-
-# method to check that the difference between levels isn't more than three
-
-def safe_difference?(report)
-  
-end
+puts safe_reports # should be less than 1000 total reports 560 is too high
