@@ -9,15 +9,15 @@ class AnimateObject
   end
 
   def choose_name
-    name_choice = nil
-    loop do 
+    # name_choice = nil
+    # loop do
       puts "Please write the #{self.class} name:"
       name_choice = gets.chomp
       # puts "You've chosen #{name_choice.upcase} as the name of the #{self.class}, is that correct? (Y/N)"
       # validation = gets.chomp
       # break if validation.downcase == "y"
-      break
-    end
+      # break
+    # end
     name_choice
   end
 
@@ -96,9 +96,7 @@ class Player < AnimateObject
 end
 
 class Monster < AnimateObject
-  def initialize
-    super
-  end
+
 end
 
 class Fight
@@ -152,7 +150,7 @@ class Fight
     if monster.endurance <= 0 && player.endurance > 0 # monster dies
       puts "#{player.name.upcase}, you are victorious!"
     elsif monster.endurance > 0 && player.endurance <= 0 # player dies
-      puts "Unfortunately, #{player.name.upcase}, your quest ends here." 
+      puts "Unfortunately, #{player.name.upcase}, your quest ends here."
     elsif monster.endurance <= 0 && player.endurance <=0 # both die
       puts "Well that's a turn up!"
       puts "Both #{player.name.upcase} and #{monster.name.upcase} have died!"
