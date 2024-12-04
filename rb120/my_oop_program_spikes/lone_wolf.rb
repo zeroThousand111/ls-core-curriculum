@@ -170,9 +170,97 @@ class Fight
     when -4..-3
     when -2..-1
     when 0
+      case random_number
+      when 1
+        damage = 3
+      when 2
+        damage = 4
+      when 3
+        damage = 5
+      when 4
+        damage = 6
+      when 5
+        damage = 7
+      when 6
+        damage = 8
+      when 7
+        damage = 9
+      when 8
+        damage = 10
+      when 9
+        damage = 11
+      when 0
+        damage = 11
+      end
     when 1..2
+      case random_number
+      when 1
+        damage = 4
+      when 2
+        damage = 5
+      when 3
+        damage = 6
+      when 4
+        damage = 7
+      when 5
+        damage = 8
+      when 6
+        damage = 9
+      when 7
+        damage = 10
+      when 8
+        damage = 11
+      when 9
+        damage = 12
+      when 0
+        damage = 12
+      end
     when 3..4
+      case random_number
+      when 1
+        damage = 5
+      when 2
+        damage = 6
+      when 3
+        damage = 7
+      when 4
+        damage = 8
+      when 5
+        damage = 9
+      when 6
+        damage = 10
+      when 7
+        damage = 11
+      when 8
+        damage = 12
+      when 9
+        damage = 14
+      when 0
+        damage = 14
+      end
     when 5..6
+      case random_number
+      when 1
+        damage = 6
+      when 2
+        damage = 7
+      when 3
+        damage = 8
+      when 4
+        damage = 9
+      when 5
+        damage = 10
+      when 6
+        damage = 11
+      when 7
+        damage = 12
+      when 8
+        damage = 14
+      when 9
+        damage = 16
+      when 0
+        damage = 16
+      end
     when 7..8
       case random_number
       when 1
@@ -197,7 +285,51 @@ class Fight
         damage = 18
       end
     when 9..10
+      case random_number
+      when 1
+        damage = 8
+      when 2
+        damage = 9
+      when 3
+        damage = 10
+      when 4
+        damage = 11
+      when 5
+        damage = 12
+      when 6
+        damage = 14
+      when 7
+        damage = 16
+      when 8
+        damage = 18
+      when 9
+        damage = 1000
+      when 0
+        damage = 1000
+      end
     when 11..100
+      case random_number
+      when 1
+        damage = 9
+      when 2
+        damage = 10
+      when 3
+        damage = 11
+      when 4
+        damage = 12
+      when 5
+        damage = 14
+      when 6
+        damage = 16
+      when 7
+        damage = 18
+      when 8
+        damage = 1000
+      when 9
+        damage = 1000
+      when 0
+        damage = 1000
+      end
     end
     damage
   end
@@ -211,9 +343,97 @@ class Fight
     when -4..-3
     when -2..-1
     when 0
+      case random_number
+      when 1
+        damage = 5
+      when 2
+        damage = 4
+      when 3
+        damage = 4
+      when 4
+        damage = 3
+      when 5
+        damage = 2
+      when 6
+        damage = 2
+      when 7
+        damage = 1
+      when 8
+        damage = 0
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     when 1..2
+      case random_number
+      when 1
+        damage = 5
+      when 2
+        damage = 4
+      when 3
+        damage = 3
+      when 4
+        damage = 3
+      when 5
+        damage = 2
+      when 6
+        damage = 2
+      when 7
+        damage = 1
+      when 8
+        damage = 0
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     when 3..4
+      case random_number
+      when 1
+        damage = 4
+      when 2
+        damage = 3
+      when 3
+        damage = 3
+      when 4
+        damage = 2
+      when 5
+        damage = 2
+      when 6
+        damage = 2
+      when 7
+        damage = 1
+      when 8
+        damage = 0
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     when 5..6
+      case random_number
+      when 1
+        damage = 4
+      when 2
+        damage = 3
+      when 3
+        damage = 3
+      when 4
+        damage = 2
+      when 5
+        damage = 2
+      when 6
+        damage = 1
+      when 7
+        damage = 0
+      when 8
+        damage = 0
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     when 7..8
       case random_number
       when 1
@@ -238,7 +458,51 @@ class Fight
         damage = 0
       end
     when 9..10
+      case random_number
+      when 1
+        damage = 3
+      when 2
+        damage = 3
+      when 3
+        damage = 2
+      when 4
+        damage = 2
+      when 5
+        damage = 2
+      when 6
+        damage = 1
+      when 7
+        damage = 0
+      when 8
+        damage = 0
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     when 11..100
+      case random_number
+      when 1
+        damage = 3
+      when 2
+        damage = 2
+      when 3
+        damage = 2
+      when 4
+        damage = 2
+      when 5
+        damage = 1
+      when 6
+        damage = 1
+      when 7
+        damage = 0
+      when 8
+        damage = 0
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     end
     damage
   end
