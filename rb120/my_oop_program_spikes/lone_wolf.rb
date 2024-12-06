@@ -9,15 +9,14 @@ class AnimateObject
   end
 
   def choose_name
-    # name_choice = nil
-    # loop do
+    name_choice = nil
+    loop do
       puts "Please write the #{self.class} name:"
       name_choice = gets.chomp
-      # puts "You've chosen #{name_choice.upcase} as the name of the #{self.class}, is that correct? (Y/N)"
-      # validation = gets.chomp
-      # break if validation.downcase == "y"
-      # break
-    # end
+      puts "You've chosen #{name_choice.upcase}, is that correct? (Y/N)"
+      validation = gets.chomp
+      break if validation.downcase == "y"
+    end
     name_choice
   end
 
@@ -63,10 +62,10 @@ class AnimateObject
   end
 end
 
+# rubocop:disable Metrics/MethodLength
 class Player < AnimateObject
   def initialize
     valid_choices = ["y", "n"]
-
     stats_already = nil
     loop do
       puts "Do you already have stats for your player? (Y/N)"
@@ -78,32 +77,36 @@ class Player < AnimateObject
     if stats_already == "y"
       super
     else
-      @name = choose_name
-      @combat_skill = randomise_skill
-      @endurance = randomise_endurance
+      initialize_with_random_stats
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
   def randomise_skill
-    rand(0..9) + 10
+    rand(11..20)
   end
 
   def randomise_endurance
-    rand(0..9) + 20
+    rand(21..30)
   end
 end
 
-class Monster < AnimateObject
-
+def initialize_with_random_stats
+  @name = choose_name
+  @combat_skill = randomise_skill
+  @endurance = randomise_endurance
 end
+
+class Monster < AnimateObject; end
 
 class Fight
   attr_reader :combat_ratio
 
   @@rounds = 0
 
+  # rubocop:disable Metrics/MethodLength
   def initialize # the orchestration method
     monster = Monster.new
     player = Player.new
@@ -118,6 +121,7 @@ class Fight
     end
     determine_winner(monster, player)
   end
+  # rubocop:enable Metrics/MethodLength
 
   def display_all_stats(monster, player)
     monster.display_stats
@@ -147,28 +151,171 @@ class Fight
     puts ""
     puts "After #{@@rounds} rounds..."
     display_endurances_both(monster, player)
+    display_winner(monster, player)
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  def display_winner(monster, player)
     if monster.endurance <= 0 && player.endurance > 0 # monster dies
       puts "#{player.name.upcase}, you are victorious!"
     elsif monster.endurance > 0 && player.endurance <= 0 # player dies
       puts "Unfortunately, #{player.name.upcase}, your quest ends here."
-    elsif monster.endurance <= 0 && player.endurance <=0 # both die
+    elsif monster.endurance <= 0 && player.endurance <= 0 # both die
       puts "Well that's a turn up!"
       puts "Both #{player.name.upcase} and #{monster.name.upcase} have died!"
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
-  # damage calculations only present for combat ratio of 8
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Lint/DuplicateBranch
 
   def calculate_monster_damage(random_number)
     damage = 0
     case combat_ratio
+    when -100..-11
+      case random_number
+      when 1
+        damage = 0
+      when 2
+        damage = 0
+      when 3
+        damage = 0
+      when 4
+        damage = 0
+      when 5
+        damage = 1
+      when 6
+        damage = 2
+      when 7
+        damage = 3
+      when 8
+        damage = 4
+      when 9
+        damage = 5
+      when 0
+        damage = 5
+      end
     when -10..-9
+      case random_number
+      when 1
+        damage = 0
+      when 2
+        damage = 0
+      when 3
+        damage = 0
+      when 4
+        damage = 1
+      when 5
+        damage = 2
+      when 6
+        damage = 3
+      when 7
+        damage = 4
+      when 8
+        damage = 5
+      when 9
+        damage = 6
+      when 0
+        damage = 6
+      end
     when -8..-7
+      case random_number
+      when 1
+        damage = 0
+      when 2
+        damage = 0
+      when 3
+        damage = 1
+      when 4
+        damage = 2
+      when 5
+        damage = 3
+      when 6
+        damage = 4
+      when 7
+        damage = 5
+      when 8
+        damage = 6
+      when 9
+        damage = 7
+      when 0
+        damage = 7
+      end
     when -6..-5
+      case random_number
+      when 1
+        damage = 0
+      when 2
+        damage = 1
+      when 3
+        damage = 2
+      when 4
+        damage = 3
+      when 5
+        damage = 4
+      when 6
+        damage = 5
+      when 7
+        damage = 6
+      when 8
+        damage = 7
+      when 9
+        damage = 8
+      when 0
+        damage = 8
+      end
     when -4..-3
+      case random_number
+      when 1
+        damage = 1
+      when 2
+        damage = 2
+      when 3
+        damage = 3
+      when 4
+        damage = 4
+      when 5
+        damage = 5
+      when 6
+        damage = 6
+      when 7
+        damage = 7
+      when 8
+        damage = 8
+      when 9
+        damage = 9
+      when 0
+        damage = 9
+      end
     when -2..-1
+      case random_number
+      when 1
+        damage = 2
+      when 2
+        damage = 3
+      when 3
+        damage = 4
+      when 4
+        damage = 5
+      when 5
+        damage = 6
+      when 6
+        damage = 7
+      when 7
+        damage = 8
+      when 8
+        damage = 9
+      when 9
+        damage = 10
+      when 0
+        damage = 10
+      end
     when 0
       case random_number
       when 1
@@ -337,11 +484,144 @@ class Fight
   def calculate_player_damage(random_number)
     damage = 0
     case combat_ratio
+    when -100..-11
+      case random_number
+      when 1
+        damage = 1000
+      when 2
+        damage = 1000
+      when 3
+        damage = 8
+      when 4
+        damage = 8
+      when 5
+        damage = 7
+      when 6
+        damage = 6
+      when 7
+        damage = 5
+      when 8
+        damage = 4
+      when 9
+        damage = 3
+      when 0
+        damage = 0
+      end
     when -10..-9
+      case random_number
+      when 1
+        damage = 100
+      when 2
+        damage = 8
+      when 3
+        damage = 7
+      when 4
+        damage = 7
+      when 5
+        damage = 6
+      when 6
+        damage = 6
+      when 7
+        damage = 5
+      when 8
+        damage = 4
+      when 9
+        damage = 3
+      when 0
+        damage = 0
+      end
     when -8..-7
+      case random_number
+      when 1
+        damage = 8
+      when 2
+        damage = 7
+      when 3
+        damage = 6
+      when 4
+        damage = 6
+      when 5
+        damage = 5
+      when 6
+        damage = 5
+      when 7
+        damage = 4
+      when 8
+        damage = 3
+      when 9
+        damage = 2
+      when 0
+        damage = 0
+      end
     when -6..-5
+      case random_number
+      when 1
+        damage = 6
+      when 2
+        damage = 6
+      when 3
+        damage = 5
+      when 4
+        damage = 5
+      when 5
+        damage = 4
+      when 6
+        damage = 4
+      when 7
+        damage = 3
+      when 8
+        damage = 2
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     when -4..-3
+      case random_number
+      when 1
+        damage = 6
+      when 2
+        damage = 5
+      when 3
+        damage = 5
+      when 4
+        damage = 4
+      when 5
+        damage = 4
+      when 6
+        damage = 3
+      when 7
+        damage = 2
+      when 8
+        damage = 1
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     when -2..-1
+      case random_number
+      when 1
+        damage = 5
+      when 2
+        damage = 5
+      when 3
+        damage = 4
+      when 4
+        damage = 4
+      when 5
+        damage = 3
+      when 6
+        damage = 2
+      when 7
+        damage = 2
+      when 8
+        damage = 1
+      when 9
+        damage = 0
+      when 0
+        damage = 0
+      end
     when 0
       case random_number
       when 1
@@ -506,6 +786,12 @@ class Fight
     end
     damage
   end
+
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Lint/DuplicateBranch
 end
 
 Fight.new
