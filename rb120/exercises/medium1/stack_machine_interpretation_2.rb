@@ -33,15 +33,29 @@ class Minilang
   end
 
   def eval
+    # p instructions
     instructions.each do |instruction|
       if is_an_integer?(instruction)
-        register = instruction
+        self.register = instruction.to_i
       elsif instruction == 'PRINT'
         display_register
       elsif instruction == 'PUSH'
         push_to_stack
+      elsif instruction == 'POP'
+        pop_from_stack
       elsif instruction == 'MULT'
         multiply
+      elsif instruction == 'DIV'
+        divide
+      elsif instruction == 'MOD'
+        modulo
+      elsif instruction == 'ADD'
+        add
+      elsif instruction == 'SUB'
+        subtract
+      else
+        puts "Invalid token: #{instruction}"
+        return
       end
     end
   end
@@ -54,12 +68,37 @@ class Minilang
     puts register
   end
 
-  def push_to_stack
-    stack << register
+  def push_to_stack # keep register value
+    stack.unshift(register)
+  end
+
+  def pop_from_stack
+    self.register = stack.shift
   end
 
   def multiply
-    puts register * stack.pop
+    total = self.register * stack.shift
+    self.register = total
+  end
+
+  def divide
+    quotient = self.register / stack.shift
+    self.register = quotient
+  end
+
+  def modulo
+    modulo = self.register % stack.shift
+    self.register = modulo
+  end
+
+  def add
+    total = self.register + stack.pop
+    self.register = total
+  end
+
+  def subtract
+    total = self.register - stack.pop
+    self.register = total
   end
 
   # helper methods
@@ -76,29 +115,29 @@ Minilang.new('PRINT').eval
 Minilang.new('5 PUSH 3 MULT PRINT').eval
 # 15
 
-# Minilang.new('5 PRINT PUSH 3 PRINT ADD PRINT').eval
-# # 5
-# # 3
-# # 8
+Minilang.new('5 PRINT PUSH 3 PRINT ADD PRINT').eval
+# 5
+# 3
+# 8
 
-# Minilang.new('5 PUSH 10 PRINT POP PRINT').eval
-# # 10
-# # 5
+Minilang.new('5 PUSH 10 PRINT POP PRINT').eval
+# 10
+# 5
 
-# Minilang.new('5 PUSH POP POP PRINT').eval
-# # Empty stack!
+Minilang.new('5 PUSH POP POP PRINT').eval
+# Empty stack!
 
-# Minilang.new('3 PUSH PUSH 7 DIV MULT PRINT ').eval
-# # 6
+Minilang.new('3 PUSH PUSH 7 DIV MULT PRINT').eval
+# 6
 
-# Minilang.new('4 PUSH PUSH 7 MOD MULT PRINT ').eval
-# # 12
+Minilang.new('4 PUSH PUSH 7 MOD MULT PRINT ').eval
+# 12
 
-# Minilang.new('-3 PUSH 5 XSUB PRINT').eval
-# # Invalid token: XSUB
+Minilang.new('-3 PUSH 5 XSUB PRINT').eval
+# Invalid token: XSUB
 
-# Minilang.new('-3 PUSH 5 SUB PRINT').eval
-# # 8
+Minilang.new('-3 PUSH 5 SUB PRINT').eval
+# 8
 
-# Minilang.new('6 PUSH').eval
+Minilang.new('6 PUSH').eval
 # (nothing printed; no PRINT commands)
