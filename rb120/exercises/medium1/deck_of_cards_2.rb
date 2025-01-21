@@ -1,5 +1,8 @@
 # Using the Card class from the previous exercise, create a Deck class that contains all of the standard 52 playing cards. Use the following code to start your work:
 
+require 'pry'
+require 'pry-byebug'
+
 class Card
   include Comparable
   attr_reader :rank, :suit
@@ -13,9 +16,15 @@ class Card
     "#{rank} of #{suit}"
   end
 
-  protected
+  # protected
+
   def <=>(other)
     self.interpret_rank <=> other.interpret_rank
+  end
+
+  def ==(other)
+    # binding.pry
+    self.rank == other.rank && self.suit == other.suit
   end
 
   def interpret_rank
@@ -43,14 +52,12 @@ class Deck
       end
     end
     self.deck.shuffle!
-    
-    # display_deck
   end
 
   def draw
-    deck.class
     if deck.empty?
       self.deck = Deck.new
+      self.deck.pop
     else
       self.deck.pop
     end
@@ -64,20 +71,12 @@ class Deck
     deck.pop
   end
 
-  def ==(other)
-    # self.deck == other.deck
-    52.times do |index|
-      self.deck[index] == other.deck[index]
-    end
-  end
-
   # my own helper methods
   def display_deck
     deck.each do |card|
       puts card
     end
   end
-    
 end
 
 =begin
@@ -95,7 +94,9 @@ puts drawn.count { |card| card.suit == 'Hearts' } == 13
 
 drawn2 = []
 52.times { drawn2 << deck.draw }
-drawn != drawn2 # Almost always.
+drawn != drawn2 # Almost always.  
+
+# This is comparing two arrays with each other.  The arrays contain 52 Card class objects each.  Therefore it is using a Card#== method.
 
 =begin
 Note that the last line should almost always be true; if you shuffle the deck 1000 times a second, you will be very, very, very old before you see two consecutive shuffles produce the same results. If you get a false result, you almost certainly have something wrong.
