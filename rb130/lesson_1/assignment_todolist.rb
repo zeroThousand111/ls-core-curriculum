@@ -142,13 +142,12 @@ class TodoList
   end
 
   def select
-    output = []
+    output = TodoList.new(self.title)
     self.each do |todo|
-      output << todo if yield(todo)
+      output.add(todo) if yield(todo)
     end
     output
   end
-
 
   private
 
@@ -156,7 +155,19 @@ class TodoList
 
 end
 
-# ---- ASSIGNMENT 11 BELOW - ADD #SELECT METHOD -----
+=begin
+The above code returns an Array object. It doesn't seem to follow the pattern from the Ruby core library of returning an object of the calling class. In other words, the TodoList#select method should return a TodoList object.
+
+Your next task is to refine our TodoList#select method so that it still behaves the same, except instead of returning an Array object, it returns a TodoList object.
+
+Hint: notice that Array#select and Hash#select both return a new object. It's not a destructive action. The original object is left alone, and a new object is returned.
+=end
+
+# ---- ASSIGNMENT 11 STEP 2 BELOW - MAKE #SELECT METHOD RETURN A TODOLIST OBJECT (NOT AN ARRAY)-----
+
+
+
+# ---- ASSIGNMENT 11 STEP 1 BELOW - ADD #SELECT METHOD -----
 
 todo1 = Todo.new("Buy milk")
 todo2 = Todo.new("Clean room")
