@@ -139,6 +139,7 @@ class TodoList
     todos.each do |element|
       yield(element)
     end
+    self # how to return the calling object
   end
 
   def select
@@ -155,36 +156,7 @@ class TodoList
 
 end
 
-=begin
-The above code returns an Array object. It doesn't seem to follow the pattern from the Ruby core library of returning an object of the calling class. In other words, the TodoList#select method should return a TodoList object.
-
-Your next task is to refine our TodoList#select method so that it still behaves the same, except instead of returning an Array object, it returns a TodoList object.
-
-Hint: notice that Array#select and Hash#select both return a new object. It's not a destructive action. The original object is left alone, and a new object is returned.
-=end
-
-# ---- ASSIGNMENT 11 STEP 2 BELOW - MAKE #SELECT METHOD RETURN A TODOLIST OBJECT (NOT AN ARRAY)-----
-
-
-
-# ---- ASSIGNMENT 11 STEP 1 BELOW - ADD #SELECT METHOD -----
-
-todo1 = Todo.new("Buy milk")
-todo2 = Todo.new("Clean room")
-todo3 = Todo.new("Go to gym")
-
-list = TodoList.new("Today's Todos")
-list.add(todo1)
-list.add(todo2)
-list.add(todo3)
-
-todo1.done!
-
-results = list.select { |todo| todo.done? }    # you need to implement this method
-
-puts results.inspect
-
-# ---- ASSIGNMENT 10 BELOW - ADD #EACH METHOD -----
+# ---- ASSIGNMENT 11 STEPs 1 AND 2 BELOW - ADD #SELECT METHOD -----
 
 # todo1 = Todo.new("Buy milk")
 # todo2 = Todo.new("Clean room")
@@ -195,10 +167,26 @@ puts results.inspect
 # list.add(todo2)
 # list.add(todo3)
 
-# list.each do |todo|
-#   puts todo                   # calls Todo#to_s
-# end
-# list.each { |todo| puts todo.done}
+# todo1.done!
+
+# results = list.select { |todo| todo.done? }    # you need to implement this method
+
+# puts results.inspect
+
+# ---- ASSIGNMENT 10 AND 11 STEP 3 BELOW - ADD #EACH METHOD -----
+
+todo1 = Todo.new("Buy milk")
+todo2 = Todo.new("Clean room")
+todo3 = Todo.new("Go to gym")
+
+list = TodoList.new("Today's Todos")
+list.add(todo1)
+list.add(todo2)
+list.add(todo3)
+
+p (list.each do |todo|
+  puts todo                   # calls Todo#to_s
+end)
 
 =begin
 [ ] Buy milk
