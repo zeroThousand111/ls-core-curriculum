@@ -144,17 +144,69 @@ class TodoList
 
   def select
     output = TodoList.new(self.title)
-    self.each do |todo|
+    each do |todo|
       output.add(todo) if yield(todo)
     end
     output
   end
 
-  private
+  def find_by_title(string) # takes a string as argument, and returns the first Todo object that matches the argument. Return nil if no todo is found.
+    select { |todo| string == todo.title }.first
+  end
+
+  def all_done # returns new TodoList object containing only the done items
+    select { |todo| todo.done? }
+  end
+
+  def all_not_done # 	returns new TodoList object containing only the not done items
+    select { |todo| !todo.done? }
+  end
+
+  def mark_done(string) # takes a string as argument, and marks the first Todo object that matches the argument as done.
+    select { |todo| string == todo.title }.todos.first.done!
+  end
+
+  def mark_all_done # mark every todo as done
+    each { |todo| todo.done! }
+  end
+
+  def mark_all_undone # mark every todo as not done
+    each { |todo| todo.undone! }
+  end
+
+  protected
 
   attr_accessor :todos
 
 end
+
+# ---- ASSIGNMENT 12 BELOW - ADD MORE METHODS THAT USE BLOCKS -----
+
+todo1 = Todo.new("Buy milk")
+todo2 = Todo.new("Clean room")
+todo3 = Todo.new("Go to gym")
+
+list = TodoList.new("Today's Todos")
+list.add(todo1)
+list.add(todo2)
+list.add(todo3)
+
+p list.find_by_title("") # => nil
+p list.find_by_title("Buy milk") # => should return a Todo object
+
+# todo1.done!
+# p list.all_done # => should return a new TodoList object with one Todo object in @todos array
+# p list.all_not_done # => should return a new TodoList object with two Todo object in @todos array
+
+# list.mark_done("Clean room")
+# puts list # now both Buy milk and Clean room should be marked as done
+
+# list.mark_all_done
+# puts list # now all items should be marked as done
+
+# list.mark_all_undone
+# puts list # now all items should be marked as undone
+
 
 # ---- ASSIGNMENT 11 STEPs 1 AND 2 BELOW - ADD #SELECT METHOD -----
 
@@ -175,18 +227,18 @@ end
 
 # ---- ASSIGNMENT 10 AND 11 STEP 3 BELOW - ADD #EACH METHOD -----
 
-todo1 = Todo.new("Buy milk")
-todo2 = Todo.new("Clean room")
-todo3 = Todo.new("Go to gym")
+# todo1 = Todo.new("Buy milk")
+# todo2 = Todo.new("Clean room")
+# todo3 = Todo.new("Go to gym")
 
-list = TodoList.new("Today's Todos")
-list.add(todo1)
-list.add(todo2)
-list.add(todo3)
+# list = TodoList.new("Today's Todos")
+# list.add(todo1)
+# list.add(todo2)
+# list.add(todo3)
 
-p (list.each do |todo|
-  puts todo                   # calls Todo#to_s
-end)
+# p (list.each do |todo|
+#   puts todo                   # calls Todo#to_s
+# end)
 
 =begin
 [ ] Buy milk
