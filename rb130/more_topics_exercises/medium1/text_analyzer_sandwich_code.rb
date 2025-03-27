@@ -152,3 +152,16 @@ analyzer.process { |text| puts ... }
 analyzer.process { |text| puts ... }
 Judging from the partial code, you can see that each block contains a puts statement, so we must provide arguments to puts that perform the necessary processing and format the answer accordingly. The last step fills in these details: for each, we use String#split and Array#count as you can see in the Solution.
 =end
+
+class TextAnalyzer
+  def process
+    file = File.open('sample_text.txt', 'r')
+    yield(file.read)
+    file.close
+  end
+end
+
+analyzer = TextAnalyzer.new
+analyzer.process { |text| puts "#{text.split(/\n\n/).count} paragraphs" }
+analyzer.process { |text| puts "#{text.split(/\n/).count} lines" }
+analyzer.process { |text| puts "#{text.split(/ /).count} words" }
