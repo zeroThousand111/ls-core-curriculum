@@ -134,16 +134,15 @@ array == %w(alice bonnie Kim Pete rachel sue Tyler)
 =end
 
 # Further Exploration
+# My solution is to transform the value of the current array[index] by yielding it to the block and then assign transformed value to local variable `first`.  Same for array[index - 1], assigned to `second`.  Then skip iteration if second <= first.
 
 def bubble_sort!(array)
   loop do
     swapped = false
     1.upto(array.size - 1) do |index|
-      if block_given?
-        next if yield(array[index - 1], array[index])
-      else
-        next if array[index - 1] <= array[index]
-      end
+      first = yield(array[index]) if block_given?
+      second = yield(array[index - 1]) if block_given?
+      next if second <= first
       
       array[index - 1], array[index] = array[index], array[index - 1]
       swapped = true
