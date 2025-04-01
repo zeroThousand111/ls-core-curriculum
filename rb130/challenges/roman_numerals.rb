@@ -77,89 +77,89 @@ We may also need a separate collection that holds key conversions between number
 require 'pry'
 require 'pry-byebug'
 
-THOUSANDS = {
-  0 => "",
-  1 => 'M',
-  2 => 'MM',
-  3 => 'MMM'
-}
+# THOUSANDS = {
+#   0 => "",
+#   1 => 'M',
+#   2 => 'MM',
+#   3 => 'MMM'
+# }
 
-HUNDREDS = {
-  0 => "",
-  1 => 'C',
-  2 => 'CC',
-  3 => 'CCC',
-  4 => 'CD',
-  5 => 'D',
-  6 => 'DC',
-  7 => 'DCC',
-  8 => 'DCCC',
-  9 => 'CM',
-}
+# HUNDREDS = {
+#   0 => "",
+#   1 => 'C',
+#   2 => 'CC',
+#   3 => 'CCC',
+#   4 => 'CD',
+#   5 => 'D',
+#   6 => 'DC',
+#   7 => 'DCC',
+#   8 => 'DCCC',
+#   9 => 'CM',
+# }
 
-TENS = {
-  0 => "",
-  1 => 'X',
-  2 => 'XX',
-  3 => 'XXX',
-  4 => 'XL',
-  5 => 'L',
-  6 => 'LX',
-  7 => 'LXX',
-  8 => 'LXXX',
-  9 => 'XC',
-}
+# TENS = {
+#   0 => "",
+#   1 => 'X',
+#   2 => 'XX',
+#   3 => 'XXX',
+#   4 => 'XL',
+#   5 => 'L',
+#   6 => 'LX',
+#   7 => 'LXX',
+#   8 => 'LXXX',
+#   9 => 'XC',
+# }
 
-UNITS = {
-  0 => "",
-  1 => 'I',
-  2 => 'II',
-  3 => 'III',
-  4 => 'IV',
-  5 => 'V',
-  6 => 'VI',
-  7 => 'VII',
-  8 => 'VIII',
-  9 => 'IX',
-}
+# UNITS = {
+#   0 => "",
+#   1 => 'I',
+#   2 => 'II',
+#   3 => 'III',
+#   4 => 'IV',
+#   5 => 'V',
+#   6 => 'VI',
+#   7 => 'VII',
+#   8 => 'VIII',
+#   9 => 'IX',
+# }
 
-class RomanNumeral
+# class RomanNumeral
 
-  def initialize(arabic_no)
-    @arabic_no = arabic_no
-  end
+#   def initialize(arabic_no)
+#     @arabic_no = arabic_no
+#   end
 
-  def to_roman
-    output = ''
-    output << THOUSANDS[calc_thousands]
-    output << HUNDREDS[calc_hundreds]
-    output << TENS[calc_tens]
-    output << UNITS[calc_units]
-    output
-  end
+#   def to_roman
+#     output = ''
+#     output << THOUSANDS[calc_thousands]
+#     output << HUNDREDS[calc_hundreds]
+#     output << TENS[calc_tens]
+#     output << UNITS[calc_units]
+#     output
+#   end
 
-  # helper methods
-  private
+#   # helper methods
+#   private
 
-  def calc_thousands
-    @arabic_no / 1000
-  end
+#   def calc_thousands
+#     @arabic_no / 1000
+#   end
 
-  def calc_hundreds
-    (@arabic_no % 1000) / 100
-  end
+#   def calc_hundreds
+#     (@arabic_no % 1000) / 100
+#   end
 
-  def calc_tens
-    (@arabic_no % 1000 % 100) / 10
-  end
+#   def calc_tens
+#     (@arabic_no % 1000 % 100) / 10
+#   end
 
-  def calc_units
-    (@arabic_no % 1000 % 100 %10)
-  end
+#   def calc_units
+#     (@arabic_no % 1000 % 100 %10)
+#   end
 
-end
+# end
 
-# refactor using this algorithm
+# Solution 2 - refactor using this algorithm
 =begin
 - Initialize a variable with an empty string to save the finished Roman conversion.
 - Iterate over the Roman Numerals collection:
@@ -168,5 +168,41 @@ end
   - Return the result string.
 =end
 
-no = RomanNumeral.new(402)
-puts no.to_roman
+ROMAN_NUMERALS = {
+            1000 => 'M',
+            900 => 'CM',
+            500 => 'D',
+            400 => 'CD',
+            100 => 'C',
+            90 => 'XC',
+            50 => 'L',
+            40 => 'XL',
+            10 => 'X',
+            9 => 'IX',
+            5 => 'V',
+            4 => 'IV',
+            1 => 'I'
+          }
+
+class RomanNumeral
+  attr_accessor :num
+
+  def initialize(num)
+    @num = num
+  end
+
+  def to_roman
+    output = ''
+    number = @num
+    ROMAN_NUMERALS.each do |key, value|
+      multiplier, left_over = number.divmod(key)
+      output << (value * multiplier) if multiplier > 0
+      number = left_over
+    end
+    
+    output
+  end
+end
+
+number = RomanNumeral.new(402)
+puts number.to_roman
