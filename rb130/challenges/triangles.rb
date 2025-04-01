@@ -52,18 +52,80 @@ See `triangles_tests.rb` file
 require 'pry'
 require 'pry-byebug'
 
+## First Draft
+
+# class Triangle
+#   attr_reader :x_length, :y_length, :z_length
+
+#   def initialize(x, y, z) # can I refactor as an array of values?
+#     @x_length = x
+#     @y_length = y
+#     @z_length = z
+
+#     raise ArgumentError unless self.is_a_triangle? # validation
+#   end
+
+#   def kind # method to determine what kind of triangle; must return one of three strings
+#     if self.is_equilateral?
+#       'equilateral'
+#     elsif self.is_isosceles?
+#       'isosceles'
+#     else
+#       'scalene'
+#     end
+#   end
+
+#   private
+
+#   def is_a_triangle?
+#     # all lengths must be greater than zero
+#     return false unless x_length > 0 && y_length > 0 && z_length > 0
+
+#     # the sum of the lengths of any two sides must be greater than the length of the third side; this is true for ALL two sides
+#     return false unless test_all_sides
+#     true
+#   end
+
+#   def test_all_sides
+#     # refactor to test an array of values with `#each_cons(2)` or similar?
+#     side_sum_test(x_length, y_length, z_length) && 
+#     side_sum_test(y_length, z_length, x_length) && 
+#     side_sum_test(x_length, z_length, y_length)
+#   end
+
+#   def side_sum_test(side1, side2, side3)
+#     (side1 + side2) > side3
+#   end
+
+#   def is_equilateral?
+#     x_length == y_length && y_length == z_length
+#   end
+
+#   def two_sides_same?(side1, side2)
+#     side1 == side2
+#   end
+
+#   def is_isosceles?
+#     two_sides_same?(x_length, y_length) || 
+#     two_sides_same?(y_length, z_length) ||
+#     two_sides_same?(x_length, z_length)
+#   end
+
+#   # NB. #is_scalene? not required, because validation for is_triangle? already in constructor.  If its not equilateral, and not isosceles, but its a triangle must mean it is scalene.
+
+# end
+
+## Second Draft - Refactor using an array of lengths
+
 class Triangle
-  attr_reader :x_length, :y_length, :z_length
+  attr_reader :lengths
 
-  def initialize(x, y, z) # can I refactor as an array of values?
-    @x_length = x
-    @y_length = y
-    @z_length = z
-
-    raise ArgumentError unless self.is_a_triangle? # validation
+  def initialize(x, y, z) # refactored as an array of values
+    @lengths = [x, y, z]
+    raise ArgumentError unless self.is_a_triangle?
   end
 
-  def kind # method to determine what kind of triangle; must return one of three strings
+  def kind
     if self.is_equilateral?
       'equilateral'
     elsif self.is_isosceles?
@@ -76,19 +138,15 @@ class Triangle
   private
 
   def is_a_triangle?
-    # all lengths must be greater than zero
-    return false unless x_length > 0 && y_length > 0 && z_length > 0
-
-    # the sum of the lengths of any two sides must be greater than the length of the third side; this is true for ALL two sides
-    return false unless test_all_sides
-    true
+    lengths.all? { |length| length > 0 } && test_all_sides
   end
 
   def test_all_sides
-    # refactor to test an array of values with `#each_cons(2)` or similar?
-    side_sum_test(x_length, y_length, z_length) && 
-    side_sum_test(y_length, z_length, x_length) && 
-    side_sum_test(x_length, z_length, y_length)
+    # refactor to test an array of values with `#permutation(3)`
+    # bit over the top to compare all permutations in performance context
+    lengths.permutation(3) do |side1, side2, side3| 
+      return false unless side_sum_test(side1, side2, side3)
+    end
   end
 
   def side_sum_test(side1, side2, side3)
@@ -96,21 +154,19 @@ class Triangle
   end
 
   def is_equilateral?
-    x_length == y_length && y_length == z_length
+    lengths[0] == lengths[1] && lengths[1] == lengths[2]
+  end
+
+  def is_isosceles?
+    lengths.permutation(2) do |pair|
+      return true if two_sides_same?(pair.first, pair.last)
+    end
+    false
   end
 
   def two_sides_same?(side1, side2)
     side1 == side2
   end
-
-  def is_isosceles?
-    two_sides_same?(x_length, y_length) || 
-    two_sides_same?(y_length, z_length) ||
-    two_sides_same?(x_length, z_length)
-  end
-
-  # NB. #is_scalene? not required, because validation for is_triangle? already in constructor.  If its not equilateral, and not isosceles, but its a triangle must mean it is scalene.
-
 end
 
 # valid triangle tests
@@ -118,6 +174,8 @@ end
 obj1 = Triangle.new(1, 1, 1)  # no ArgumentError
 # obj2 = Triangle.new(1, 1, 0)  # raises ArgumentError
 # p obj3 = Triangle.new(1, 1, 2)  # raises ArgumentError
+
+# kind tests
 
 puts Triangle.new(9, 9, 9).kind # equilateral
 puts Triangle.new(3, 4, 3).kind # isosceles
