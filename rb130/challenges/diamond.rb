@@ -123,6 +123,18 @@ require 'pry-byebug'
 
 # solution 2 - second draft - after I read LS notes on algorithm
 
+=begin                      width of diamond = 9 (E is index 4)
+    string = "    A    \n"\ internal = 0 | external = 4 | letter_index = 0
+             "   B B   \n"\ internal = 1 | external = 3 | letter_index = 1
+             "  C   C  \n"\ internal = 3 | external = 2 | letter_index = 2
+             " D     D \n"\ internal = 5 | external = 1 | letter_index = 3
+             "E       E\n"\ internal = 7 | external = 0 | letter_index = 4
+             " D     D \n"\ internal = 5 | external = 1 | letter_index = 3
+             "  C   C  \n"\ internal = 3 | external = 2 | letter_index = 2
+             "   B B   \n"\ internal = 1 | external = 3 | letter_index = 1
+             "    A    \n"  internal = 0 | external = 4 | letter_index = 0
+=end
+
 class Diamond
 
   def self.make_diamond(letter)
@@ -130,14 +142,12 @@ class Diamond
     @range = (("A"..letter).to_a) + (("A"...letter).to_a.reverse)
     @diamond_width = calc_diamond_width #range.index(letter)
 
-    @range.each do |current_letter|
-      puts "#{leading_whitespace(current_letter)}#{make_row(current_letter)}"
-    end
+    rows = @range.map do |current_letter|
+      "#{leading_whitespace(current_letter)}#{make_row(current_letter)}"
+    end.join("\n") + "\n"
 
-    #diamond = @range.each do |letter|
-     # "#{" " * @range.index(letter)}#{make_row(letter)}"
-    #end.join("\n")
-    #p "#{diamond}\n"
+    puts rows
+    rows
   end
 
   private
@@ -164,18 +174,6 @@ class Diamond
   end
 
 end
-
-=begin                      width of diamond = 9 (E is index 4)
-    string = "    A    \n"\ internal = 0 | external = 4 | letter_index = 0
-             "   B B   \n"\ internal = 1 | external = 3 | letter_index = 1
-             "  C   C  \n"\ internal = 3 | external = 2 | letter_index = 2
-             " D     D \n"\ internal = 5 | external = 1 | letter_index = 3
-             "E       E\n"\ internal = 7 | external = 0 | letter_index = 4
-             " D     D \n"\ internal = 5 | external = 1 | letter_index = 3
-             "  C   C  \n"\ internal = 3 | external = 2 | letter_index = 2
-             "   B B   \n"\ internal = 1 | external = 3 | letter_index = 1
-             "    A    \n"  internal = 0 | external = 4 | letter_index = 0
-=end
 
 p Diamond.make_diamond("A")
 p Diamond.make_diamond("B")

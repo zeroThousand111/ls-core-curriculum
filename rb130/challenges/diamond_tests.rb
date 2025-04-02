@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative '10_diamond'
+require_relative 'diamond'
 
 class DiamondTest < Minitest::Test
   def test_letter_a
@@ -14,7 +14,7 @@ class DiamondTest < Minitest::Test
   end
 
   def test_letter_c
-    skip
+    # skip
     answer = Diamond.make_diamond('C')
     string = "  A  \n"\
              " B B \n"\
