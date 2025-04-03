@@ -140,13 +140,12 @@ class Diamond
   def self.make_diamond(letter)
     @letter = letter
     @range = (("A"..letter).to_a) + (("A"...letter).to_a.reverse)
-    @diamond_width = calc_diamond_width #range.index(letter)
+    # @diamond_width = calc_diamond_width #range.index(letter)
 
     rows = @range.map do |current_letter|
-      "#{leading_whitespace(current_letter)}#{make_row(current_letter)}"
+      "#{leading_whitespace(current_letter)}#{make_row(current_letter)}#{leading_whitespace(current_letter)}"
     end.join("\n") + "\n"
-
-    puts rows
+    
     rows
   end
 
@@ -166,16 +165,18 @@ class Diamond
   end
 
   def self.calc_internal_width(letter)
-    @range.index(letter) * 2 -1 
+    (@range.index(letter) * 2) - 1 
   end
 
-  def self.calc_diamond_width
-    @range.index(@letter) * 2 + 1
-  end
+  # def self.calc_diamond_width
+  #   (@range.index(@letter) * 2) + 1
+  # end
 
 end
 
-p Diamond.make_diamond("A")
-p Diamond.make_diamond("B")
-p Diamond.make_diamond("C")
-p Diamond.make_diamond("E")
+# My Tests
+
+# p Diamond.make_diamond("A")
+# p Diamond.make_diamond("B")
+# p Diamond.make_diamond("C")
+# p Diamond.make_diamond("E")
