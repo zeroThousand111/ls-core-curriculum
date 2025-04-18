@@ -63,6 +63,8 @@ OR Regex e.g. score += 3 if char.match?(/[BCMP]/)
   + approach
     - procedure
 
+I ELECTED TO USE REGEX IN MY SOLUTION, BECAUSE I HAD JUST READ THE INTRO TO REGEX OPEN SHELF BOOK!
+
 * CREATE a total score variable and initialise as value of 0
 * MOVE through string from first character to last
 * EVALUATE value of each letter
@@ -74,6 +76,8 @@ OR Regex e.g. score += 3 if char.match?(/[BCMP]/)
 # Code
 require 'pry'
 require 'pry-byebug'
+
+# SOLUTION 1 - USING REGEX
 
 class Scrabble
   def initialize(string)
@@ -100,3 +104,85 @@ class Scrabble
     score
   end
 end
+
+# SOLUTION 2 - REFACTOR SOLUTION WITH REGEX
+
+class Scrabble
+  attr_reader :word
+  attr_accessor :word_score
+
+  def initialize(word)
+    @word = word
+    @word_score = 0
+  end
+
+  def self.score(word)
+    Scrabble.new(word).score
+  end
+
+  def score
+    return word_score if word.nil?
+    evaluate_score
+    word_score
+  end
+
+  private
+
+  def evaluate_score
+    word.chars do |char|
+      self.word_score += 1 if char =~ (/[AEIOULNRST]/i)
+      self.word_score += 2 if char =~ (/[DG]/i)
+      self.word_score += 3 if char =~ (/[BCMP]/i)
+      self.word_score += 4 if char =~ (/[FHVWY]/i)
+      self.word_score += 5 if char =~ (/K/i)
+      self.word_score += 8 if char =~ (/[JX]/i)
+      self.word_score += 10 if char =~ (/[QZ]/i)
+    end
+  end
+end
+
+# SOLUTION 3 - USING A HASH DATA STRUCTURE DICTIONARY
+
+class Scrabble
+  LETTER_VALUES = {
+    ["A", "E", "I", "O", "U", "L", "N", "R", "S", "T"] => 1,
+    ["D", "G"] => 2, 
+    ["B", "C", "M", "P"] => 3,
+    ["F", "H", "V", "W", "Y"] => 4,
+    ["K"] => 5,
+    ["J", "X"] => 8,
+    ["Q", "Z"] => 10
+  }
+
+  attr_reader :word
+  attr_accessor :word_score
+
+  def initialize(word)
+    @word = word
+    @word_score = 0
+  end
+
+  def self.score(word)
+    Scrabble.new(word).score
+  end
+
+  def score
+    return word_score if word.nil?
+    evaluate_score
+    word_score
+  end
+
+  private
+
+  def evaluate_score
+    word.chars do |char|
+      LETTER_VALUES.each do |key, value|
+        self.word_score += value if key.include?(char.upcase)
+      end
+    end
+  end
+end
+
+# my tests
+
+puts Scrabble.new("aaa").score
