@@ -134,13 +134,81 @@ require 'date'
 
 # SOLUTION 2 - SECOND DRAFT - REFACTOR
 
+# class Meetup
+#   attr_reader :month, :year, :last_day_of_the_month
+
+#   def initialize(year, month)
+#     @month = month
+#     @year = year
+#     @last_day_of_the_month = Date.new(@year, @month, -1).day
+#   end
+
+#   def day(weekday, descriptor)
+#     weekday = weekday.downcase
+#     descriptor = descriptor.downcase
+
+#     array_of_date_objects = generate_range_of_dates(descriptor)
+#     array_of_date_objects.reverse! if descriptor == "last"
+
+#     date = search_date_range_for_date(weekday, descriptor, array_of_date_objects)
+
+#     failed_to_find(descriptor, weekday) if date.nil? 
+    
+#     date
+#   end
+
+#   private
+
+#   def failed_to_find(descriptor, weekday)
+#     puts "There is no matching date for the #{descriptor} #{weekday} of the month in #{@month}/#{@year}" 
+#   end
+
+#   def search_date_range_for_date(weekday, descriptor, array_of_date_objects)
+#     array_of_date_objects.each do |date_object|
+#       case weekday
+#       when "monday" then return date_object if date_object.monday?
+#       when "tuesday" then return date_object if date_object.tuesday?
+#       when "wednesday" then return date_object if date_object.wednesday?
+#       when "thursday" then return date_object if date_object.thursday?
+#       when "friday" then return date_object if date_object.friday?
+#       when "saturday" then return date_object if date_object.saturday?
+#       when "sunday" then return date_object if date_object.sunday?
+#       end
+#     end
+#     nil
+#   end
+
+#   def generate_range_of_dates(descriptor)
+#     dowm = {
+#       "first" => (1..7),
+#       "second" => (8..14),
+#       "third" => (15..21),
+#       "fourth" => (22..28),
+#       "fifth" => (29..@last_day_of_the_month),
+#       "teenth" => (13..19),
+#       "last" => (22..@last_day_of_the_month)
+#     }
+
+#     array = []
+#     range_of_days = dowm[descriptor]
+
+#     range_of_days.each do |day_no|
+#       array << Date.new(@year, @month, day_no)
+#     end
+
+#     array
+#   end
+# end
+
+# SOLUTION 3 - THIRD DRAFT - IMPLEMENTING LSBOT'S RECOMMENDATIONS
+
 class Meetup
   attr_reader :month, :year, :last_day_of_the_month
 
   def initialize(year, month)
     @month = month
     @year = year
-    @last_day_of_the_month = calc_no_of_days_in_the_month
+    @last_day_of_the_month = Date.new(@year, @month, -1).day
   end
 
   def day(weekday, descriptor)
@@ -163,27 +231,22 @@ class Meetup
     puts "There is no matching date for the #{descriptor} #{weekday} of the month in #{@month}/#{@year}" 
   end
 
-  def calc_no_of_days_in_the_month
-    Date.new(@year, @month, -1).day
-  end
-
   def search_date_range_for_date(weekday, descriptor, array_of_date_objects)
-    array_of_date_objects.each do |date_object|
-      case weekday
-      when "monday" then return date_object if date_object.monday?
-      when "tuesday" then return date_object if date_object.tuesday?
-      when "wednesday" then return date_object if date_object.wednesday?
-      when "thursday" then return date_object if date_object.thursday?
-      when "friday" then return date_object if date_object.friday?
-      when "saturday" then return date_object if date_object.saturday?
-      when "sunday" then return date_object if date_object.sunday?
-      end
-    end
-    nil
+    weekday_methods = {
+    "monday" => :monday?,
+    "tuesday" => :tuesday?,
+    "wednesday" => :wednesday?,
+    "thursday" => :thursday?,
+    "friday" => :friday?,
+    "saturday" => :saturday?,
+    "sunday" => :sunday?
+  }
+
+  method_to_call = weekday_methods[weekday]
+  array_of_date_objects.find { |date| date.send(method_to_call) }
   end
 
   def generate_range_of_dates(descriptor)
-    # if using a Range as the value
     dowm = {
       "first" => (1..7),
       "second" => (8..14),
@@ -193,27 +256,10 @@ class Meetup
       "teenth" => (13..19),
       "last" => (22..@last_day_of_the_month)
     }
-    # if using an array of first and last dates in range of dates
-    # dowm = {
-    # "first" => [1, 7],
-    # "second" => [8, 14],
-    # "third" => [15, 21],
-    # "fourth" => [22, 28],
-    # "fifth" => [29, @last_day_of_the_month],
-    # "teenth" => [13, 19],
-    # "last" => [(@last_day_of_the_month - 7), @last_day_of_the_month]
-    # }
 
     array = []
-    # using array of dates
-    # first_day_no, last_day_no = dowm[descriptor]
-    # first_day_no.upto(last_day_no) do |day_no|
-    #   array << Date.new(@year, @month, day_no)
-    # end
-    
-    # using range of dates
     range_of_days = dowm[descriptor]
-    
+
     range_of_days.each do |day_no|
       array << Date.new(@year, @month, day_no)
     end
