@@ -107,16 +107,103 @@
 # end
 
 # SOLUTION 2 - SECOND DRAFT - REFACTOR
+# class Element
+#   attr_reader :datum, :next
+
+#   def initialize(datum, next_element=nil)
+#     @datum = datum
+#     @next = next_element
+#   end
+
+#   def tail?
+#     self.next.nil?
+#   end
+# end
+
+# class SimpleLinkedList
+#   include Enumerable
+
+#   attr_accessor :head
+
+#   def self.from_a(array)
+#     new_list = SimpleLinkedList.new
+#     return new_list if array.nil? || array.empty?
+
+#     array.reverse_each do |value|
+#       new_list.push(value)
+#     end
+#     new_list
+#   end
+
+#   def initialize
+#     @head = nil
+#   end
+
+#   def size
+#     return 0 if self.empty?
+#     self.count
+#   end
+
+#   def empty?
+#     head.nil?
+#   end
+
+#   def peek
+#     return nil if self.empty?
+#     head.datum
+#   end
+
+#   def push(datum)
+#     new_element = Element.new(datum, head)
+#     self.head = new_element
+#   end
+
+#   def pop 
+#     temp_head = head
+#     self.head = temp_head.next
+#     temp_head.datum
+#   end
+
+#   def to_a
+#     array = []
+#     return array if self.empty?
+
+#     self.each do |element|
+#       array << element.datum
+#     end
+
+#     array
+#   end
+
+#   def reverse
+#     temp_array = self.to_a
+#     temp_array.reverse!
+#     SimpleLinkedList.from_a(temp_array)
+#   end
+  
+#   private
+
+#   def each
+#     current_element = head
+
+#     loop do
+#       yield(current_element)
+#       break if current_element.next.nil?
+#       current_element = current_element.next
+#     end
+
+#     head
+#   end
+# end
+
+# SOLUTION 3 - THIRD DRAFT - IMPLEMENT LSBOT RECOMMENDATIONS IF HELPFUL
+
 class Element
-  attr_reader :datum
+  attr_reader :datum, :next
 
   def initialize(datum, next_element=nil)
     @datum = datum
-    @next_element = next_element
-  end
-
-  def next
-    @next_element
+    @next = next_element
   end
 
   def tail?
@@ -180,9 +267,7 @@ class SimpleLinkedList
   end
 
   def reverse
-    temp_array = self.to_a
-    temp_array.reverse!
-    SimpleLinkedList.from_a(temp_array)
+    SimpleLinkedList.from_a(self.to_a.reverse)
   end
   
   private
@@ -190,9 +275,8 @@ class SimpleLinkedList
   def each
     current_element = head
 
-    loop do
+    while current_element # i.e. while is truthy
       yield(current_element)
-      break if current_element.next.nil?
       current_element = current_element.next
     end
 
