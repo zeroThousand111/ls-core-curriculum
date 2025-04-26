@@ -60,11 +60,61 @@
 
 # SOLUTION 2 - SECOND DRAFT - REFACTOR
 
-class CustomSet
-  attr_accessor :set
+# class CustomSet
+#   attr_accessor :set
 
+#   def initialize(set=[])
+#     @set = set
+#   end
+
+#   def empty?
+#     set.empty?
+#   end
+
+#   def contains?(object)
+#     set.include?(object)
+#   end
+
+#   def subset?(other)
+#     set.all? { |value| other.set.include?(value) }
+#   end
+
+#   def disjoint?(other)
+#     !set.intersect?(other.set)
+#   end
+
+#   def eql?(other)
+#     return false if set.uniq.size != other.set.uniq.size
+#     set.uniq.all? { |value| other.set.uniq.include?(value) }
+#   end
+
+#   def ==(other)
+#     self.eql?(other)
+#   end
+
+#   def add(new)
+#     self.set.push(new) unless contains?(new)
+#     self
+#   end
+
+#   def intersection(other)
+#     CustomSet.new(set.intersection(other.set))
+#   end
+
+#   def difference(other)
+#     CustomSet.new(set.difference(other.set))
+#   end
+
+#   def union(other)
+#     CustomSet.new(set.union(other.set))
+#   end
+# end
+
+# SOLUTION 3 - THIRD DRAFT - IMPLEMENT LSBOT RECOMMENDATIONS
+
+class CustomSet
   def initialize(set=[])
-    @set = set
+    @set = set.uniq
   end
 
   def empty?
@@ -84,8 +134,8 @@ class CustomSet
   end
 
   def eql?(other)
-    return false if set.uniq.size != other.set.uniq.size
-    set.uniq.all? { |value| other.set.uniq.include?(value) }
+    return false if set.size != other.set.size
+    set.all? { |value| other.set.include?(value) }
   end
 
   def ==(other)
@@ -93,7 +143,7 @@ class CustomSet
   end
 
   def add(new)
-    self.set.push(new) unless contains?(new)
+    set.push(new) unless contains?(new)
     self
   end
 
@@ -108,6 +158,9 @@ class CustomSet
   def union(other)
     CustomSet.new(set.union(other.set))
   end
+
+  protected
+  attr_accessor :set
 end
 
 # MY TESTS
