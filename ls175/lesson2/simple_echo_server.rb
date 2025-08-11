@@ -11,5 +11,6 @@ loop do
 
   client.puts "HTTP/1.1 200 OK"
   client.puts "Content-Type: text/plain\r\n\r\n"
+  client.puts request_line
   client.close
 end
