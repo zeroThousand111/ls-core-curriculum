@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lists Overview</title>
+    <style>
+      /* CSS goes here! */
+      
+      li, dd, dt {
+        font-size: 1.25rem;
+      }
+
+      .red-background,
+      .green-background,
+      .blue-background {
+        width: 50px;
+        height: 25px;
+      }
+
+      .red-background {
+        background-color: red;
+      }
+
+      .green-background  {
+        background-color: green;
+      }
+
+      .blue-background  {
+        background-color: blue;
+      }
+
+      .red-foreground {
+        color: red;
+      }
+
+      .green-foreground {
+        color: green;
+      }
+
+      .blue-foreground {
+        color: blue;
+      } 
+
+      nav ul {
+        background-color: powderblue;
+        list-style-type: none;
+        padding-left: 0;
+        font-size: 0;
+        width: 100%;
+      }
+
+      nav li {
+        font-size: 1.25rem;
+        display: inline-block;
+        text-align: center;
+        width: 25%;
+      }
+
+      nav a {
+        box-sizing: border-box;
+        color: blue;
+        display: inline-block;
+        line-height: 2.5;
+        padding: 0 10px;
+        text-decoration: none;
+        width: 100%;
+      }
+
+      nav a:hover,
+      nav a:focus {
+        background-color: blue;
+        color: white;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Team</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+    
+    <dl>
+      <dt>Unordered</dt>
+      <dd>A simple list with bullets.</dd>
+      <dd>A plain list with no bullets or sequence numbers.</dd>
+      <dd>
+        <ul>
+          <li>Red</li>
+          <li>Green</li>
+          <li>Blue</li>
+        </ul>
+      </dd>
+
+      <dt>Ordered</dt>
+      <dd>A simple list with a visible sequence.</dd>
+      <dd>
+        <ol>
+          <li>Red</li>
+          <li>Green</li>
+          <li>Blue</li>
+        </ol>
+      </dd>
+
+      <dt>Description</dt>
+      <dt>Definition</dt>
+      <dd>A list with terms and definitions.</dd>
+      <dd>
+        <dl>
+          <dt>Red</dt>   <dd><div class="red-background"></div></dd>
+          <dt>Green</dt> <dd><div class="green-background"></div></dd>
+          <dt>Blue</dt>  <dd><div class="blue-background"></div></dd>
+        </dl>
+      </dd>
+    </dl>
+
+    <ul>
+      <li class="red-foreground">
+        Red
+        <ul>
+          <li>&#9608;&#9608;&#9608;</li>
+          <li>#ff0000</li>
+          <li>rgb(255, 0, 0)</li>
+        </ul>
+      </li>
+
+      <li class="green-foreground">
+        Green
+        <ul>
+          <li>&#9608;&#9608;&#9608;</li>
+          <li>#00ff00</li>
+          <li>rgb(0, 255, 0)</li>
+        </ul>
+      </li>
+
+      <li class="blue-foreground">
+        Blue
+        <ul>
+          <li>&#9608;&#9608;&#9608;</li>
+          <li>#0000ff</li>
+          <li>rgb(0, 0, 255)</li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html>
