@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nutrition Label</title>
+  <style>
+    body {
+      font-size: 28px;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    table {
+      border-collapse: collapse;
+      max-width: 750px;
+    }
+
+    th, td {
+      padding-block: 2px;
+      padding-inline: 3px;
+    }
+
+    .thick-lower-border {
+      border-block-end: 30px solid black;
+    }
+    
+    .thin-lower-border {
+      border-block-end: 12px solid black;
+    }
+
+    .outline-lower-border {
+      border-block-end: 1px solid black;
+    }
+
+    .title {
+      font-size: 5rem;
+      font-weight: bolder;
+      text-align: left;
+    }
+
+    .small-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .medium-text {
+      font-size: 2rem;
+    }
+
+    .small-text {
+      font-size: 1.4rem;
+    }
+
+    .light {
+      font-weight: lighter;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .align-text-left {
+      text-align: left;
+    }
+
+    .align-text-right {
+      text-align: right;
+    }
+
+  </style>
+</head>
+<body>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="title" span="row" colspan="5">Nutrition Facts</th>
+      </tr>
+      <tr>
+        <td class="medium-text align-text-left" colspan="5">Serving Size 2/3 cup (55g)</td>
+      </tr>
+      <tr class="medium-text align-text-left thick-lower-border">
+        <td colspan="5">Servings Per Container About 8</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr class="outline-lower-border">
+        <th class="small-title align-text-left" span="row" colspan="5">Amount Per Serving</th>
+      </tr>
+
+      <tr class="thin-lower-border">
+        <th class="medium-text bold align-text-left" span="row">Calories</th>
+        <td class="medium-text align-text-left" colspan="2">230</td>
+        <td class="medium-text align-text-right">Calories from Fat</td>
+        <td class="medium-text align-text-right">40</td>
+      </tr>
+        
+      <tr class="outline-lower-border">
+        <td class="small-title align-text-right" colspan="5">% Daily Value*</td>
+      </tr>
+
+      <tr class="outline-lower-border">
+        <td class="medium-text bold" colspan="2">Total Fat</td>
+        <td class="medium-text align-text-left" colspan="2">8g</td>
+        <td class="medium-text bold align-text-right"><strong>12</strong>&percnt;</td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td class="medium-text outline-lower-border align-text-right">Saturated Fat</td>
+        <td class="medium-text outline-lower-border">1g</td>
+        <td class="medium-text outline-lower-border bold align-text-right">5</td>
+        <td class="medium-text outline-lower-border align-text-right">&percnt;</td>  
+      </tr>
+
+      <tr>
+        <td></td>
+        <td class="medium-text outline-lower-border align-text-right"><em>Trans</em> Fat</td>
+        <td class="medium-text outline-lower-border" colspan="3">0g</td>  
+      </tr>
+
+      <tr class="outline-lower-border">
+        <td class="medium-text bold" colspan="2">Cholesterol</td>
+        <td class="medium-text align-text-left">0mg</td>
+        <td class="medium-text bold align-text-right">0</td>
+        <td class="medium-text align-text-right">&percnt;</td>
+      </tr>
+
+      <tr class="outline-lower-border">
+        <td class="medium-text bold" colspan="2">Sodium</td>
+        <td class="medium-text align-text-left">160mg</td>
+        <td class="medium-text bold align-text-right">7</td>
+        <td class="medium-text align-text-right">&percnt;</td>
+      </tr>
+
+      <tr class="outline-lower-border">
+        <td class="medium-text bold" colspan="2">Total Carbohydrate</td>
+        <td class="medium-text align-text-left">37g</td>
+        <td class="medium-text bold align-text-right">12</td>
+        <td class="medium-text align-text-right">&percnt;</td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td class="medium-text outline-lower-border align-text-right">Dietary Fibre</td>
+        <td class="medium-text outline-lower-border" colspan="3">4g</td>  
+      </tr>
+
+      <tr>
+        <td></td>
+        <td class="medium-text outline-lower-border align-text-right">Sugars</td>
+        <td class="medium-text outline-lower-border" colspan="3">1g</td>  
+      </tr>
+
+      <tr class="thick-lower-border">
+        <td class="medium-text bold" colspan="2">Protein</td>
+        <td class="medium-text align-text-left" colspan="3">3g</td>
+      </tr>
+
+      <tr class="outline-lower-border">
+        <td class="medium-text" colspan="4">Vitamin A</td>
+        <td class="medium-text align-text-right">10&percnt;</td>
+      </tr>
+
+      <tr class="outline-lower-border">
+        <td class="medium-text" colspan="4">Vitamin C</td>
+        <td class="medium-text align-text-right">8&percnt;</td>
+      </tr>
+
+      <tr class="outline-lower-border">
+        <td class="medium-text" colspan="4">Calcium</td>
+        <td class="medium-text align-text-right">20&percnt;</td>
+      </tr>
+
+      <tr class="outline-lower-border">
+        <td class="medium-text" colspan="4">Iron</td>
+        <td class="medium-text align-text-right">40&percnt;</td>
+      </tr>
+
+      <!-- How to align this paragraph like a list with text other than * indented? -->
+      <tr> 
+        <td class="small-text align-text-left" colspan="5">
+          * Percent daily values are based on a 2,000 calorie diet.  Your daily value may be higher or lower depending on your calorie needs. 
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  
+</body>
+</html>
