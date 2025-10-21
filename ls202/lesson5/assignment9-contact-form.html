@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 8 | Contact Form</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    form {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    input[type="submit"],
+    input[type="reset"]
+     {
+      display: inline-block;
+      margin-block-start: 10px;
+      margin-inline-end: 30px;
+      padding-block: 10px;
+      width: 200px;
+    }
+
+    dt,
+    dd {
+      display: inline-block;
+    }
+
+    .partial {
+      box-sizing: border-box;
+      display: inline-block;
+    }
+
+    .one_half {
+      width: 50%;
+    }
+
+    .ten-percent {
+      width: 10%;
+    }
+
+    .forty-percent {
+      width: 40%;
+      outline: green solid 4px;
+    }
+
+    .left {
+      padding-right: 5px;
+      outline: solid blue 2px;
+    }
+
+    .right {
+      padding-left: 5px;
+      outline: solid red 2px;
+    }
+
+    .both {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    dl {
+      margin-bottom: 0;
+    }
+
+    dl + dl {
+      margin-top: 0;
+    }
+
+  </style>
+</head>
+
+<body>
+  <form action="#" method="post" id="new-user-form">
+
+    <dl class="partial one_half left">
+      <dt>
+        <label for="first-name">First name:</label>
+      </dt>
+      <dd>
+        <input type="text" name="first-name" id="first-name">
+      </dd>
+    </dl><!--
+
+  --><dl class="partial one_half right">
+      <dt>
+        <label for="last-name">Last name:</label>
+      </dt>
+      <dd>
+        <input type="text" name="last-name" id="last-name">
+      </dd>
+    </dl><!--
+
+  --><dl>
+      <dt>
+        <label for="email">Email:</label>
+      </dt>
+      <dd>
+        <input type="text" name="email" id="email" placeholder="name@email.com">
+      </dd>
+    </dl><!--
+
+  --><dl class="partial one_half left">
+      <dt>
+        <label for="city">City:</label>
+      </dt>
+      <dd>
+        <input type="text" name="city" id="city">
+      </dd>
+    </dl><!--  
+      
+  --><dl class="partial ten-percent both">
+      <dt>
+        <label for="state">State:</label>
+      </dt>
+      <dd>
+        <select name="state" id="state">
+          <option>AK</option>
+          <option>AL</option>
+          <option>AR</option>
+          <option>AZ</option>
+          <option>CA</option>
+          <option>CO</option>
+          <option>CT</option>
+          <option>DC</option>
+          <option>DE</option>
+          <option>FL</option>
+          <option>GA</option>
+          <option>HI</option>
+          <option>IA</option>
+          <option>ID</option>
+          <option>IL</option>
+          <option>IN</option>
+          <option>KS</option>
+          <option>KY</option>
+          <option>LA</option>
+          <option>MA</option>
+          <option>MD</option>
+          <option>ME</option>
+          <option>MI</option>
+          <option>MN</option>
+          <option>MO</option>
+          <option>MS</option>
+          <option>MT</option>
+          <option>NC</option>
+          <option>ND</option>
+          <option>NE</option>
+          <option>NH</option>
+          <option>NJ</option>
+          <option>NM</option>
+          <option>NV</option>
+          <option>NY</option>
+          <option>OH</option>
+          <option>OK</option>
+          <option>OR</option>
+          <option>PA</option>
+          <option>RI</option>
+          <option>SC</option>
+          <option>SD</option>
+          <option>TN</option>
+          <option>TX</option>
+          <option>UT</option>
+          <option>VA</option>
+          <option>VT</option>
+          <option>WA</option>
+          <option>WI</option>
+          <option>WV</option>
+          <option>WY</option>
+        </select>
+      </dd>
+    </dl><!--
+
+  --><dl class="partial forty-percent right">
+      <dt>
+        <label for="zip">Zip:
+      </dt>
+      <dd>
+        <input type="text" name="zip" id="zip" placeholder="12345" pattern="[0-9]{5}">
+      </dd>
+    </dl>
+
+    <input type="submit" form="new-user-form">
+    <input type="reset">
+    
+  </form>
+  
+</body>
+</html>
