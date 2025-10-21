@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 8 | Contact Form</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    form {
+      max-width: 550px;
+      margin: 0 auto;
+    }
+
+    fieldset {
+      margin-block: 10px;
+    }
+
+    h2 {
+      margin-block: 0;
+    }
+
+    label {
+      display: block;
+      margin-block-end: 8px;
+      padding-inline-end: 10px;
+    }
+
+    input[type="submit"],
+    input[type="reset"]
+     {
+      display: inline-block;
+      margin-block-start: 10px;
+      margin-inline-end: 30px;
+      padding-block: 10px;
+      width: 200px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <form action="#" method="post" id="new-user-form">
+
+    <fieldset id="contact-details">
+    <legend><h2>Contact Details</h2></legend>
+      <label for="first-name">First name:
+        <input type="text" id="first-name">
+      </label>
+      <label for="last-name">Last name:
+        <input type="text" id="last-name">
+      </label>
+      <label for="email">Email:
+        <input type="text" id="email" placeholder="name@email.com">
+      </label>
+      <label for="city">City:
+        <input type="text" id="city">
+      </label>
+      <label for="state">State:
+        <select name="state">
+          <option>AK</option>
+          <option>AL</option>
+          <option>AR</option>
+          <option>AZ</option>
+          <option>CA</option>
+          <option>CO</option>
+          <option>CT</option>
+          <option>DC</option>
+          <option>DE</option>
+          <option>FL</option>
+          <option>GA</option>
+          <option>HI</option>
+          <option>IA</option>
+          <option>ID</option>
+          <option>IL</option>
+          <option>IN</option>
+          <option>KS</option>
+          <option>KY</option>
+          <option>LA</option>
+          <option>MA</option>
+          <option>MD</option>
+          <option>ME</option>
+          <option>MI</option>
+          <option>MN</option>
+          <option>MO</option>
+          <option>MS</option>
+          <option>MT</option>
+          <option>NC</option>
+          <option>ND</option>
+          <option>NE</option>
+          <option>NH</option>
+          <option>NJ</option>
+          <option>NM</option>
+          <option>NV</option>
+          <option>NY</option>
+          <option>OH</option>
+          <option>OK</option>
+          <option>OR</option>
+          <option>PA</option>
+          <option>RI</option>
+          <option>SC</option>
+          <option>SD</option>
+          <option>TN</option>
+          <option>TX</option>
+          <option>UT</option>
+          <option>VA</option>
+          <option>VT</option>
+          <option>WA</option>
+          <option>WI</option>
+          <option>WV</option>
+          <option>WY</option>
+        </select>
+      </label>
+      <label for="zip">Zip:
+        <input type="text" id="zip" placeholder="12345" pattern="[0-9]{5}">
+      </label>
+    </fieldset>
+
+    <fieldset id="colors">
+      <legend><h2>Colors</h2></legend>
+      <p>Which of these are your favourite colors?</p>
+      <label for="blue">
+        <input type="radio" name="fav-colors" id="blue" required checked>Blue
+      </label>
+      <label for="blue">
+        <input type="radio" name="fav-colors" id="red" required>Red
+      </label>
+      <label for="green">
+        <input type="radio" name="fav-colors" id="green" required>Green
+      </label>
+      <label for="pink">
+        <input type="radio" name="fav-colors" id="pink" required>Pink
+      </label>      
+    </fieldset>
+
+    <fieldset id="technologies">
+      <legend><h2>Technologies</h2></legend>
+      <p>Which technologies do you want to learn?</p>
+      <label for="ruby">
+        <input type="checkbox" name="tech-choices" id="ruby">Ruby
+      </label>
+      <label for="python">
+        <input type="checkbox" name="tech-choices" id="python">Python
+      </label>
+      <label for="javascript">
+        <input type="checkbox" name="tech-choices" id="javascript">JavaScript
+      </label>
+      <label for="html">
+        <input type="checkbox" name="tech-choices" id="html">HTML
+      </label>
+      <label for="css">
+        <input type="checkbox" name="tech-choices" id="css">CSS
+      </label>
+    </fieldset>
+
+    <fieldset id="comment-area">
+      <legend><h2>Your Comments</h2></legend>
+      <label for="comments">Let us know what you think:</label>
+      <textarea name="comment" id="comments" cols="60" rows="8" form="new-user-form">Your comments</textarea>
+    </fieldset>
+
+    <input type="hidden" value="1999-12-31">
+    <input type="submit" form="new-user-form">
+    <input type="reset">
+    
+  </form>
+  
+</body>
+</html>
