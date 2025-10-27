@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 3-1 | Lesson 6 | LS202</title>
+
+  <style>
+    #columns {
+      background-color: #e0e0e0;
+      box-sizing: border-box;
+      margin: 0 auto;
+      padding: 20px;
+      width: 780px;
+      /* This is the property and value that stops the children floating outside the parent */
+
+      /* overflow: hidden;  */
+    }
+
+    #columns::after { /* This rule is the clearfix */
+      clear: both;
+      content: "";
+      display: block;
+    }
+
+    #primary, #secondary {
+      background-color: yellow;
+    }
+
+    #primary {
+      float: left;
+      width: 500px;
+    }
+
+    #secondary {
+      float: right;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <h1>The Containing Floats Problem</h1>
+  <div id="columns">
+    <div id="primary">
+      <h1>Main Content</h1>
+    </div>
+
+    <div id="secondary">
+      <h3>Sidebar Content</h3>
+    </div>
+  </div>
+
+</body>
+</html>
