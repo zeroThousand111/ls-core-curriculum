@@ -1,0 +1,92 @@
+body {
+  font-family: sans-serif;
+}
+
+.wrapper {
+  width: 1000px;
+  border: solid, darkgrey, 2px;
+  padding-inline: 2rem;
+  margin: 0 auto;
+}
+
+h2,
+h3,
+h4 {
+  color: rgb(190, 0, 0);
+}
+
+p {
+  line-height: 2;
+}
+
+.monospace {
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.nav-style-box { /* this is a class of ul */
+  border: dashed, rgb(190, 0, 0), 2px;
+  padding-block: 2rem;
+  position: relative;
+  left: 2rem;
+  width: 60%;
+}
+
+li {
+  display: inline;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.margin-30px {
+  margin: 30px;
+}
+
+a.padding {
+  background-color: green;
+  color: white;
+  padding: 30px;
+}
+
+a.floated {
+  float: left;
+}
+
+ul.clearfix {
+  overflow: hidden;
+}
+
+div.blue-white {
+  background-color: rgb(22, 142, 255);
+  color: white;
+}
+
+div.padding-and-margins-green {
+  box-sizing: border-box;
+  background-color: green;
+  color: white;
+  height: 60px;
+  padding: 20px;
+  margin: 20px;
+
+}
+p.padding-and-margins-green {
+  bottom: 40px;
+}
+
+div.fixed-width {
+  width: 90px;
+  background-color: orange;
+  color: white;
+}
+
+p.fixed-width {
+  line-height: 1;
+}
