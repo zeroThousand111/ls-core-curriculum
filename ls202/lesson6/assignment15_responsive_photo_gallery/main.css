@@ -1,0 +1,123 @@
+/* GLOBAL */
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+img {
+  width: 100%;
+  background-color: white;
+}
+
+/* this overrides the browser stylesheet that gives it pixels of margin */
+figure {
+  margin: 0;
+  width: 100%;
+}
+
+body {
+  background-color: black;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+/* TYPOGRAPHY */
+
+h1 {
+  padding-block-start: 3rem;
+  padding-block-end: 1rem;
+}
+
+.align-text-left {
+  text-align: left;
+}
+
+#title {
+  justify-self: center;
+}
+
+/* LAYOUT */
+
+.black-outer-frame {
+  margin: 2rem;
+}
+
+.photo-gallery {
+  background-color: rgb(66, 66, 66);
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.main-photo {
+  padding-block-end: 2rem;
+  width: 95%;
+  /* align-self: center; */
+  /* can i use a grid property to center it instead of margin auto? */
+  margin: 0 auto;
+}
+
+.variable-col-grid-container {
+  display: grid;
+  width: 95%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  margin: 0 auto;
+  padding-block-end: 2rem;
+}
+
+/* IMAGE FRAMES */
+
+.large-image {
+  padding: 15px;
+}
+
+.small-image {
+  padding: 7px;
+}
+
+/* MEDIA QUERIES */
+
+/* more than 1280px */
+@media (min-width: 1279px) {
+
+  .photo-gallery {
+    max-width: 5000px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .variable-col-grid-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #title {
+    grid-column: 1 / 3;
+    grid-row: 1;
+  }
+
+}
+
+/* N.B. from 900px to 1279px the grid becomes our desktop-first basic design with 1 column for .photo-gallery and four columns for .variable-col-grid-container */
+
+/* from 600px to 899px */
+@media (max-width: 899px) {
+
+  .variable-col-grid-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* from 0 to 599px */
+@media (max-width: 599px) {
+
+  .variable-col-grid-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
