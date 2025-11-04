@@ -89,7 +89,7 @@ h1 {
 
   .photo-gallery {
     max-width: 5000px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
   }
 
   .variable-col-grid-container {
