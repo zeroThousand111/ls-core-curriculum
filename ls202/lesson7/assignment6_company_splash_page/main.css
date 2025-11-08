@@ -1,32 +1,67 @@
+/* LAYOUT */
+
 body {
-  font-family: sans-serif;
+  font-family: "Nunito Sans",sans-serif;
   background-image: url(bg_body.gif);
 }
 
 .width-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 #spacedesign-logo {
   margin: 0 auto;
+  width: 300px;
 }
 
 header {
+  margin-block-start: 10rem;
+  margin-block-end: 6rem;
   align-items: center;
 }
 
 main {
   background-color: white;
+  text-align: center;
+  margin-inline: 3rem;
 }
 
 footer {
-  background-color: grey;
+  background-color: #E7E7E7;
+  padding-block: 2rem;
+  margin-inline: 3rem;
+  margin-block-end: 9rem;
 }
 
 #footer-icon-container {
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  width: 50%;
+  width: 40%;
+}
+
+/* TYPOGRAPHY */
+
+h2 {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #45494D;
+  display: block;
+  padding-block-start: 5.75rem;
+  padding-block-end: 1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #3E98B2;
+  padding-block-end: 1rem;
+}
+
+p {
+  color: #45494D;
+  font-size: 1.25rem;
+  padding-inline: 6rem;
+  padding-block-end: 5rem;
 }
