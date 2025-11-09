@@ -6,7 +6,7 @@ body {
 }
 
 .width-container {
-  max-width: 800px;
+  max-width: 850px;
   margin: 0 auto;
 }
 
@@ -56,10 +56,19 @@ section:last-child {
   padding-block-end: 5rem;
 }
 
+.headshot-section {
+  /* outline: yellow solid 2px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-inline: 3rem;
+  height: 500px;
+}
+
 footer {
   background-color: #E7E7E7;
   text-align: center;
-  padding-block: 5rem;
+  padding-block: 5.25rem;
 }
 
 .footer-container {
@@ -91,6 +100,7 @@ h3 {
 }
 
 p {
+  padding-inline: 1.5rem;
   color: #45494D;
   font-size: 1.25rem;
   font-weight: 600;
@@ -98,6 +108,12 @@ p {
 
 .footer-para {
   color: #B1B1B1;
-  /* padding-inline: 1rem; */
   padding-block-end: 2rem;
+}
+
+figcaption {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3E59B2;
+  margin-block-start: 1.25rem;
 }
