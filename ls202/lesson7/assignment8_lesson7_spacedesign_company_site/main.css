@@ -1,0 +1,103 @@
+/* LAYOUT */
+
+body {
+  font-family: "Nunito Sans",sans-serif;
+  background-image: url(images/bg_body.gif);
+}
+
+.width-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#spacedesign-logo {
+  margin: 0 auto;
+  width: 335px;
+}
+
+header {
+  margin-block-start: 8.5rem;
+  margin-block-end: 2.5rem;
+  align-items: center;
+}
+
+nav {
+  margin-block-start: 7rem;
+  margin-inline: auto;
+  text-align: center;
+  width: 55%;
+  display: flex;
+  justify-content: space-between;
+}
+
+nav > a {
+  color: #CACACA;
+  text-decoration: none;
+  font-size: 1.7rem;
+  font-weight: 500;
+}
+
+nav .accented-nav {
+  color: #6DB9FF;
+  font-weight: 900;
+}
+
+main {
+  background-color: white;
+  text-align: center;
+  padding-block-start: 5rem;
+}
+
+section {
+  padding-block: 1.75rem;
+}
+
+section:last-child {
+  padding-block-end: 5rem;
+}
+
+footer {
+  background-color: #E7E7E7;
+  text-align: center;
+  padding-block: 5rem;
+}
+
+.footer-container {
+  margin: 0 auto;
+  max-width: 550px;
+  width: 50%;
+}
+
+.footer-icon-flexbox {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* TYPOGRAPHY */
+
+h2 {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #45494D;
+  display: block;
+  padding-block-end: 1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #3E59B2;
+  padding-block-end: 1rem;
+}
+
+p {
+  color: #45494D;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.footer-para {
+  color: #B1B1B1;
+  /* padding-inline: 1rem; */
+  padding-block-end: 2rem;
+}
