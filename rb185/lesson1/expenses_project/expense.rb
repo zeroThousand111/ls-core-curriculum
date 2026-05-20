@@ -2,7 +2,7 @@
 
 require "pg"
 require "io/console"
-require "Date"
+require "date"
 
 class ExpenseData
   def initialize
